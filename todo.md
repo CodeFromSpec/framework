@@ -1,7 +1,7 @@
 # TODO
 
 ## code-from-spec
-- ordem dos depends_on não importa; juntar tudo (inclusive do nodo de teste) e ordenar alfabeticamente
+- Sem shared visibility, duplicação é inevitável para helpers de pacote
 
 ## staleness tool
 - modo "small output" traz só o primeiro erro
