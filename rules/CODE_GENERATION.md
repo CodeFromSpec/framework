@@ -1,123 +1,105 @@
 # Code Generation with Subagents
 
-Instructions for code generation subagents using the
-`subagent-mcp` MCP server.
+How an orchestrator uses subagents to generate code from
+specifications. This document assumes familiarity with
+[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
 
 ---
 
 ## Overview
 
-The subagent's job is to verify that a specification is complete
-and unambiguous enough to generate code from. If it is, it proves
-it by generating the code. If it is not, it reports exactly what
-is missing or contradictory. Both outcomes are equally valid.
-
-The subagent may be called during specification design to find
-gaps, or during code generation to produce files. It does not
-know which — it behaves the same either way.
+Code generation should be performed by confined subagents. The
+orchestrator dispatches a subagent for each stale source file,
+providing only the logical name of the target node. The subagent
+receives the spec chain, reviews the specification, and either
+generates the code or reports gaps.
 
 ---
 
-## Tools
+## Confinement
 
-The subagent has access to two MCP tools provided by the
-`subagent-mcp` server:
+Ideally, a subagent should only have access to the spec chain for the
+target node and the ability to write the declared output files.
+It should not explore the filesystem, read unrelated files, or
+fetch external information. If the chain is insufficient, the
+correct action is to report what is missing.
 
-- `load_chain` — loads the full spec chain for a given name
-- `write_file` — writes a generated file to disk
+The `subagent-mcp` tool (see Resources in
+[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md)) enforces this
+confinement. Its tools include:
 
-The subagent has no other tools or filesystem access.
+- `load_chain` — returns the complete spec chain for a logical
+  name
+- `write_file` — writes a file to disk, validated against the
+  node's `implements` list
 
----
-
-## Workflow
-
-1. Call `load_chain` with the logical name the orchestrator
-   provided. This returns a concatenated set of specification
-   files. Must be called exactly once.
-
-2. The response contains multiple files separated by delimiters.
-   Each file has a `node:` and `path:` header. Find the file
-   whose `node:` matches the logical name — this is the
-   **target**. Everything else is supporting context.
-
-3. The target file contains a YAML block between `---` delimiters
-   at the top. In that block, the `implements` field lists the
-   source files to generate, and the `version` field is the
-   current version number.
-
-4. For each file listed in `implements`, verify that the target
-   and context provide enough information to implement it. Note
-   anything ambiguous, missing, or contradictory.
-
-5. If issues were found in step 4, report the findings and stop.
-   Otherwise, proceed to step 6.
-
-6. Generate each source file. Use the target file as the primary
-   specification and the rest of the context for constraints,
-   conventions, and reference material.
-
-7. Call `write_file` once per file listed in `implements` to
-   write the result, passing the logical name as `logical_name`.
+When `subagent-mcp` is available, the orchestrator should
+configure the subagent with access to only these two tools and
+no other filesystem access. When it is not available, the
+orchestrator is responsible for assembling the chain and
+delivering it to the subagent by other means (e.g., in the
+prompt), and for restricting the subagent's write access.
 
 ---
 
-## Rules
+## Prerequisites
 
-### Optimize for human review
+Before dispatching subagents:
 
-A human may need to review the output against the specification.
-Everything below serves that goal — the subagent should spend
-extra tokens and time if it makes the result easier for a human
-to verify.
+1. Resolve all spec and test node staleness. Generating code
+   from stale specs is wasteful — the output will be stale
+   before it is written.
 
-- **Comment abundantly.** Explain intent, clarify non-obvious
-  decisions, and document constraints that influenced the
-  implementation.
-- **Write straightforward code.** Simple and readable over clever
-  and compact.
-- **Minimize changes.** When updating an existing file, only
-  modify what is needed to meet the specification — no unnecessary
-  reformatting or restructuring. Smaller diffs are easier to
-  review.
-- **Skip unnecessary work.** If the existing code already
-  satisfies the specification, do not regenerate it.
+2. If using `subagent-mcp`, ensure it is installed and configured
+   (see [Getting Started](../docs/GETTING_STARTED.md)).
 
-### Spec comment
+3. Ensure a subagent definition is available. A reference
+   implementation is provided at
+   [subagents/code_generation_subagent.md](../subagents/code_generation_subagent.md).
 
-Every generated file must contain the string:
+---
 
-```
-spec: <logical-name>@v<version>
-```
+## Dispatching
 
-- `logical-name` is the logical name of the target node.
-- `version` is the `version` field from the target's YAML block.
+For each stale source file:
 
-Place it inside a comment as early in the file as the language
-allows. The comment syntax does not matter — what matters is
-that the string appears in the file.
+1. Identify the logical name of the node that generates the file.
 
-Example (Go):
+2. Dispatch a subagent with that logical name in the prompt.
 
-```go
-// spec: ROOT/architecture/backend/config@v5
-package configuration
-```
+3. The subagent loads the chain, reviews the specification, and
+   either writes the files or reports findings.
 
-Example (Python):
+Multiple subagents may be dispatched in parallel — each operates
+independently.
 
-```python
-# spec: ROOT/architecture/backend/config@v5
-```
+---
 
-Example (SQL):
+## What to expect
 
-```sql
--- spec: ROOT/architecture/backend/config@v5
-```
+The subagent produces one of two results:
 
-### Strict compliance
+- **Generated files** — written to disk. Each file contains a
+  spec comment identifying the source node and version.
 
-Every rule and convention in the context is mandatory; nothing
-is optional.
+- **Findings report** — the specification is ambiguous,
+  incomplete, or contradictory. The subagent reports exactly
+  what is wrong. This is correct output — fix the spec and
+  retry.
+
+Both outcomes are equally valid. The subagent may be dispatched
+during specification design specifically to find gaps, or during
+a resync to produce files.
+
+---
+
+## After generation
+
+1. Check for remaining stale files. If any remain, dispatch
+   subagents for the next batch. Repeat until clean.
+
+2. Build and run tests. If anything fails, trace back to the spec
+   and correct it. Do not patch the generated code — fix the spec
+   and regenerate.
+
+
