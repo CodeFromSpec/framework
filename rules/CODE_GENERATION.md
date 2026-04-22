@@ -34,7 +34,7 @@ confinement. Its tools include:
 
 When `subagent-mcp` is available, the orchestrator should
 configure the subagent with access to only these tools and no
-other filesystem access. A reference subagent definition is 
+other filesystem access. A reference subagent definition is
 provided at [subagents/code_generation_subagent.md](../subagents/code_generation_subagent.md).
 
 When it is not available, the orchestrator is responsible for
@@ -50,28 +50,21 @@ Given a logical name:
 
 1. Dispatch a subagent with that logical name in the prompt.
 
-2. The subagent receives the spec chain, reviews the
-   specification, and either writes the declared files or
-   reports findings.
+2. The subagent obtains the spec chain, reviews the
+   specification, and produces one of two results:
+
+   - **Generated files** — written to disk. Each file contains
+     a spec comment identifying the source node and version.
+
+   - **Findings report** — the specification is ambiguous,
+     incomplete, or contradictory. The subagent reports exactly
+     what is wrong. This is correct output — fix the spec and
+     retry.
+
+   Both outcomes are equally valid. The subagent may be
+   dispatched during specification design specifically to find
+   gaps, or during a resync to produce files.
 
 3. If the subagent generated files, build and run tests. If
    anything fails, trace back to the spec and correct it. Do
    not patch the generated code — fix the spec and regenerate.
-
----
-
-## What to expect
-
-The subagent produces one of two results:
-
-- **Generated files** — written to disk. Each file contains a
-  spec comment identifying the source node and version.
-
-- **Findings report** — the specification is ambiguous,
-  incomplete, or contradictory. The subagent reports exactly
-  what is wrong. This is correct output — fix the spec and
-  retry.
-
-Both outcomes are equally valid. The subagent may be dispatched
-during specification design specifically to find gaps, or during
-a resync to produce files.
