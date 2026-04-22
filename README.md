@@ -44,12 +44,20 @@ point.
 
 ---
 
+## Getting started
+
+See [GETTING_STARTED.md](docs/GETTING_STARTED.md) for step-by-step
+setup: spec directory, tooling installation, MCP configuration,
+and an AGENTS.md template ready to copy.
+
+---
+
 ## Methodology files
 
 | File | Purpose |
 |---|---|
-| [`framework/CODE_FROM_SPEC.md`](framework/CODE_FROM_SPEC.md) | Full methodology: spec structure, versioning, staleness, resync procedure |
-| [`framework/AGENT_CODE_GENERATION.md`](framework/AGENT_CODE_GENERATION.md) | Agent instructions: code generation |
+| [`rules/CODE_FROM_SPEC.md`](rules/CODE_FROM_SPEC.md) | Full methodology: spec structure, versioning, staleness, resync procedure |
+| [`rules/CODE_GENERATION.md`](rules/CODE_GENERATION.md) | Code generation with subagents |
 
 ---
 
@@ -58,6 +66,7 @@ point.
 | Repository | Description |
 |---|---|
 | [tool-staleness-check](https://github.com/CodeFromSpec/tool-staleness-check) | CLI tool that automates staleness verification |
+| [tool-subagent-mcp](https://github.com/CodeFromSpec/tool-subagent-mcp) | MCP server that provides confined tools for code generation subagents |
 
 ---
 
@@ -71,5 +80,5 @@ To fetch a specific version of the methodology, use the raw URLs
 from the appropriate branch:
 
 ```
-https://raw.githubusercontent.com/CodeFromSpec/framework/v1/framework/CODE_FROM_SPEC.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v1/rules/CODE_FROM_SPEC.md
 ```

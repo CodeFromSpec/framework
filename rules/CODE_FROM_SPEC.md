@@ -370,7 +370,7 @@ For test nodes, the parent is the `_node.md` in the same directory.
 A generated source file is stale when:
 
 ```
-node.version != version in the file's // spec: comment
+node.version != version in the file's spec comment
 ```
 
 Staleness verification is automated by the `staleness-check` tool.
@@ -404,9 +404,9 @@ output will be stale before it is written.
 
 ## Code Generation
 
-The orchestrator dispatches a code generation subagent for each
+An **orchestrator** dispatches a code generation subagent for each
 stale source file. The subagent receives a self-contained set of
-instructions and a structured input — it does not explore the
+instructions and a structured input — ideally, it does not explore the
 filesystem or read anything beyond what it receives. The
 orchestrator is responsible for assembling the correct input; if
 the input is wrong or incomplete, the subagent's output will be
@@ -455,6 +455,17 @@ EXTERNAL/fixtures             (_external.md + data.sql)
 The chain is the complete context. Nothing outside the chain is
 needed. Nothing inside the chain is redundant.
 
+### Spec comment
+
+Every generated source file must contain a **spec comment** — a
+string in the format `spec: <logical-name>@v<version>` that
+identifies the logical name and version of the spec node that
+generated the file.
+
+The spec comment is placed inside a comment as early in the file
+as the language allows. The comment syntax depends on the language;
+the string itself is fixed.
+
 See Resources for the agent's instruction file URL.
 
 ---
@@ -484,5 +495,6 @@ External resources required to operate this framework:
 
 | Resource | URL |
 |---|---|
-| Code generation agent instructions | https://raw.githubusercontent.com/CodeFromSpec/framework/main/framework/AGENT_CODE_GENERATION.md |
+| Code generation with subagents | https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_GENERATION.md |
 | `staleness-check` tool | https://github.com/CodeFromSpec/tool-staleness-check/releases/tag/v1.0.2 |
+| `subagent-mcp` tool | https://github.com/CodeFromSpec/tool-subagent-mcp/releases/tag/v1.1.0 |
