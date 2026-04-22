@@ -44,6 +44,14 @@ point.
 
 ---
 
+## Getting started
+
+See [GETTING_STARTED.md](GETTING_STARTED.md) for step-by-step
+setup: spec directory, tooling installation, MCP configuration,
+and an AGENTS.md template ready to copy.
+
+---
+
 ## Methodology files
 
 | File | Purpose |
@@ -58,6 +66,7 @@ point.
 | Repository | Description |
 |---|---|
 | [tool-staleness-check](https://github.com/CodeFromSpec/tool-staleness-check) | CLI tool that automates staleness verification |
+| [tool-subagent-mcp](https://github.com/CodeFromSpec/tool-subagent-mcp) | MCP server that provides confined tools for code generation subagents |
 
 ---
 
