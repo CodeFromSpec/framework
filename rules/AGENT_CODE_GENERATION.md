@@ -79,36 +79,42 @@ For each file in the leaf node's `implements`:
 
 ---
 
-## Spec reference comment
+## Version marker
 
-Every generated file must include a spec reference comment on the
-first line where a comment is allowed by the language in use:
+Every generated file must contain the string:
 
 ```
-// spec: <logical-name>@v<version>
+spec: <logical-name>@v<version>
 ```
 
-- `logical-name` is the node's title (e.g.,
+- `logical-name` is the node's logical name (e.g.,
   `ROOT/architecture/backend/config` for spec nodes,
   `TEST/architecture/backend/config` for canonical test nodes,
   `TEST/architecture/backend/config(edge_cases)` for named test
   nodes).
 - `version` is the `version` field from the leaf node's frontmatter.
 
-Example — a spec node titled `# ROOT/architecture/backend/config`
-with `version: 5`:
+Place it inside a comment as early in the file as the language
+allows. The comment syntax does not matter — what matters is that
+the string appears in the file.
+
+Example (Go):
 
 ```go
 // spec: ROOT/architecture/backend/config@v5
 package configuration
 ```
 
-Example — a test node titled `# TEST/architecture/backend/config`
-with `version: 3`:
+Example (Python):
 
-```go
-// spec: TEST/architecture/backend/config@v3
-package configuration
+```python
+# spec: ROOT/architecture/backend/config@v5
+```
+
+Example (SQL):
+
+```sql
+-- spec: ROOT/architecture/backend/config@v5
 ```
 
 ---

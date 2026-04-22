@@ -370,7 +370,7 @@ For test nodes, the parent is the `_node.md` in the same directory.
 A generated source file is stale when:
 
 ```
-node.version != version in the file's // spec: comment
+node.version != version in the file's spec: marker
 ```
 
 Staleness verification is automated by the `staleness-check` tool.
