@@ -34,8 +34,8 @@ Before working on this project, read the framework documentation:
 
 - The spec tree under `code-from-spec/spec/` drives all
   implementation decisions.
-- Only leaf nodes generate code. Each source file begins with a
-  `// spec:` comment referencing its spec node and version.
+- Only leaf nodes generate code. Each source file contains a
+  spec comment referencing its spec node and version.
 - Never change code; correct the corresponding spec node and
   regenerate.
 - When a spec version changes, the code is stale and must be
@@ -57,6 +57,7 @@ Before running staleness checks or code generation:
    |---|---|
    | Windows amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_windows_amd64.zip` |
    | Linux amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_linux_amd64.tar.gz` |
+   | Linux arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_linux_arm64.tar.gz` |
    | macOS arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_darwin_arm64.tar.gz` |
    | macOS amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_darwin_amd64.tar.gz` |
 
