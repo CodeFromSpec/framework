@@ -46,7 +46,7 @@ point.
 
 ## Getting started
 
-See [GETTING_STARTED.md](GETTING_STARTED.md) for step-by-step
+See [GETTING_STARTED.md](docs/GETTING_STARTED.md) for step-by-step
 setup: spec directory, tooling installation, MCP configuration,
 and an AGENTS.md template ready to copy.
 
@@ -56,8 +56,8 @@ and an AGENTS.md template ready to copy.
 
 | File | Purpose |
 |---|---|
-| [`framework/CODE_FROM_SPEC.md`](framework/CODE_FROM_SPEC.md) | Full methodology: spec structure, versioning, staleness, resync procedure |
-| [`framework/AGENT_CODE_GENERATION.md`](framework/AGENT_CODE_GENERATION.md) | Agent instructions: code generation |
+| [`rules/CODE_FROM_SPEC.md`](rules/CODE_FROM_SPEC.md) | Full methodology: spec structure, versioning, staleness, resync procedure |
+| [`rules/AGENT_CODE_GENERATION.md`](rules/AGENT_CODE_GENERATION.md) | Agent instructions: code generation |
 
 ---
 
@@ -80,5 +80,5 @@ To fetch a specific version of the methodology, use the raw URLs
 from the appropriate branch:
 
 ```
-https://raw.githubusercontent.com/CodeFromSpec/framework/v1/framework/CODE_FROM_SPEC.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v1/rules/CODE_FROM_SPEC.md
 ```

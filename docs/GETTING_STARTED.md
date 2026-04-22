@@ -27,8 +27,8 @@ authoritative source of truth, not the code itself.
 Before working on this project, read the framework documentation:
 
 - Overview: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/README.md`
-- Specification structure and versioning: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/framework/CODE_FROM_SPEC.md`
-- Code generation rules: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/framework/AGENT_CODE_GENERATION.md`
+- Specification structure and versioning: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/rules/CODE_FROM_SPEC.md`
+- Code generation rules: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/rules/AGENT_CODE_GENERATION.md`
 
 ## Key Rules
 
@@ -102,7 +102,7 @@ code-from-spec/
 ```
 
 The root `_node.md` is the starting point. See
-[CODE_FROM_SPEC.md](framework/CODE_FROM_SPEC.md) for the full
+[CODE_FROM_SPEC.md](../rules/CODE_FROM_SPEC.md) for the full
 specification structure.
 
 ### 2. Install tooling
@@ -171,4 +171,4 @@ Run the staleness check to confirm everything is wired up:
 If the tool runs and reports `spec_staleness: []`,
 `test_staleness: []`, and `code_staleness: []`, the project is
 clean. Otherwise, follow the
-[staleness resolution process](framework/CODE_FROM_SPEC.md#resolution).
+[staleness resolution process](../rules/CODE_FROM_SPEC.md#resolution).

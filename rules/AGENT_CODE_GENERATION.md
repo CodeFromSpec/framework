@@ -1,40 +1,39 @@
 # Agent: Code Generation
 
-Rules for code generation.
+Rules for code generation subagents using the `subagent-mcp`
+server.
 
 ---
 
 ## Input
 
-This file is provided to you as instructions before any other
-content. After these instructions, you receive a YAML block
-identifying the leaf node and its context files:
+The orchestrator provides the logical name of the target node
+in the subagent's prompt. The subagent has access to the
+`subagent-mcp` MCP server which exposes two tools:
 
-```yaml
-leaf_node: code-from-spec/spec/architecture/backend/config/_node.md
-context:
-  - code-from-spec/spec/_node.md
-  - code-from-spec/spec/architecture/_node.md
-  - code-from-spec/spec/architecture/backend/_node.md
-  - code-from-spec/external/database/_external.md
-  - code-from-spec/external/database/schema.sql
-```
+- `load_chain` — loads the full spec chain for a logical name
+- `write_file` — writes a generated file to disk
 
-Read all files in `context` and the `leaf_node` in full — no
-partial reads. The `context` files provide constraints, conventions,
-and reference material. The `leaf_node` is the spec to implement —
-its frontmatter contains:
-- `implements` — the source files to generate (paths relative to
-  the project root).
-- `version` — the current spec version.
+The subagent has no other filesystem access.
+
+---
+
+## Core Workflow
+
+1. Call `load_chain` with the logical name. This returns all
+   relevant spec files concatenated in a single response. Must
+   be called exactly once.
+2. Generate the source files declared in the node's `implements`
+   list from the returned context.
+3. Write each file using the `write_file` tool.
 
 ---
 
 ## Output
 
-You deliver the files listed in the leaf node's `implements`, ready
-for use. If the leaf node specifies test files, follow the standard
-testing conventions of the language in use.
+You deliver the files listed in the leaf node's `implements`,
+written via `write_file`. If the leaf node specifies test files,
+follow the standard testing conventions of the language in use.
 
 ---
 
@@ -50,13 +49,12 @@ testing conventions of the language in use.
 - **Respect all constraints.** Everything you received as context is
   mandatory — constraints, rules, conventions, patterns. Nothing is
   optional, nothing can be skipped. Follow everything to the letter.
-- **Use only the provided input.** Your only allowed filesystem
-  operations are: read the files listed in `context` and
-  `leaf_node`, read the existing files in `implements` when they
-  exist, and write the files in `implements` (creating intermediate
-  directories if needed). Do not read, search, or fetch any other
-  information. If the input is insufficient, stop and report —
-  never supplement it on your own.
+- **Use only the provided input.** Your only allowed operations are:
+  call `load_chain` once, read the existing files in `implements`
+  when they exist, and call `write_file` for each file in
+  `implements`. Do not read, search, or fetch any other information.
+  If the input is insufficient, stop and report — never supplement
+  it on your own.
 
 ---
 
@@ -67,7 +65,7 @@ For each file in the leaf node's `implements`:
 1. Check if the file exists.
 
 2. **If it does not exist** — generate the file from scratch,
-   guided by the context content.
+   guided by the context returned by `load_chain`.
 
 3. **If it exists** — read the `// spec:` comment at the top of
    the file and compare its version with the leaf node's `version`.
