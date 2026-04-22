@@ -57,7 +57,7 @@ and an AGENTS.md template ready to copy.
 | File | Purpose |
 |---|---|
 | [`rules/CODE_FROM_SPEC.md`](rules/CODE_FROM_SPEC.md) | Full methodology: spec structure, versioning, staleness, resync procedure |
-| [`rules/AGENT_CODE_GENERATION.md`](rules/AGENT_CODE_GENERATION.md) | Agent instructions: code generation |
+| [`rules/CODE_GENERATION.md`](rules/CODE_GENERATION.md) | Code generation with subagents |
 
 ---
 
