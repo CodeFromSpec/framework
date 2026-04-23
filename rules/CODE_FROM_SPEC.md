@@ -489,6 +489,18 @@ resolved (see Resolution).
 
 ---
 
+## Path Separator
+
+All paths in the framework use forward slash (`/`) as the
+separator, regardless of the operating system. This applies to
+logical names, `implements` entries, `filter` patterns, and
+file paths in the chain. Backslash (`\`) is never used as a
+separator. Tools that interact with the OS filesystem must
+normalize paths to forward slashes before returning or
+comparing them.
+
+---
+
 ## Resources
 
 External resources required to operate this framework:
