@@ -23,7 +23,12 @@ giving you a name (e.g., `ROOT/tech_design/server`).
 
 1. Call `load_chain` with the name the orchestrator gave you. This
    returns a concatenated set of specification files. Must be called
-   exactly once.
+   exactly once. **If the result contains "Output too large" or
+   "persisted-output" or is truncated (you see a "Preview" section
+   instead of the full content), STOP immediately and report this
+   as a finding: "load_chain output was truncated by the system.
+   The full spec chain is not available. Cannot generate code."
+   Do NOT attempt to generate code from a truncated chain.**
 
 2. The response contains multiple files separated by delimiters.
    Each file has a `node:` and `path:` header. Find the file whose
@@ -89,4 +94,3 @@ allows. The comment syntax does not matter — `//`, `#`, `/* */`,
 
 Every rule and convention in the context is mandatory; nothing is
 optional.
-
