@@ -6,9 +6,9 @@ of specification files. To change behavior, you change the spec and
 regenerate. You never edit generated code directly.
 
 This methodology is designed for AI agent participation at every
-stage — writing specs, managing versions, detecting staleness,
-running resyncs, generating code, and assisting non-technical
-contributors with spec authoring.
+stage — writing specs, managing versions, detecting and resolving
+staleness, generating code, and assisting non-technical contributors
+with spec authoring.
 
 ---
 
@@ -54,8 +54,9 @@ level of abstraction.
 
 A node with child directories is an **intermediate node**. A node
 without children is a **leaf node**. Intermediate nodes provide
-context and constraints to their descendants. Only leaf nodes may generate code. Not all leaf nodes do; some
-serve as documentation only.
+context and constraints to their descendants. Only leaf nodes may
+generate code. Not all leaf nodes do; some serve as documentation
+only.
 
 A **test node** is a file ending in `.test.md` placed inside the
 directory of the node it tests (its **subject**). The canonical test
@@ -323,11 +324,11 @@ the reference:
 Example — implementing `ROOT/payments/fees/calculation`:
 
 ```
-ROOT                           (spec/_node.md)                    [# Public]
-ROOT/payments                  (spec/payments/_node.md)           [# Public]
-ROOT/payments/fees             (spec/payments/fees/_node.md)      [# Public]
-ROOT/payments/fees/calculation (spec/payments/fees/calculation/_node.md) [full]
-ROOT/external/database         (spec/external/database/_node.md)  [# Public]
+ROOT                           (code-from-spec/_node.md)                              [# Public]
+ROOT/payments                  (code-from-spec/payments/_node.md)                     [# Public]
+ROOT/payments/fees             (code-from-spec/payments/fees/_node.md)                [# Public]
+ROOT/payments/fees/calculation (code-from-spec/payments/fees/calculation/_node.md)    [full]
+ROOT/external/database         (code-from-spec/external/database/_node.md)            [# Public]
 ```
 
 For test nodes, the subject node is included with only its
@@ -335,13 +336,12 @@ For test nodes, the subject node is included with only its
 entries from the test node are appended in alphabetical order:
 
 ```
-ROOT                           (spec/_node.md)                    [# Public]
-ROOT/payments                  (spec/payments/_node.md)           [# Public]
-ROOT/payments/fees             (spec/payments/fees/_node.md)      [# Public]
-ROOT/payments/fees/calculation (spec/payments/fees/calculation/_node.md) [# Public]
-TEST/payments/fees/calculation (spec/payments/fees/calculation/default.test.md) [full]
-ROOT/external/database         (spec/external/database/_node.md)  [# Public]
-ROOT/external/fixtures         (spec/external/fixtures/_node.md)  [# Public]
+ROOT                           (code-from-spec/_node.md)                              [# Public]
+ROOT/payments                  (code-from-spec/payments/_node.md)                     [# Public]
+ROOT/payments/fees             (code-from-spec/payments/fees/_node.md)                [# Public]
+ROOT/payments/fees/calculation (code-from-spec/payments/fees/calculation/_node.md)    [# Public]
+TEST/payments/fees/calculation (code-from-spec/payments/fees/calculation/default.test.md) [full]
+ROOT/external/database         (code-from-spec/external/database/_node.md)            [# Public]
 ```
 
 The chain is the complete context. Nothing outside the chain is
