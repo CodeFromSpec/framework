@@ -12,6 +12,20 @@ with spec authoring.
 
 ---
 
+## Versions
+
+> [!WARNING] 
+> **This is the development branch (`main`) and may contain unreleased
+> changes.** 
+
+For a stable release, use a version branch:
+
+| Version | Branch                                                                                                 |
+|---------|--------------------------------------------------------------------------------------------------------|
+| v1      | [https://github.com/CodeFromSpec/framework/tree/v1](https://github.com/CodeFromSpec/framework/tree/v1) |
+
+---
+
 ## How it works
 
 Specifications are organized as a tree. Each node is a directory
