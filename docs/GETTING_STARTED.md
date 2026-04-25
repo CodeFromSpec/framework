@@ -20,8 +20,8 @@ branch.
 
 ## Methodology
 
-This project follows the **Code from Spec** methodology. All code
-is generated from specifications — the spec tree is the
+This project follows the **Code from Spec v1** methodology. All
+code is generated from specifications — the spec tree is the
 authoritative source of truth, not the code itself.
 
 Before working on this project, read the framework documentation:
