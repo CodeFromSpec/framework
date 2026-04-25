@@ -94,7 +94,7 @@ to target a specific public subsection of the node (see Body).
 | `TEST/architecture/backend/config(edge_cases)` | `code-from-spec/architecture/backend/config/edge_cases.test.md` |
 
 Resolution rules:
-- `ROOT/x` → `code-from-spec/x/_node.md` (exports `# Public`)
+- `ROOT/x` → `code-from-spec/x/_node.md` (`# Public`)
 - `ROOT/x(y)` → `## y` subsection of `# Public` in `code-from-spec/x/_node.md`
 - `TEST/x(y)` → `code-from-spec/x/y.test.md`
 - `TEST/x` is an alias for `TEST/x(default)`
@@ -179,7 +179,7 @@ The body of a node is divided into top-level sections, each starting
 with a `#` heading. A section ends when the next `#` heading begins
 or the file ends. Two sections have special meaning: the **node name section** and
 the **public section** (`# Public`). All other sections are treated
-as private — never exported via inheritance or `depends_on`.
+as private — not available via inheritance or `depends_on`.
 
 #### Node name section
 
@@ -188,11 +188,11 @@ frontmatter — nothing may appear between the frontmatter and this
 heading. The heading is the node's logical name (e.g.
 `# ROOT/architecture/backend/config`). Its content serves as
 intent — what this node does and why it exists. This section is
-not exported to other nodes.
+not available to other nodes.
 
 #### Public section
 
-Everything under `# Public` is exported:
+Everything under `# Public` is available to other nodes:
 - Inherited automatically by all descendant nodes.
 - Imported by nodes that declare `depends_on: ROOT/x/y`.
 
@@ -215,7 +215,8 @@ Useful private subsections include:
 
 #### Test node body
 
-Nothing in a test node is exported. Content is free-form.
+Nothing in a test node is available to other nodes. Content is
+free-form.
 
 ---
 
