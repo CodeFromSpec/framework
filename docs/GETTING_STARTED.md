@@ -56,6 +56,7 @@ Before running staleness checks or code generation:
    | Platform | Download URL |
    |---|---|
    | Windows amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v1.0.2/staleness-check_windows_amd64.zip` |
+   | Windows arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v1.0.2/staleness-check_windows_arm64.zip` |
    | Linux amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v1.0.2/staleness-check_linux_amd64.tar.gz` |
    | Linux arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v1.0.2/staleness-check_linux_arm64.tar.gz` |
    | macOS arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v1.0.2/staleness-check_darwin_arm64.tar.gz` |
@@ -126,6 +127,7 @@ Download the latest release for your platform and extract it into
 | Platform | Download |
 |---|---|
 | Windows amd64 | [staleness-check_windows_amd64.zip](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v1.0.2/staleness-check_windows_amd64.zip) |
+| Windows arm64 | [staleness-check_windows_arm64.zip](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v1.0.2/staleness-check_windows_arm64.zip) |
 | Linux amd64 | [staleness-check_linux_amd64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v1.0.2/staleness-check_linux_amd64.tar.gz) |
 | Linux arm64 | [staleness-check_linux_arm64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v1.0.2/staleness-check_linux_arm64.tar.gz) |
 | macOS arm64 | [staleness-check_darwin_arm64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v1.0.2/staleness-check_darwin_arm64.tar.gz) |
