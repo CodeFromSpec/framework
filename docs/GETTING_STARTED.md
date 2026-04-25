@@ -32,7 +32,7 @@ Before working on this project, read the framework documentation:
 
 ## Key Rules
 
-- The spec tree under `code-from-spec/spec/` drives all
+- The spec tree under `code-from-spec/` drives all
   implementation decisions.
 - Only leaf nodes generate code. Each source file contains a
   spec comment referencing its spec node and version.
@@ -43,7 +43,8 @@ Before working on this project, read the framework documentation:
 
 ## Tooling Bootstrap
 
-Before running staleness checks or code generation:
+**You MUST ensure tooling is properly installed if you have not
+already done so:**
 
 1. Verify that `/tools/` is present in `.gitignore`. If it is not,
    add it. Use the leading `/` to match only the root `tools/`
@@ -56,6 +57,7 @@ Before running staleness checks or code generation:
    | Platform | Download URL |
    |---|---|
    | Windows amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_windows_amd64.zip` |
+   | Windows arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_windows_arm64.zip` |
    | Linux amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_linux_amd64.tar.gz` |
    | Linux arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_linux_arm64.tar.gz` |
    | macOS arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_darwin_arm64.tar.gz` |
@@ -78,12 +80,44 @@ Before running staleness checks or code generation:
 
    Extract the binary into `tools/`.
 
-Run the staleness check from the project root:
+4. Verify that `.claude/agents/code-from-spec-code-generation.md`
+   exists. If it does not, download it from the framework repository:
 
-```bash
-./tools/staleness-check        # Linux / macOS
-./tools/staleness-check.exe    # Windows
-```
+   ```
+   https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/subagents/code-from-spec-code-generation.md
+   ```
+
+   Save the contents to
+   `.claude/agents/code-from-spec-code-generation.md`.
+
+5. Verify that the `subagent-mcp` MCP server is configured.
+   Check both `.mcp.json` and `.claude/settings.json`. If
+   neither contains the configuration, create or update
+   `.mcp.json` in the project root with:
+
+   ```json
+   {
+     "mcpServers": {
+       "subagent-mcp": {
+         "type": "stdio",
+         "command": "tools/subagent-mcp"
+       }
+     }
+   }
+   ```
+
+   On Windows, use `tools/subagent-mcp.exe` as the command.
+
+   If you created or modified the MCP configuration, inform
+   the user that a restart of Claude Code is required for the
+   new MCP server to become available.
+
+## Workflow Rules
+
+- **Do not** run staleness checks, resolve staleness, or
+  generate code unless the user explicitly requests it.
+- Reading the methodology documents (the three URLs above)
+  remains a prerequisite before any of these actions.
 ````
 
 ---
@@ -99,9 +133,7 @@ At the project root, create the spec tree structure:
 
 ```
 code-from-spec/
-  spec/
-    _node.md        <- root spec node
-  external/         <- external dependencies (optional)
+  _node.md        <- root spec node
 ```
 
 The root `_node.md` is the starting point. See
@@ -126,6 +158,7 @@ Download the latest release for your platform and extract it into
 | Platform | Download |
 |---|---|
 | Windows amd64 | [staleness-check_windows_amd64.zip](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_windows_amd64.zip) |
+| Windows arm64 | [staleness-check_windows_arm64.zip](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_windows_arm64.zip) |
 | Linux amd64 | [staleness-check_linux_amd64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_linux_amd64.tar.gz) |
 | Linux arm64 | [staleness-check_linux_arm64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_linux_arm64.tar.gz) |
 | macOS arm64 | [staleness-check_darwin_arm64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_darwin_arm64.tar.gz) |
@@ -145,9 +178,21 @@ Download the latest release for your platform and extract it into
 | macOS arm64 | [subagent-mcp_darwin_arm64.tar.gz](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_darwin_arm64.tar.gz) |
 | macOS amd64 | [subagent-mcp_darwin_amd64.tar.gz](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_darwin_amd64.tar.gz) |
 
-### 3. Configure the MCP server
+### 3. Install the code generation agent
 
-Register the subagent-mcp server in `.claude/settings.json`:
+Download the subagent definition from the framework repository:
+
+```
+https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/subagents/code-from-spec-code-generation.md
+```
+
+Save the contents to
+`.claude/agents/code-from-spec-code-generation.md`.
+
+### 4. Configure the MCP server
+
+Register the subagent-mcp server in `.mcp.json` at the project
+root (or in `.claude/settings.json`):
 
 ```json
 {
@@ -162,7 +207,7 @@ Register the subagent-mcp server in `.claude/settings.json`:
 
 On Windows, use `tools/subagent-mcp.exe` as the command.
 
-### 4. Verify
+### 5. Verify
 
 Run the staleness check to confirm everything is wired up:
 
@@ -174,4 +219,4 @@ Run the staleness check to confirm everything is wired up:
 If the tool runs and reports `spec_staleness: []`,
 `test_staleness: []`, and `code_staleness: []`, the project is
 clean. Otherwise, follow the
-[staleness resolution process](../rules/CODE_FROM_SPEC.md#resolution).
+[staleness resolution process](../rules/CODE_FROM_SPEC.md#staleness-resolution).
