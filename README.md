@@ -6,9 +6,9 @@ hierarchy of specification files. To change behavior, you change
 the spec and regenerate. You never edit generated code directly.
 
 This methodology is designed for AI agent participation at every
-stage — writing specs, managing versions, detecting staleness,
-running resyncs, generating code, and assisting non-technical
-contributors with spec authoring.
+stage — writing specs, managing versions, detecting and resolving
+staleness, generating code, and assisting non-technical contributors
+with spec authoring.
 
 ---
 
@@ -16,11 +16,11 @@ contributors with spec authoring.
 
 Specifications are organized as a tree. Each node is a directory
 containing a `_node.md` file. Child nodes add precision to their
-parents — business intent at the root, implementation contracts at
+parents — high-level intent at the root, implementation detail at
 the leaves. Only leaf nodes generate code.
 
 ```
-spec/
+code-from-spec/
 └── payments/
     └── fees/
         ├── calculation/
@@ -38,10 +38,6 @@ Leaf nodes may also have test nodes — `*.test.md` files placed
 inside the same directory — which generate test files following
 the same versioning rules.
 
-External dependencies (third-party APIs, shared libraries) live
-under `external/`, each as a folder with an `_external.md` entry
-point.
-
 ---
 
 ## Getting started
@@ -56,7 +52,7 @@ and an AGENTS.md template ready to copy.
 
 | File | Purpose |
 |---|---|
-| [`rules/CODE_FROM_SPEC.md`](rules/CODE_FROM_SPEC.md) | Full methodology: spec structure, versioning, staleness, resync procedure |
+| [`rules/CODE_FROM_SPEC.md`](rules/CODE_FROM_SPEC.md) | Full methodology: spec structure, versioning, staleness, code generation |
 | [`rules/CODE_GENERATION.md`](rules/CODE_GENERATION.md) | Code generation with subagents |
 
 ---

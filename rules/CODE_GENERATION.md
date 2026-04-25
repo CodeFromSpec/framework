@@ -35,7 +35,7 @@ confinement. Its tools include:
 When `subagent-mcp` is available, the orchestrator should
 configure the subagent with access to only these tools and no
 other filesystem access. A reference subagent definition is
-provided at [subagents/code_generation_subagent.md](../subagents/code_generation_subagent.md).
+provided at [subagents/code-from-spec-code-generation.md](../subagents/code-from-spec-code-generation.md).
 
 When it is not available, the orchestrator is responsible for
 assembling the chain and delivering it to the subagent by other
@@ -63,8 +63,4 @@ Given a logical name:
 
    Both outcomes are equally valid. The subagent may be
    dispatched during specification design specifically to find
-   gaps, or during a resync to produce files.
-
-3. If the subagent generated files, build and run tests. If
-   anything fails, trace back to the spec and correct it. Do
-   not patch the generated code — fix the spec and regenerate.
+   gaps, or during code generation to produce files.
