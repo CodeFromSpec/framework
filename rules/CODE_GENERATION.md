@@ -35,7 +35,7 @@ confinement. Its tools include:
 When `subagent-mcp` is available, the orchestrator should
 configure the subagent with access to only these tools and no
 other filesystem access. A reference subagent definition is
-provided at [subagents/code_generation_subagent.md](../subagents/code_generation_subagent.md).
+provided at [subagents/code-from-spec-code-generation.md](../subagents/code-from-spec-code-generation.md).
 
 When it is not available, the orchestrator is responsible for
 assembling the chain and delivering it to the subagent by other
