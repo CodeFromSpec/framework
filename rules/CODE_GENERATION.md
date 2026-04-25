@@ -63,8 +63,4 @@ Given a logical name:
 
    Both outcomes are equally valid. The subagent may be
    dispatched during specification design specifically to find
-   gaps, or during a resync to produce files.
-
-3. If the subagent generated files, build and run tests. If
-   anything fails, trace back to the spec and correct it. Do
-   not patch the generated code — fix the spec and regenerate.
+   gaps, or during code generation to produce files.
