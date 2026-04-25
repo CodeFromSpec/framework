@@ -309,17 +309,14 @@ the input is wrong or incomplete, the subagent's output will be
 wrong.
 
 The orchestrator assembles the context for each subagent by
-building the **chain** — the ordered sequence of ancestor
-`_node.md` files from root to the target leaf node, followed by
-all `depends_on` content collected across the chain.
+building the **chain** — the public content of each ancestor from
+root to the target node, followed by the target node in full
+(public and private), followed by the target node's `depends_on`
+content.
 
-From ancestor nodes, only the `# Public` section is included in
-the chain. The target leaf node is always included in full
-(`# Public` and `# Private`).
-
-`depends_on` entries are collected from every node in the chain
-and appended in alphabetical order by physical path. What is
-imported depends on the reference:
+`depends_on` entries from the target node are appended in
+alphabetical order by physical path. What is imported depends on
+the reference:
 - `ROOT/x/y` — `# Public` section of the referenced node.
 - `ROOT/x/y(z)` — `## z` subsection of `# Public` only.
 
@@ -333,12 +330,9 @@ ROOT/payments/fees/calculation (spec/payments/fees/calculation/_node.md) [full]
 ROOT/external/database         (spec/external/database/_node.md)  [# Public]
 ```
 
-For test nodes, the test node is appended after the leaf node.
-The leaf node is included with only its `# Public` section (test
-nodes are black-box by default). The test node itself is included
-in full. All `depends_on` — from the leaf node, the test node, or
-any other node in the chain — are collected, deduplicated, and
-sorted alphabetically by physical path as a single block at the end:
+For test nodes, the subject node is included with only its
+`# Public` section, followed by the test node in full. `depends_on`
+entries from the test node are appended in alphabetical order:
 
 ```
 ROOT                           (spec/_node.md)                    [# Public]
@@ -355,16 +349,19 @@ needed. Nothing inside the chain is redundant.
 
 ### Spec comment
 
-Every generated source file must contain a **spec comment** — a
-string in the format `spec: <logical-name>@v<version>` that
-identifies the logical name and version of the spec node that
-generated the file.
+Every generated file must contain the string:
+
+```
+code-from-spec: <name>@v<version>
+```
+
+where `<name>` is the target node's logical name and `<version>` is
+the `version` field from the target's frontmatter.
 
 The spec comment is placed inside a comment as early in the file
-as the language allows. The comment syntax depends on the language;
-the string itself is fixed.
-
-See Resources for the agent's instruction file URL.
+as the language allows. The comment syntax does not matter — `//`,
+`#`, `/* */`, `--`, or any other form is fine. What matters is that
+`code-from-spec: <name>@v<version>` appears in the file.
 
 ---
 
