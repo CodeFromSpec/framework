@@ -33,12 +33,20 @@ root/
 Specification files use [CommonMark](https://commonmark.org/) for Markdown formatting and are
 UTF-8 encoded, without BOM.
 
-Each file begins with a YAML frontmatter block delimited by `---`
-lines. Frontmatter is not part of CommonMark — it is an extension
-adopted by this framework. The opening `---` must be the first line
-of the file.
+### YAML frontmatter
+
+Each file begins with a YAML frontmatter block. Frontmatter is not
+part of CommonMark — it is an extension adopted by this framework.
+
+The frontmatter block starts with a line containing exactly `---`
+(three hyphens, nothing else) as the first line of the file, and
+ends with the next line containing exactly `---`. The content
+between the two delimiters is parsed as YAML.
 
 ### Heading levels
+
+Only ATX headings (`#` prefix) are recognized by the framework.
+Setext headings are not supported.
 
 Only two heading levels are structural for the framework:
 
@@ -58,7 +66,7 @@ applied in order:
 
 1. **Trim** — leading and trailing whitespace is removed.
 2. **Collapse** — each sequence of one or more whitespace characters
-   within the heading is replaced by a single `U+0020` (space).
+   within the heading content is replaced by a single `U+0020` (space).
 3. **Case fold** — the result is case-folded using Unicode simple
    case folding.
 
