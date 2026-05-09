@@ -22,6 +22,7 @@ For a stable release, use a version branch:
 
 | Version | Branch                                                                                                 |
 |---------|--------------------------------------------------------------------------------------------------------|
+| v2      | [https://github.com/CodeFromSpec/framework/tree/v2](https://github.com/CodeFromSpec/framework/tree/v2) |
 | v1      | [https://github.com/CodeFromSpec/framework/tree/v1](https://github.com/CodeFromSpec/framework/tree/v1) |
 
 ---

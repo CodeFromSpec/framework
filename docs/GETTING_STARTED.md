@@ -20,7 +20,7 @@ branch.
 
 ## Methodology
 
-This project follows the **Code from Spec v2** methodology. All
+This project follows the **Code from Spec v3** methodology. All
 code is generated from specifications — the spec tree is the
 authoritative source of truth, not the code itself.
 
