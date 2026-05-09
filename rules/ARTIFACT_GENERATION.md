@@ -54,7 +54,7 @@ Given a logical name:
    specification, and produces one of two results:
 
    - **Generated artifacts** — written to disk. Each file
-     contains a spec comment identifying the source node and
+     contains a artifact tag identifying the source node and
      chain hash.
 
    - **Findings report** — the specification is ambiguous,

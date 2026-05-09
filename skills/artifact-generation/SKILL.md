@@ -48,7 +48,7 @@ items.
    >    `# Public` and `# Agent` sections, the constraints from
    >    ancestor nodes, and any dependency content.
    > 3. For each artifact declared in the node's `artifacts` list,
-   >    generate the complete file content. The spec comment must
+   >    generate the complete file content. The artifact tag must
    >    appear as early in the file as the format allows:
    >    `code-from-spec: <logical-name>@<hash>`
    >    where `<hash>` is the chain hash provided by `load_chain`.

@@ -26,7 +26,7 @@ order: 10
 depends_on:
   - ROOT/external/payments-api
 artifacts:
-  - id: main
+  - id: transfers
     path: internal/transfers/transfers.go
 ---
 ```

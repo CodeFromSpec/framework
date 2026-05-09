@@ -25,7 +25,7 @@ missing and stop.
 2. Parse the output. Present results to the user grouped by
    status:
    - **Stale** — artifacts whose chain hash differs from the hash
-     in their spec comment.
+     in their artifact tag.
    - **Missing** — artifacts whose files do not exist on disk.
 3. If everything is clean, report that all artifacts are up to
    date.
