@@ -1,17 +1,17 @@
-# Code Generation with Subagents
+# Artifact Generation with Subagents
 
-How to generate code for a given logical name using a confined
-subagent. This document assumes familiarity with
+How to generate artifacts for a given logical name using a
+confined subagent. This document assumes familiarity with
 [CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
 
 ---
 
 ## Overview
 
-Code generation should be performed by confined subagents. Given
-a logical name, the orchestrator dispatches a subagent that
+Artifact generation should be performed by confined subagents.
+Given a logical name, the orchestrator dispatches a subagent that
 receives the spec chain, reviews the specification, and either
-generates the code or reports gaps.
+generates the artifacts or reports gaps.
 
 ---
 
@@ -28,9 +28,9 @@ The `subagent-mcp` tool (see Resources in
 confinement. Its tools include:
 
 - `load_chain` — returns the complete spec chain for a logical
-  name
+  name, including the current chain hash
 - `write_file` — writes a file to disk, validated against the
-  node's `implements` list
+  node's `artifacts` list
 
 When `subagent-mcp` is available, the orchestrator should
 configure the subagent with access to only these tools and no
@@ -53,8 +53,9 @@ Given a logical name:
 2. The subagent obtains the spec chain, reviews the
    specification, and produces one of two results:
 
-   - **Generated files** — written to disk. Each file contains
-     a spec comment identifying the source node and version.
+   - **Generated artifacts** — written to disk. Each file
+     contains a spec comment identifying the source node and
+     chain hash.
 
    - **Findings report** — the specification is ambiguous,
      incomplete, or contradictory. The subagent reports exactly
@@ -63,4 +64,4 @@ Given a logical name:
 
    Both outcomes are equally valid. The subagent may be
    dispatched during specification design specifically to find
-   gaps, or during code generation to produce files.
+   gaps, or during artifact generation to produce files.

@@ -1,14 +1,14 @@
-# Code From Spec
+# Code From Spec v3
 
 **Code From Spec** is a methodology where code is a generated
 artifact, not the source of truth. The source of truth is a
 hierarchy of specification files. To change behavior, you change
-the spec and regenerate. You never edit generated code directly.
+the spec and regenerate. You never edit generated artifacts
+directly.
 
 This methodology is designed for AI agent participation at every
-stage — writing specs, managing versions, detecting and resolving
-staleness, generating code, and assisting non-technical contributors
-with spec authoring.
+stage — writing specs, generating artifacts, detecting staleness,
+and assisting non-technical contributors with spec authoring.
 
 ---
 
@@ -32,26 +32,25 @@ For a stable release, use a version branch:
 Specifications are organized as a tree. Each node is a directory
 containing a `_node.md` file. Child nodes add precision to their
 parents — high-level intent at the root, implementation detail at
-the leaves. Only leaf nodes generate code.
+the leaves. Only leaf nodes generate artifacts.
 
 ```
 code-from-spec/
 └── payments/
     └── fees/
         ├── calculation/
-        │   └── _node.md   ← leaf → generates code
+        │   └── _node.md   ← leaf → generates artifacts
         └── rounding/
-            └── _node.md   ← leaf → generates code
+            └── _node.md   ← leaf → generates artifacts
 ```
 
-Every `_node.md` begins with a YAML frontmatter carrying a `version`
-integer. When a node changes, its version increments. Dependents
-that reference an outdated version are **stale** and must be
-reviewed and regenerated.
+Staleness is detected automatically by comparing a hash of each
+node's chain against the hash recorded in its generated artifacts.
+When they differ, the artifact is stale and must be regenerated.
 
 Leaf nodes may also have test nodes — `*.test.md` files placed
-inside the same directory — which generate test files following
-the same versioning rules.
+inside the same directory — which generate test artifacts
+following the same staleness rules.
 
 ---
 
@@ -67,8 +66,9 @@ and an AGENTS.md template ready to copy.
 
 | File | Purpose |
 |---|---|
-| [`rules/CODE_FROM_SPEC.md`](rules/CODE_FROM_SPEC.md) | Full methodology: spec structure, versioning, staleness, code generation |
-| [`rules/CODE_GENERATION.md`](rules/CODE_GENERATION.md) | Code generation with subagents |
+| [`rules/CODE_FROM_SPEC.md`](rules/CODE_FROM_SPEC.md) | Full methodology: spec structure, staleness, artifact generation |
+| [`rules/ARTIFACT_GENERATION.md`](rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
+| [`rules/LAYERS.md`](rules/LAYERS.md) | Organizing specs into progressive refinement layers |
 
 ---
 
@@ -77,7 +77,7 @@ and an AGENTS.md template ready to copy.
 | Repository | Description |
 |---|---|
 | [tool-staleness-check](https://github.com/CodeFromSpec/tool-staleness-check) | CLI tool that automates staleness verification |
-| [tool-subagent-mcp](https://github.com/CodeFromSpec/tool-subagent-mcp) | MCP server that provides confined tools for code generation subagents |
+| [tool-subagent-mcp](https://github.com/CodeFromSpec/tool-subagent-mcp) | MCP server that provides confined tools for artifact generation subagents |
 
 ---
 
@@ -91,5 +91,5 @@ To fetch a specific version of the methodology, use the raw URLs
 from the appropriate branch:
 
 ```
-https://raw.githubusercontent.com/CodeFromSpec/framework/v1/rules/CODE_FROM_SPEC.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v2/rules/CODE_FROM_SPEC.md
 ```

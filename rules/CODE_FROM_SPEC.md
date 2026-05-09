@@ -1,4 +1,4 @@
-# Code From Spec
+# Code From Spec v3
 
 **Code From Spec** is a methodology where code is a generated
 artifact, not the source of truth. The source of truth is a hierarchy
@@ -24,29 +24,6 @@ root/
         ├── calculation/   ← leaf, generates artifacts
         └── rounding/      ← leaf, generates artifacts
 ```
-
-### Layers
-
-Specs can be organized into multiple trees (layers), each adding
-a domain of specialized knowledge. Layers enable progressive
-refinement — a leaf node in one layer generates an artifact that
-a node in the next layer consumes as input.
-
-```
-domain/           ← business intent (written by non-programmers)
-functional/       ← pseudocode logic (generated from domain)
-implementation/   ← source code (generated from functional)
-```
-
-Each layer has its own hierarchy of intermediate nodes that
-provide context and constraints to their descendants. A layer's
-intermediate nodes carry the rules for how artifacts in that
-layer should be generated — the "how" that transforms input
-from the previous layer.
-
-Not every node consumes input from a previous layer. Some nodes
-originate in a layer without a predecessor (e.g., a test
-utilities node that exists only in the implementation layer).
 
 ---
 
@@ -442,6 +419,6 @@ External resources required to operate this framework:
 
 | Resource | URL |
 |---|---|
-| Artifact generation with subagents | https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_GENERATION.md |
+| Artifact generation with subagents | https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/ARTIFACT_GENERATION.md |
 | `staleness-check` tool | https://github.com/CodeFromSpec/tool-staleness-check/releases/latest |
 | `subagent-mcp` tool | https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest |
