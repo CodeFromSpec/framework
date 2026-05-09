@@ -3,12 +3,11 @@
 **Code From Spec** is a methodology where code is a generated
 artifact, not the source of truth. The source of truth is a hierarchy
 of specification files. To change behavior, you change the spec and
-regenerate. You never edit generated code directly.
+regenerate. You never edit generated artifacts directly.
 
 This methodology is designed for AI agent participation at every
-stage — writing specs, managing versions, detecting and resolving
-staleness, generating code, and assisting non-technical contributors
-with spec authoring.
+stage — writing specs, generating artifacts, detecting staleness,
+and assisting non-technical contributors with spec authoring.
 
 ---
 
@@ -16,32 +15,56 @@ with spec authoring.
 
 Specifications are organized as a tree. Each node adds precision
 to its parent — high-level intent at the root, implementation
-detail at the leaves. Only leaf nodes generate code.
+detail at the leaves. Only leaf nodes generate artifacts.
 
 ```
 root/
 └── payments/
     └── fees/
-        ├── calculation/   ← leaf, implemented
-        └── rounding/      ← leaf, implemented
+        ├── calculation/   ← leaf, generates artifacts
+        └── rounding/      ← leaf, generates artifacts
 ```
+
+### Layers
+
+Specs can be organized into multiple trees (layers), each adding
+a domain of specialized knowledge. Layers enable progressive
+refinement — a leaf node in one layer generates an artifact that
+a node in the next layer consumes as input.
+
+```
+domain/           ← business intent (written by non-programmers)
+functional/       ← pseudocode logic (generated from domain)
+implementation/   ← source code (generated from functional)
+```
+
+Each layer has its own hierarchy of intermediate nodes that
+provide context and constraints to their descendants. A layer's
+intermediate nodes carry the rules for how artifacts in that
+layer should be generated — the "how" that transforms input
+from the previous layer.
+
+Not every node consumes input from a previous layer. Some nodes
+originate in a layer without a predecessor (e.g., a test
+utilities node that exists only in the implementation layer).
 
 ---
 
 ## File Format
 
-Specification files use [CommonMark](https://commonmark.org/) for Markdown formatting and are
-UTF-8 encoded, without BOM.
+Specification files use [CommonMark](https://commonmark.org/) for
+Markdown formatting and are UTF-8 encoded, without BOM.
 
 ### YAML frontmatter
 
-Each file begins with a YAML frontmatter block. Frontmatter is not
-part of CommonMark — it is an extension adopted by this framework.
+Frontmatter is optional. When present, the frontmatter block
+starts with a line containing exactly `---` (three hyphens,
+nothing else) as the first line of the file, and ends with the
+next line containing exactly `---`. The content between the two
+delimiters is parsed as YAML.
 
-The frontmatter block starts with a line containing exactly `---`
-(three hyphens, nothing else) as the first line of the file, and
-ends with the next line containing exactly `---`. The content
-between the two delimiters is parsed as YAML.
+A node with no `depends_on`, `from`, or `artifacts` does not
+need frontmatter. The `_node.md` file can contain only content.
 
 ### Heading levels
 
@@ -51,7 +74,7 @@ Setext headings are not supported.
 Only two heading levels are structural for the framework:
 
 - **Level 1 (`#`)** — delimits top-level sections (node name,
-  `# Public`, private sections).
+  `# Public`, `# Agent`, private sections).
 - **Level 2 (`##`)** — delimits subsections within a top-level
   section (e.g. `## Interface` within `# Public`).
 
@@ -89,11 +112,14 @@ example, all of the following are equivalent:
 
 ## Specifications
 
-Specifications are the source of truth from which code is generated.
+Specifications are the source of truth from which artifacts are
+generated.
 
 ### Location
 
 Specifications live under `<project root>/code-from-spec/`.
+Artifacts must be generated outside this directory — never place
+generated output inside the spec tree.
 
 ### Structure
 
@@ -114,8 +140,8 @@ level of abstraction.
 A node with child directories is an **intermediate node**. A node
 without children is a **leaf node**. Intermediate nodes provide
 context and constraints to their descendants. Only leaf nodes may
-generate code. Not all leaf nodes do; some serve as documentation
-only.
+generate artifacts. Not all leaf nodes do; some serve as
+documentation only.
 
 A **test node** is a file ending in `.test.md` placed inside the
 directory of the node it tests (its **subject**). The canonical test
@@ -140,8 +166,12 @@ config/
 
 Every node has a logical name derived from its position in the tree.
 Spec nodes use the `ROOT/` prefix; test nodes use the `TEST/`
-prefix. A `ROOT/` reference may include a parenthetical qualifier
-to target a specific public subsection of the node (see Body).
+prefix. Artifacts use the `ARTIFACT/` prefix.
+
+A `ROOT/` reference may include a parenthetical qualifier to target
+a specific public subsection of the node (see Body). An `ARTIFACT/`
+reference may include a parenthetical qualifier to target a specific
+artifact by its `id`.
 
 | Logical name | Resolves to |
 |---|---|
@@ -151,24 +181,26 @@ to target a specific public subsection of the node (see Body).
 | `ROOT/architecture/backend/config(interface)` | `## Interface` subsection of `# Public` in `code-from-spec/architecture/backend/config/_node.md` |
 | `TEST/architecture/backend/config` | `code-from-spec/architecture/backend/config/default.test.md` |
 | `TEST/architecture/backend/config(edge_cases)` | `code-from-spec/architecture/backend/config/edge_cases.test.md` |
+| `ARTIFACT/architecture/backend/config(main)` | The artifact with `id: main` generated by `ROOT/architecture/backend/config` |
 
 Resolution rules:
 - `ROOT/x` → `code-from-spec/x/_node.md` (`# Public`)
 - `ROOT/x(y)` → `## y` subsection of `# Public` in `code-from-spec/x/_node.md`
 - `TEST/x(y)` → `code-from-spec/x/y.test.md`
 - `TEST/x` is an alias for `TEST/x(default)`
+- `ARTIFACT/x(y)` → the file at the `path` of the artifact with `id: y` in `ROOT/x`'s `artifacts` list
+- `ARTIFACT/x` → alias for the first artifact in `ROOT/x`'s `artifacts` list
 
 ### Frontmatter
 
-Every node begins with a YAML frontmatter block.
+Frontmatter is optional. When present, it may contain the following
+fields:
 
 | Field | Description | Notes |
 |---|---|---|
-| `version` | See Versioning and Staleness. | All nodes |
-| `parent_version` | The version of the parent node this node was written against. | Root node and test nodes have no parent |
-| `subject_version` | The version of the node this test was written against — the `_node.md` in the same directory. | Test nodes only |
-| `depends_on` | Cross-tree dependencies with their known versions. Uses logical names. | Optional |
-| `implements` | Source files generated by this node. Filesystem paths relative to the project root. | Leaf and test nodes |
+| `depends_on` | Cross-tree dependencies. Uses logical names. | Optional |
+| `from` | Artifact consumed as input for generation. Uses `ARTIFACT/` logical name. | Optional, leaf nodes only |
+| `artifacts` | Artifacts generated by this node. Each entry has `id` and `path`. | Optional, leaf and test nodes only |
 
 Frontmatter is metadata for the framework — it is not part of the
 node's content and does not participate in inheritance or
@@ -179,45 +211,48 @@ nodes. Each node must declare its own `depends_on` for the content
 it needs.
 
 A `depends_on` entry using `ROOT/x/y` imports the `# Public` section
-of the referenced node. An entry using `ROOT/x/y(z)` imports only the `## z` subsection
-of `# Public` of the referenced node — useful when a node needs
-a specific part of the public context rather than all of it.
+of the referenced node. An entry using `ROOT/x/y(z)` imports only
+the `## z` subsection of `# Public` of the referenced node — useful
+when a node needs a specific part of the public context rather than
+all of it.
 
 `depends_on` may only reference nodes in other branches of the tree.
 Pointing to an ancestor would be redundant — its content is already
 available via inheritance. Pointing to a descendant would create a
 circular dependency.
 
-Example — root node:
-
-```yaml
----
-version: 3
----
-```
-
 Example — intermediate node without dependencies:
 
 ```yaml
 ---
-version: 2
-parent_version: 3
+depends_on:
+  - ROOT/external/lib-go-utils(dbutils)
 ---
 ```
 
-Example — leaf node with dependencies:
+Example — leaf node with artifacts:
 
 ```yaml
 ---
-version: 1
-parent_version: 1
 depends_on:
-  - path: ROOT/external/payments-api/create-transfer
-    version: 5
-  - path: ROOT/architecture/backend/api-gateway
-    version: 6
-implements:
-  - internal/transfers/transfers.go
+  - ROOT/external/payments-api/create-transfer
+  - ROOT/architecture/backend/api-gateway
+artifacts:
+  - id: main
+    path: internal/transfers/transfers.go
+---
+```
+
+Example — leaf node consuming input from another layer:
+
+```yaml
+---
+from: ARTIFACT/functional/transfers(default)
+depends_on:
+  - ROOT/external/database
+artifacts:
+  - id: main
+    path: internal/transfers/transfers.go
 ---
 ```
 
@@ -225,10 +260,9 @@ Example — test node:
 
 ```yaml
 ---
-version: 1
-subject_version: 2
-implements:
-  - internal/configuration/config_test.go
+artifacts:
+  - id: main
+    path: internal/configuration/config_test.go
 ---
 ```
 
@@ -236,18 +270,20 @@ implements:
 
 The body of a node is divided into top-level sections, each starting
 with a `#` heading. A section ends when the next `#` heading begins
-or the file ends. Two sections have special meaning: the **node name section** and
-the **public section** (`# Public`). All other sections are treated
-as private — not available via inheritance or `depends_on`.
+or the file ends. Three sections have special meaning: the
+**node name section**, the **public section** (`# Public`), and the
+**agent section** (`# Agent`). All other sections are private —
+visible only to humans and the orchestrator, not to generation
+subagents.
 
 #### Node name section
 
 Must be the first section in the file, immediately after the
-frontmatter — nothing may appear between the frontmatter and this
-heading. The heading is the node's logical name (e.g.
-`# ROOT/architecture/backend/config`). Its content serves as
-intent — what this node does and why it exists. This section is
-not available to other nodes.
+frontmatter (if present) — nothing may appear between the
+frontmatter and this heading. The heading is the node's logical
+name (e.g. `# ROOT/architecture/backend/config`). Its content
+serves as intent — what this node does and why it exists. This
+section is not available to other nodes.
 
 #### Public section
 
@@ -259,18 +295,29 @@ Content is free-form. Any `##` subsection within `# Public` can be
 imported individually via `depends_on: ROOT/x/y(subsection)`.
 
 Useful public subsections include:
-- **`## Interface`** — types, function signatures, error codes.
+- **`## Interface`** — types, function signatures, import paths.
 - **`## Context`** — information needed to understand this node.
 - **`## Constraints`** — rules that dependents must respect.
 
+#### Agent section
+
+Everything under `# Agent` is visible to the generation subagent
+when generating artifacts for this node. It is not available to
+other nodes via inheritance or `depends_on`.
+
+Use this section for instructions that guide artifact generation:
+step-by-step implementation logic, SQL details, algorithm
+specifics, patterns to follow.
+
 #### Private sections
 
-All sections other than the node name and `# Public` are private.
-Useful private subsections include:
-- **`## Implementation`** — step-by-step logic and handler details
-  for the source files listed in `implements`.
-- **`## Decisions`** — choices made and what was discarded.
-- **`## Rationale`** — deeper reasoning behind decisions.
+All sections other than the node name, `# Public`, and `# Agent`
+are private — visible only to humans and the orchestrator AI.
+Use any heading name that makes sense:
+
+- **`# Decisions`** — choices made and what was discarded.
+- **`# Rationale`** — deeper reasoning behind decisions.
+- **`# TODO`** — pending work or open questions.
 
 #### Test node body
 
@@ -279,125 +326,90 @@ free-form.
 
 ---
 
-## Versioning and Staleness
+## Staleness
 
-Every versioned file has a `version` field in its YAML frontmatter.
-Version numbers are integers.
+Staleness applies only to artifacts, never to specs. An artifact
+is stale when its chain has changed since it was last generated.
 
-### Which files are versioned
+### Chain hash
 
-| File | Location |
-|---|---|
-| Spec node | `code-from-spec/**/_node.md` |
-| Test node | `code-from-spec/**/*.test.md` |
+Staleness is determined by comparing hashes. The **chain hash**
+is computed from the concatenated content of all nodes in the
+chain (see Chain Assembly). Before hashing, content is normalized:
+all CRLF line endings are converted to LF. No other normalization
+is applied.
 
-### When to increment the version field
+### Spec comment
 
-The `version` field must be incremented on every change to the
-file — no exceptions. A single added space, a corrected typo, a
-reformatted line, a bumped dependency version in the frontmatter —
-all require a version increment. The rule is mechanical: if
-computing a hash of the file before and after the change would
-produce different results, the version must change. Semantic
-significance is irrelevant. Never decide that a change is "too
-small" to warrant a version increment.
-
-### How to increment
-
-Add 1 to the current value. Version 3 becomes 4, not 5 or 10.
-
-### What is staleness
-
-A file is stale when it references a version that is no longer
-current — meaning something it depends on has changed since it was
-last updated. Staleness is never declared — it is always
-calculated by comparing declared versions against current versions.
-
-### Which files can become stale
-
-| File | Stale when |
-|---|---|
-| Spec node (`_node.md`) | Parent or dependency version changed |
-| Test node (`*.test.md`) | Subject or dependency version changed |
-| Generated source file | The node that implements it has changed version since last generation |
-
-### How to determine if a file is stale
-
-A node is stale when:
+Every generated artifact must contain the string:
 
 ```
-parent.version != node.parent_version
-depends_on[x].current_version != node.depends_on[x].version
+code-from-spec: <name>@<hash>
 ```
 
-For test nodes, replace `parent_version` with `subject_version`.
+where `<name>` is the target node's logical name and `<hash>` is
+the chain hash at the time of generation.
 
-A generated source file is stale when:
+The spec comment is placed inside a comment as early in the file
+as the language or format allows. The comment syntax does not
+matter — `//`, `#`, `/* */`, `--`, `<!-- -->`, or any other form
+is fine. What matters is that
+`code-from-spec: <name>@<hash>` appears in the file.
 
-```
-node.version != version in the file's spec comment
-```
+### Staleness check
 
-Staleness verification is automated by the `staleness-check` tool.
-The tool reports stale items in a fixed order: spec nodes first
-(top-down), then test nodes, then generated source files.
+The `staleness-check` tool computes the current chain hash for
+each node that declares `artifacts` and compares it with the hash
+in each artifact's spec comment. If they differ, the artifact is
+stale and must be regenerated.
 
-### Staleness Resolution
-
-Resolving staleness means reviewing each stale node in light of
-how the parent or dependency that triggered the staleness changed,
-and determining whether the node's own content needs to be updated.
-The version bump is the consequence of that review, not the act
-itself. Skipping the content review defeats the purpose of versioning.
-
-The resolution process is iterative: call `staleness-check`, address
-the first item it reports, call the tool again, repeat. Because the
-tool reports top-down, resolving a parent before its children avoids
-cascading rework. If a resolution introduces ambiguity or requires
-human judgment, stop and consult the user.
-
-Spec node staleness must be resolved before test node staleness.
-Both must be clean before generating code (see Code Generation) —
-generating from stale specs is wasteful, as the output will be
-stale before it is written.
+Artifacts whose files do not exist are reported as `missing`
+(a special case of stale).
 
 ---
 
-## Code Generation
+## Artifact Generation
 
-An **orchestrator** dispatches a code generation subagent for each
-stale source file. The subagent receives a self-contained set of
-instructions and a structured input — ideally, it does not explore the
-filesystem or read anything beyond what it receives. The
+An **orchestrator** dispatches a generation subagent for each
+stale artifact. The subagent receives a self-contained set of
+instructions and a structured input — ideally, it does not explore
+the filesystem or read anything beyond what it receives. The
 orchestrator is responsible for assembling the correct input; if
 the input is wrong or incomplete, the subagent's output will be
 wrong.
 
+### Chain assembly
+
 The orchestrator assembles the context for each subagent by
-building the **chain** — the public content of each ancestor from
-root to the target node, followed by the target node in full
-(public and private), followed by the target node's `depends_on`
-content.
+building the **chain**:
 
-`depends_on` entries from the target node are appended in
-alphabetical order by physical path. What is imported depends on
-the reference:
-- `ROOT/x/y` — `# Public` section of the referenced node.
-- `ROOT/x/y(z)` — `## z` subsection of `# Public` only.
+1. The `# Public` content of each ancestor from root to the
+   target node.
+2. The target node's `# Public` and `# Agent` sections.
+3. The target node's `depends_on` content, appended in
+   alphabetical order by path. What is imported depends on the
+   reference:
+   - `ROOT/x/y` — `# Public` section of the referenced node.
+   - `ROOT/x/y(z)` — `## z` subsection of `# Public` only.
+4. If the target node has a `from` field, the content of the
+   referenced artifact is included as the input to transform.
 
-Example — implementing `ROOT/payments/fees/calculation`:
+Example — generating an artifact for
+`ROOT/payments/fees/calculation`:
 
 ```
 ROOT                           (code-from-spec/_node.md)                              [# Public]
 ROOT/payments                  (code-from-spec/payments/_node.md)                     [# Public]
 ROOT/payments/fees             (code-from-spec/payments/fees/_node.md)                [# Public]
-ROOT/payments/fees/calculation (code-from-spec/payments/fees/calculation/_node.md)    [full]
+ROOT/payments/fees/calculation (code-from-spec/payments/fees/calculation/_node.md)    [# Public + # Agent]
 ROOT/external/database         (code-from-spec/external/database/_node.md)            [# Public]
+ARTIFACT/functional/fees/calculation(default) (pseudocode/fees-calculation.md)        [full content]
 ```
 
 For test nodes, the subject node is included with only its
-`# Public` section, followed by the test node in full. `depends_on`
-entries from the test node are appended in alphabetical order:
+`# Public` section, followed by the test node in full.
+`depends_on` entries from the test node are appended in
+alphabetical order:
 
 ```
 ROOT                           (code-from-spec/_node.md)                              [# Public]
@@ -411,29 +423,13 @@ ROOT/external/database         (code-from-spec/external/database/_node.md)      
 The chain is the complete context. Nothing outside the chain is
 needed. Nothing inside the chain is redundant.
 
-### Spec comment
-
-Every generated file must contain the string:
-
-```
-code-from-spec: <name>@v<version>
-```
-
-where `<name>` is the target node's logical name and `<version>` is
-the `version` field from the target's frontmatter.
-
-The spec comment is placed inside a comment as early in the file
-as the language allows. The comment syntax does not matter — `//`,
-`#`, `/* */`, `--`, or any other form is fine. What matters is that
-`code-from-spec: <name>@v<version>` appears in the file.
-
 ---
 
 ## Path Separator
 
 All paths in the framework use forward slash (`/`) as the
 separator, regardless of the operating system. This applies to
-logical names, `implements` entries, and file paths in the chain.
+logical names, `artifacts` entries, and file paths in the chain.
 Backslash (`\`) is never used as a separator. Tools that interact
 with the OS filesystem must normalize paths to forward slashes
 before returning or comparing them.
@@ -446,6 +442,6 @@ External resources required to operate this framework:
 
 | Resource | URL |
 |---|---|
-| Code generation with subagents | https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_GENERATION.md |
+| Artifact generation with subagents | https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_GENERATION.md |
 | `staleness-check` tool | https://github.com/CodeFromSpec/tool-staleness-check/releases/latest |
 | `subagent-mcp` tool | https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest |
