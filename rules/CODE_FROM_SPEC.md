@@ -446,6 +446,6 @@ External resources required to operate this framework:
 
 | Resource | URL |
 |---|---|
-| Code generation with subagents | https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_GENERATION.md |
-| `staleness-check` tool | https://github.com/CodeFromSpec/tool-staleness-check/releases/latest |
-| `subagent-mcp` tool | https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest |
+| Code generation with subagents | https://raw.githubusercontent.com/CodeFromSpec/framework/v2/rules/CODE_GENERATION.md |
+| `staleness-check` tool | https://github.com/CodeFromSpec/tool-staleness-check/releases/tag/v2.0.0 |
+| `subagent-mcp` tool | https://github.com/CodeFromSpec/tool-subagent-mcp/releases/tag/v2.1.1 |

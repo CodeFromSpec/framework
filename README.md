@@ -14,14 +14,11 @@ with spec authoring.
 
 ## Versions
 
-> [!WARNING] 
-> **This is the development branch (`main`) and may contain unreleased
-> changes.** 
-
-For a stable release, use a version branch:
+This is the **v2** stable branch.
 
 | Version | Branch                                                                                                 |
 |---------|--------------------------------------------------------------------------------------------------------|
+| v2      | [https://github.com/CodeFromSpec/framework/tree/v2](https://github.com/CodeFromSpec/framework/tree/v2) |
 | v1      | [https://github.com/CodeFromSpec/framework/tree/v1](https://github.com/CodeFromSpec/framework/tree/v1) |
 
 ---
@@ -82,13 +79,13 @@ and an AGENTS.md template ready to copy.
 
 ## Versioning
 
-`main` is the development branch. Released versions live in
-dedicated branches (`v1`, `v2`, ...) and receive only bugfix
-commits. Breaking changes always produce a new version branch.
+Released versions live in dedicated branches (`v1`, `v2`, ...)
+and receive only bugfix commits. Breaking changes produce a new
+version branch. `main` is the development branch.
 
 To fetch a specific version of the methodology, use the raw URLs
 from the appropriate branch:
 
 ```
-https://raw.githubusercontent.com/CodeFromSpec/framework/v1/rules/CODE_FROM_SPEC.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v2/rules/CODE_FROM_SPEC.md
 ```

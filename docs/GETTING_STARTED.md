@@ -26,9 +26,9 @@ authoritative source of truth, not the code itself.
 
 Before working on this project, read the framework documentation:
 
-- Overview: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/README.md`
-- Specification structure and versioning: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/rules/CODE_FROM_SPEC.md`
-- Code generation rules: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/rules/CODE_GENERATION.md`
+- Overview: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/v2/README.md`
+- Specification structure and versioning: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/v2/rules/CODE_FROM_SPEC.md`
+- Code generation rules: `https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/v2/rules/CODE_GENERATION.md`
 
 ## Key Rules
 
@@ -56,12 +56,12 @@ already done so:**
 
    | Platform | Download URL |
    |---|---|
-   | Windows amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_windows_amd64.zip` |
-   | Windows arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_windows_arm64.zip` |
-   | Linux amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_linux_amd64.tar.gz` |
-   | Linux arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_linux_arm64.tar.gz` |
-   | macOS arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_darwin_arm64.tar.gz` |
-   | macOS amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_darwin_amd64.tar.gz` |
+   | Windows amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_windows_amd64.zip` |
+   | Windows arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_windows_arm64.zip` |
+   | Linux amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_linux_amd64.tar.gz` |
+   | Linux arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_linux_arm64.tar.gz` |
+   | macOS arm64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_darwin_arm64.tar.gz` |
+   | macOS amd64 | `https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_darwin_amd64.tar.gz` |
 
    Extract the binary into `tools/`.
 
@@ -71,12 +71,12 @@ already done so:**
 
    | Platform | Download URL |
    |---|---|
-   | Windows amd64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_windows_amd64.zip` |
-   | Windows arm64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_windows_arm64.zip` |
-   | Linux amd64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_linux_amd64.tar.gz` |
-   | Linux arm64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_linux_arm64.tar.gz` |
-   | macOS arm64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_darwin_arm64.tar.gz` |
-   | macOS amd64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_darwin_amd64.tar.gz` |
+   | Windows amd64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_windows_amd64.zip` |
+   | Windows arm64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_windows_arm64.zip` |
+   | Linux amd64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_linux_amd64.tar.gz` |
+   | Linux arm64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_linux_arm64.tar.gz` |
+   | macOS arm64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_darwin_arm64.tar.gz` |
+   | macOS amd64 | `https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_darwin_amd64.tar.gz` |
 
    Extract the binary into `tools/`.
 
@@ -84,7 +84,7 @@ already done so:**
    exists. If it does not, download it from the framework repository:
 
    ```
-   https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/subagents/code-from-spec-code-generation.md
+   https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/v2/subagents/code-from-spec-code-generation.md
    ```
 
    Save the contents to
@@ -157,12 +157,12 @@ Download the latest release for your platform and extract it into
 
 | Platform | Download |
 |---|---|
-| Windows amd64 | [staleness-check_windows_amd64.zip](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_windows_amd64.zip) |
-| Windows arm64 | [staleness-check_windows_arm64.zip](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_windows_arm64.zip) |
-| Linux amd64 | [staleness-check_linux_amd64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_linux_amd64.tar.gz) |
-| Linux arm64 | [staleness-check_linux_arm64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_linux_arm64.tar.gz) |
-| macOS arm64 | [staleness-check_darwin_arm64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_darwin_arm64.tar.gz) |
-| macOS amd64 | [staleness-check_darwin_amd64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/latest/download/staleness-check_darwin_amd64.tar.gz) |
+| Windows amd64 | [staleness-check_windows_amd64.zip](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_windows_amd64.zip) |
+| Windows arm64 | [staleness-check_windows_arm64.zip](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_windows_arm64.zip) |
+| Linux amd64 | [staleness-check_linux_amd64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_linux_amd64.tar.gz) |
+| Linux arm64 | [staleness-check_linux_arm64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_linux_arm64.tar.gz) |
+| macOS arm64 | [staleness-check_darwin_arm64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_darwin_arm64.tar.gz) |
+| macOS amd64 | [staleness-check_darwin_amd64.tar.gz](https://github.com/CodeFromSpec/tool-staleness-check/releases/download/v2.0.0/staleness-check_darwin_amd64.tar.gz) |
 
 #### subagent-mcp
 
@@ -171,19 +171,19 @@ Download the latest release for your platform and extract it into
 
 | Platform | Download |
 |---|---|
-| Windows amd64 | [subagent-mcp_windows_amd64.zip](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_windows_amd64.zip) |
-| Windows arm64 | [subagent-mcp_windows_arm64.zip](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_windows_arm64.zip) |
-| Linux amd64 | [subagent-mcp_linux_amd64.tar.gz](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_linux_amd64.tar.gz) |
-| Linux arm64 | [subagent-mcp_linux_arm64.tar.gz](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_linux_arm64.tar.gz) |
-| macOS arm64 | [subagent-mcp_darwin_arm64.tar.gz](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_darwin_arm64.tar.gz) |
-| macOS amd64 | [subagent-mcp_darwin_amd64.tar.gz](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest/download/subagent-mcp_darwin_amd64.tar.gz) |
+| Windows amd64 | [subagent-mcp_windows_amd64.zip](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_windows_amd64.zip) |
+| Windows arm64 | [subagent-mcp_windows_arm64.zip](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_windows_arm64.zip) |
+| Linux amd64 | [subagent-mcp_linux_amd64.tar.gz](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_linux_amd64.tar.gz) |
+| Linux arm64 | [subagent-mcp_linux_arm64.tar.gz](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_linux_arm64.tar.gz) |
+| macOS arm64 | [subagent-mcp_darwin_arm64.tar.gz](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_darwin_arm64.tar.gz) |
+| macOS amd64 | [subagent-mcp_darwin_amd64.tar.gz](https://github.com/CodeFromSpec/tool-subagent-mcp/releases/download/v2.1.1/subagent-mcp_darwin_amd64.tar.gz) |
 
 ### 3. Install the code generation agent
 
 Download the subagent definition from the framework repository:
 
 ```
-https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/subagents/code-from-spec-code-generation.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/v2/subagents/code-from-spec-code-generation.md
 ```
 
 Save the contents to
