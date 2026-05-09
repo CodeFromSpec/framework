@@ -68,6 +68,7 @@ and an AGENTS.md template ready to copy.
 |---|---|
 | [`rules/CODE_FROM_SPEC.md`](rules/CODE_FROM_SPEC.md) | Full methodology: spec structure, staleness, artifact generation |
 | [`rules/FILE_FORMAT.md`](rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
+| [`rules/CHAIN_HASH.md`](rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
 | [`rules/ARTIFACT_GENERATION.md`](rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
 | [`docs/LAYERS.md`](docs/LAYERS.md) | Organizing specs into progressive refinement layers |
 

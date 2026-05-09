@@ -271,10 +271,9 @@ generated.
 ### Chain hash
 
 Staleness is determined by comparing hashes. The **chain hash**
-is computed from the concatenated content of all nodes in the
-chain (see Chain Assembly). Before hashing, content is normalized:
-all CRLF line endings are converted to LF. No other normalization
-is applied.
+is a SHA-1 digest (base64url encoded, 27 characters) computed
+from the content of all nodes in the chain. See
+[CHAIN_HASH.md](CHAIN_HASH.md) for the full algorithm.
 
 ### Artifact tag
 
@@ -335,12 +334,12 @@ Example — generating an artifact for
 `ROOT/payments/fees/calculation`:
 
 ```
-ROOT                           (code-from-spec/_node.md)                              [# Public]
-ROOT/payments                  (code-from-spec/payments/_node.md)                     [# Public]
-ROOT/payments/fees             (code-from-spec/payments/fees/_node.md)                [# Public]
-ROOT/payments/fees/calculation (code-from-spec/payments/fees/calculation/_node.md)    [# Public + # Agent]
-ROOT/external/database         (code-from-spec/external/database/_node.md)            [# Public]
-ARTIFACT/functional/fees/calculation(default) (pseudocode/fees-calculation.md)        [full content]
+ROOT                           [# Public]            ← ancestor
+ROOT/payments                  [# Public]            ← ancestor
+ROOT/payments/fees             [# Public]            ← ancestor
+ROOT/payments/fees/calculation [# Public + # Agent]  ← target
+ROOT/external/database         [# Public]            ← depends_on
+ARTIFACT/functional/fees/calculation(calc) [full]    ← from
 ```
 
 For test nodes, the subject node is included with only its
@@ -349,12 +348,12 @@ For test nodes, the subject node is included with only its
 alphabetical order:
 
 ```
-ROOT                           (code-from-spec/_node.md)                              [# Public]
-ROOT/payments                  (code-from-spec/payments/_node.md)                     [# Public]
-ROOT/payments/fees             (code-from-spec/payments/fees/_node.md)                [# Public]
-ROOT/payments/fees/calculation (code-from-spec/payments/fees/calculation/_node.md)    [# Public]
-TEST/payments/fees/calculation (code-from-spec/payments/fees/calculation/default.test.md) [full]
-ROOT/external/database         (code-from-spec/external/database/_node.md)            [# Public]
+ROOT                           [# Public]            ← ancestor
+ROOT/payments                  [# Public]            ← ancestor
+ROOT/payments/fees             [# Public]            ← ancestor
+ROOT/payments/fees/calculation [# Public]            ← subject
+TEST/payments/fees/calculation [full]                ← target (test)
+ROOT/external/database         [# Public]            ← depends_on
 ```
 
 The chain is the complete context. Nothing outside the chain is
