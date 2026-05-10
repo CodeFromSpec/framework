@@ -132,6 +132,12 @@ Pointing to an ancestor would be redundant — its content is already
 available via inheritance. Pointing to a descendant would create a
 circular dependency.
 
+`input` references a single artifact produced by another node.
+The content of that artifact is included in the chain as the
+material to be transformed. While `depends_on` brings in spec
+context that informs generation, `input` brings in content that
+the generation subagent transforms into a new artifact.
+
 Example — intermediate node with dependencies:
 
 ```yaml
