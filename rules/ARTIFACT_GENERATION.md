@@ -30,7 +30,7 @@ confinement. Its tools include:
 - `load_chain` — returns the complete spec chain for a logical
   name, including the current chain hash
 - `write_file` — writes a file to disk, validated against the
-  node's `artifacts` list
+  node's `outputs` list
 
 When `subagent-mcp` is available, the orchestrator should
 configure the subagent with access to only these tools and no

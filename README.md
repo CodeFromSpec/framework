@@ -48,10 +48,6 @@ Staleness is detected automatically by comparing a hash of each
 node's chain against the hash recorded in its generated artifacts.
 When they differ, the artifact is stale and must be regenerated.
 
-Leaf nodes may also have test nodes — `*.test.md` files placed
-inside the same directory — which generate test artifacts
-following the same staleness rules.
-
 ---
 
 ## Getting started

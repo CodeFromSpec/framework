@@ -21,7 +21,7 @@ All text content is normalized before hashing: CRLF line endings
 are converted to LF. No other normalization is applied.
 
 This applies to both spec node content and artifact file content
-(referenced via `from`).
+(referenced via `input`).
 
 ---
 
@@ -38,7 +38,7 @@ hashed content.
 | Target | `# Public` section followed by `# Agent` section (concatenated, in this order) |
 | `depends_on: ROOT/x/y` | `# Public` section of the referenced node |
 | `depends_on: ROOT/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
-| `from: ARTIFACT/x/y(id)` | Full content of the artifact file |
+| `input: ARTIFACT/x/y(id)` | Full content of the artifact file |
 
 ---
 
@@ -52,7 +52,11 @@ hashes (as raw bytes, not encoded) in chain assembly order:
 2. The target — content hash of `# Public` followed by `# Agent`.
 3. `depends_on` entries — content hash of each, in alphabetical
    order by path.
-4. `from` entry (if present) — content hash of the artifact file.
+4. `input` entry (if present) — content hash of the artifact file.
+
+Redundant `depends_on` entries (e.g., the same path listed twice,
+or both `ROOT/x/y` and `ROOT/x/y(z)`) are not deduplicated — each
+entry contributes its content hash in alphabetical order by path.
 
 The resulting SHA-1 is encoded as base64url to produce the 27
 character string that appears in the artifact tag:

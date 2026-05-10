@@ -47,7 +47,7 @@ items.
    > 2. Read the chain carefully. Identify the target node's
    >    `# Public` and `# Agent` sections, the constraints from
    >    ancestor nodes, and any dependency content.
-   > 3. For each artifact declared in the node's `artifacts` list,
+   > 3. For each artifact declared in the node's `outputs` list,
    >    generate the complete file content. The artifact tag must
    >    appear as early in the file as the format allows:
    >    `code-from-spec: <logical-name>@<hash>`

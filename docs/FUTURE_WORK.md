@@ -25,7 +25,7 @@ to control display order among sibling nodes:
 order: 10
 depends_on:
   - ROOT/external/payments-api
-artifacts:
+outputs:
   - id: transfers
     path: internal/transfers/transfers.go
 ---
