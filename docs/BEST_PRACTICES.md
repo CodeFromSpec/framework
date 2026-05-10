@@ -6,61 +6,11 @@ that reduce friction and avoid common pitfalls.
 
 ---
 
-## Batch spec changes before resolving staleness
-
-### The problem
-
-Every spec change triggers a staleness cascade. If you edit a
-leaf node, its dependents become stale, their dependents become
-stale, and so on. Resolving staleness after each individual edit
-means walking through the cascade multiple times — most of it
-mechanical version bumps with no content change.
-
-For example, suppose you need to change two leaf nodes that
-share a common dependent — say a library node and a handler
-node that both feed into a server node. If you edit the library
-first and resolve staleness immediately, the cascade propagates
-through the server and its test nodes. Then you edit the
-handler — and the server and its test nodes cascade again. Two
-rounds of mechanical bumps for work that could have been one.
-
-### The practice
-
-Complete all related spec edits before running `staleness-check`.
-Design the changes, write them into the spec nodes, and only then
-start the resolution process.
-
-The framework's resolution rules do not require immediate
-resolution after each edit. They require that staleness is
-resolved in order (specs before tests, tests before code) and
-top-down within each layer. Nothing prevents you from
-accumulating changes first.
-
-### When to resolve
-
-A good trigger is: "I'm done changing specs and ready to
-generate code." At that point, run `staleness-check` once,
-resolve the cascade once, and proceed to code generation.
-
-If you're unsure whether you're done — keep editing. A premature
-resolution round is wasted effort if you end up changing another
-spec five minutes later.
-
-### The exception
-
-If a spec change introduces ambiguity or you need to validate
-your direction before continuing, it's fine to resolve staleness
-mid-stream. The practice is about avoiding *unnecessary*
-intermediate rounds, not about never resolving until the very
-end.
-
----
-
 ## Diagnose before regenerating
 
 ### The problem
 
-When generated code fails tests, the instinct is to regenerate
+When generated artifacts fail tests, the instinct is to regenerate
 immediately — fix the spec, dispatch the subagent, hope it works
 this time. This often produces the same bug or a different one,
 because the root cause was never understood.
@@ -72,14 +22,14 @@ choice, burning tokens without progress.
 
 ### The practice
 
-When tests fail after code generation, stop and diagnose:
+When tests fail after artifact generation, stop and diagnose:
 
 1. **Read the failing test output.** What specifically failed?
    An assertion, a panic, a compilation error?
 
-2. **Read the generated code.** Find the line or logic that
-   caused the failure. Understand what the code is doing and
-   why it's wrong.
+2. **Read the generated artifact.** Find the line or logic that
+   caused the failure. Understand what it is doing and why it's
+   wrong.
 
 3. **Trace back to the spec.** Is the spec ambiguous? Missing a
    constraint? Prescribing something that doesn't work? Or is
@@ -89,7 +39,7 @@ When tests fail after code generation, stop and diagnose:
 4. **Fix the spec if needed.** If the spec is the problem,
    correct it. Be specific — add the constraint, prescribe the
    approach, clarify the ambiguity. A vague spec fix produces
-   vague code.
+   vague output.
 
 5. **Regenerate.** Now that you understand the problem and the
    spec addresses it, regeneration is targeted rather than
@@ -116,7 +66,39 @@ problems.
 
 ### The principle
 
-Regeneration is not debugging. The subagent generates code from
-the spec it receives. If the spec doesn't address the problem,
-no amount of regeneration will fix it. Diagnosis is the step
-that turns a failing test into a better spec.
+Regeneration is not debugging. The subagent generates artifacts
+from the spec it receives. If the spec doesn't address the
+problem, no amount of regeneration will fix it. Diagnosis is the
+step that turns a failing test into a better spec.
+
+---
+
+## Start every session with the methodology
+
+### The problem
+
+Expecting the AI agent to fetch the methodology from a remote URL
+at the start of each session is unreliable. The agent may skip
+the read, summarize instead of reading in full, or fail silently
+due to network issues. The result is an agent that generates
+artifacts without understanding the framework's rules.
+
+### The practice
+
+Keep `CODE_FROM_SPEC.md` at your project root. At the start of
+every session, reference it directly:
+
+```
+@CODE_FROM_SPEC.md
+```
+
+If context gets cluttered during a long session, clear and
+re-inject:
+
+```
+/clear
+@CODE_FROM_SPEC.md
+```
+
+This guarantees the agent has the complete methodology in context
+before any work begins — no network dependency, no partial reads.
