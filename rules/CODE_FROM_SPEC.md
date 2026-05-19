@@ -44,8 +44,6 @@ generated.
 ### Location
 
 Specifications live under `<project root>/code-from-spec/`.
-Artifacts must be generated outside this directory — never place
-generated output inside the spec tree.
 
 ### Structure
 
@@ -58,7 +56,8 @@ This inheritance is automatic and mandatory.
 
 Every spec node is a directory containing a `_node.md` file. The
 directory structure is the spec tree — a node's position in the
-filesystem is its position in the hierarchy.
+filesystem is its position in the hierarchy. Other files in the
+directory are permitted but are ignored by the framework.
 
 Each `_node.md` describes one aspect of the system at a specific
 level of abstraction.
