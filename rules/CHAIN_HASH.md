@@ -20,8 +20,8 @@ The output is 27 characters.
 All text content is normalized before hashing: CRLF line endings
 are converted to LF. No other normalization is applied.
 
-This applies to both spec node content and artifact file content
-(referenced via `input`).
+This applies to spec node content, external file content, and
+artifact file content (referenced via `depends_on` or `input`).
 
 ---
 
@@ -35,10 +35,14 @@ hashed content.
 | Position | Content hashed |
 |---|---|
 | Ancestor | `# Public` section |
-| Target | `# Public` section followed by `# Agent` section (concatenated, in this order) |
+| Target `# Public` | `# Public` section |
+| Target `# Agent` | `# Agent` section |
 | `depends_on: ROOT/x/y` | `# Public` section of the referenced node |
 | `depends_on: ROOT/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
-| `input: ARTIFACT/x/y(id)` | Full content of the artifact file |
+| `depends_on: ARTIFACT/x/y(id)` | Full content of the referenced artifact, excluding any frontmatter |
+| `external` (whole file) | Full content of the referenced file |
+| `external` (with fragments) | Concatenation of each fragment's content, in declaration order |
+| `input: ARTIFACT/x/y(id)` | Full content of the artifact file, excluding any frontmatter |
 
 ---
 
@@ -49,10 +53,13 @@ hashes (as raw bytes, not encoded) in chain assembly order:
 
 1. Each ancestor from root to the target's parent — `# Public`
    content hash of each.
-2. The target — content hash of `# Public` followed by `# Agent`.
-3. `depends_on` entries — content hash of each, in alphabetical
+2. `depends_on` entries — content hash of each, in alphabetical
    order by path.
-4. `input` entry (if present) — content hash of the artifact file.
+3. `external` entries — content hash of each, in alphabetical
+   order by path.
+4. The target — content hash of `# Public`, then content hash
+   of `# Agent`.
+5. `input` entry (if present) — content hash of the artifact file.
 
 Redundant `depends_on` entries (e.g., the same path listed twice,
 or both `ROOT/x/y` and `ROOT/x/y(z)`) are not deduplicated — each
@@ -75,15 +82,17 @@ Given the chain for `ROOT/payments/fees/calculation`:
 ROOT                           [# Public]            → content hash A
 ROOT/payments                  [# Public]            → content hash B
 ROOT/payments/fees             [# Public]            → content hash C
-ROOT/payments/fees/calculation [# Public + # Agent]  → content hash D
-ROOT/external/database         [# Public]            → content hash E
-ARTIFACT/functional/calc(calc) [file content]        → content hash F
+ROOT/external/database         [# Public]            → content hash D  (depends_on)
+proto/payments/v1/transfers.proto [full]             → content hash E  (external)
+ROOT/payments/fees/calculation [# Public]            → content hash F  (target)
+ROOT/payments/fees/calculation [# Agent]             → content hash G  (target)
+ARTIFACT/functional/calc(calc) [file content]        → content hash H  (input)
 ```
 
 The chain hash is:
 
 ```
-SHA-1( A || B || C || D || E || F )
+SHA-1( A || B || C || D || E || F || G || H )
 ```
 
 where `||` denotes concatenation of raw hash bytes (20 bytes
