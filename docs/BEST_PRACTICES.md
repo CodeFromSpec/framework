@@ -73,6 +73,66 @@ step that turns a failing test into a better spec.
 
 ---
 
+## Use external imports intentionally
+
+### The problem
+
+A node needs context from a file outside the spec tree — an API
+specification, a database schema, legacy source code. The tempting
+approach is to import the entire file via `external`, regardless
+of size. This works but wastes context window and can introduce
+noise that causes the generation subagent to hallucinate or focus
+on irrelevant details.
+
+### The practice
+
+**Small files — import whole.** If the file is short and
+entirely relevant (a `.proto` definition, a JSON contract, a
+short config file), import it without fragments:
+
+```yaml
+external:
+  - path: proto/payments/v1/transfers.proto
+```
+
+**Large files — extract via an intermediate artifact.** When
+only part of a large file matters, do not try to surgically
+import fragments on the first pass. Instead, create a dedicated
+leaf node that imports the whole file and generates an
+intermediate artifact containing only the relevant extract. The
+downstream node then consumes that artifact via
+`depends_on: ARTIFACT/`.
+
+This keeps the large file out of the downstream chain and lets
+the extraction subagent — guided by the node's `# Agent`
+section — decide what is relevant.
+
+**Fragments for stable, well-understood boundaries.** Use
+`lines` and `hash` when you know exactly which portion of a file
+matters and that portion has stable boundaries. Typical cases:
+a specific function in a source file, a known section in a
+vendor specification, a fixed header block in a data file.
+Always include the `hash` — it turns line drift from a silent
+problem into an explicit error.
+
+```yaml
+external:
+  - path: internal/legacy/transfers.go
+    fragments:
+      - description: TransferFunds validation logic
+        lines: 45-120
+        hash: p2Rc8tU5vOqJ4xF6zA1wKnM7gHb
+```
+
+### The principle
+
+`external` brings the outside world into the chain. The less
+you import, the more focused the generation subagent's context
+is. When in doubt, prefer a small intermediate extraction over
+a large direct import.
+
+---
+
 ## Start every session with the methodology
 
 ### The problem
