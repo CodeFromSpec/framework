@@ -224,11 +224,22 @@ bypass security requirements. The constraints are above
 them in the tree. The agent reads them. The generated
 code respects them.
 
+Traditional development has a perverse incentive: the
+developer who cuts corners delivers faster and receives
+praise. The one who gets edge cases right delivers more
+slowly. Quality that matters is invisible in the short
+term — it manifests only as the absence of problems,
+which no one notices. The damage surfaces months later
+in a failed audit or a silent data corruption.
+
 The spec makes quality observable. When the compliance
 officer reviews a spec node, they can tell whether the
 rules are right — before any code is generated. The
-incentive realigns: correctness is no longer invisible,
-and shortcuts are no longer undetectable.
+developer who gets the domain right is visibly different
+from the one who approximates, because the spec makes
+the difference legible to the people who know.
+Correctness is no longer invisible, and shortcuts are
+no longer undetectable.
 
 ---
 
@@ -238,18 +249,24 @@ The same AI that generates code helps write specs. A
 non-technical contributor describes behavior in natural
 language; the agent structures it into a valid spec node.
 
-In practice, AI participates in every phase: reviewing
-specs for inconsistencies, proposing alternatives,
-diagnosing generation failures, tracing bugs to spec
-gaps. But AI does not make design decisions. The human
-asks "should this feature exist?" and "would a newcomer
-understand this structure?" — questions that require
-judgment about purpose, not just consistency.
+In practice, AI is an intellectual collaborator in spec
+development. It reviews specs and identifies missing
+error cases. It proposes function names and record
+structures. It questions whether two components share
+logic that should be unified. It diagnoses test failures
+and traces them to specific spec gaps.
 
-The productive model is: AI handles volume (reviewing
-every node, checking every reference, generating every
-artifact) and the human handles judgment (naming,
-organization, feature scope, simplification).
+But AI does not make design decisions. It does not ask
+"should this feature exist?" or "would a newcomer
+understand this structure?" Those questions require
+understanding purpose, economics, and long-term vision
+— context that no chain carries.
+
+The pattern is consistent: AI proposes, human disposes.
+AI identifies options and consequences. The human
+chooses. Every significant design decision — naming,
+organization, simplification, what to keep and what to
+cut — is the human's.
 
 ---
 
