@@ -326,25 +326,17 @@ individual AI model.
 
 ---
 
-## The transition
+## Building trust
 
-Trust is built through evidence, not optimism.
-
-**Phase 1**: Humans review specs and generated code.
-Every regeneration is inspected.
-
-**Phase 2**: Humans review specs thoroughly but examine
-generated code by sampling. Tests provide confidence.
-
-**Phase 3**: Humans review specs only. Code is verified
-by tests and CI.
-
-**Phase 4**: Humans review specs only at the production
-deployment boundary. Everything else is automated.
-
-Each transition is earned by evidence. Trust can regress
-— a serious bug should make the team return to a
-previous phase.
+Trust in AI-generated code is built through evidence,
+not optimism. Teams start by reviewing both specs and
+generated code. As confidence grows — fewer agent
+errors, more comprehensive tests, tighter specs — they
+shift to reviewing specs only, with tests and CI
+verifying the code. Trust can regress: a serious bug
+should make the team return to reviewing generated
+output. The phases are a dial to adjust, not a ladder
+to climb.
 
 ---
 
