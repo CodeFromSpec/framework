@@ -79,3 +79,45 @@ their leaf nodes. Some examples:
 - **`ROOT/external/`** — HTTP endpoints, authentication methods,
   JSON payload schemas, rate limits, retry policies, error
   response formats.
+
+---
+
+## Extraction layer
+
+Large external files — protobuf definitions, OpenAPI specs,
+vendor documentation — often contain far more than any
+single node needs. An **extraction layer** uses leaf nodes
+to import the full file via `external` and produce a
+curated artifact containing only the relevant portion.
+
+```
+code-from-spec/
+├── extraction/
+│   ├── _node.md              ← conventions for extraction
+│   ├── payments-proto/
+│   │   └── _node.md          ← external: proto/payments/v1/transfers.proto
+│   │                            outputs: [{id: transfers, path: ...}]
+│   └── stripe-api/
+│       └── _node.md          ← external: docs/vendor/stripe-payouts.yaml
+│                                outputs: [{id: payouts, path: ...}]
+├── functional/
+│   └── transfers/
+│       └── _node.md          ← depends_on: ARTIFACT/extraction/payments-proto(transfers)
+```
+
+Each extraction node imports the full file and instructs
+the subagent (via `# Agent`) to extract specific content:
+endpoints, schemas, type definitions, or any subset the
+downstream nodes need. The output is a clean artifact that
+other nodes reference via `depends_on: ARTIFACT/`.
+
+When the source file changes, the extraction node becomes
+stale (the `external` content participates in the chain
+hash). Regeneration re-extracts the relevant portion —
+the subagent reads the updated file and produces a new
+artifact. No line numbers or hashes to maintain manually.
+
+The extraction is described in natural language and
+performed by the subagent. The source file can change
+structure (lines shift, sections move) without breaking
+the import.

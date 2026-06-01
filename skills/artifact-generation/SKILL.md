@@ -1,88 +1,91 @@
 ---
 name: artifact-generation
-description: Generates or regenerates artifacts from the Code from Spec tree. Use when the staleness-check tool reports stale artifacts, or when the user asks to generate or regenerate.
+description: Generates or regenerates artifacts from the Code from Spec tree. Use when stale artifacts exist, or when the user asks to generate or regenerate artifacts.
 ---
 
 # Artifact Generation
 
-Generate artifacts for all stale items reported by the
-staleness-check tool.
+Generate artifacts for stale entries reported by
+`validate_specs`.
 
 ## When invoked
 
-Run this skill when the user asks to generate artifacts,
-regenerate files, or when the staleness-check tool reports stale
-items.
+Run this skill when the user asks to generate or regenerate
+artifacts, or when stale artifacts exist.
 
 ## Prerequisites
 
-1. Verify the staleness-check binary exists
-   (`tools/staleness-check.exe` on Windows,
-   `tools/staleness-check` elsewhere). If not, tell the user it
-   is missing and stop.
+1. Verify the framework-mcp MCP server is connected (the
+   `validate_specs`, `load_chain`, and `write_file` tools must
+   be available).
 
-2. Verify the subagent-mcp binary exists
-   (`tools/subagent-mcp.exe` on Windows,
-   `tools/subagent-mcp` elsewhere). If not, tell the user it is
-   missing and stop.
+2. Run `validate_specs`. If `format_errors` are reported, stop
+   and tell the user to fix them first — artifact generation
+   requires a clean spec tree.
 
 ## Algorithm
 
-1. Run the staleness-check tool and collect all stale items.
-2. If no items are stale, report that everything is up to date
+1. Run `validate_specs` and collect all stale/missing artifacts.
+2. If no stale artifacts, report that everything is up to date
    and stop.
-3. Group items by `node` — each unique logical name is one
-   generation task.
-4. For each stale node (in the order reported), dispatch a
-   `code-from-spec-code-generation` subagent with the following
+3. Group stale artifacts by rank. The rank (returned by
+   `validate_specs`) reflects dependency depth — artifacts
+   with lower rank must be generated before artifacts with
+   higher rank, because higher-rank artifacts may depend on
+   them. Process ranks in ascending order. Within the same
+   rank, artifacts are independent and should be dispatched
+   in parallel. For each artifact, dispatch a
+   `code-from-spec-artifact-generation` subagent with the following
    prompt:
 
    > You are a confined artifact generation subagent.
-   > Your only task is to generate the artifact(s) for the node
-   > `<logical-name>`.
+   > Your only task is to generate the artifact
+   > `<artifact-id>` for the node `<logical-name>`.
    >
    > Steps:
    > 1. Call `load_chain` with logical_name `<logical-name>` to
-   >    receive the complete spec chain.
+   >    receive the complete spec chain. The first line of the
+   >    response is `chain_hash: <hash>` — extract this hash.
    > 2. Read the chain carefully. Identify the target node's
-   >    `# Public` and `# Agent` sections, the constraints from
-   >    ancestor nodes, and any dependency content.
-   > 3. For each artifact declared in the node's `outputs` list,
-   >    generate the complete file content. The artifact tag must
-   >    appear as early in the file as the format allows:
-   >    `code-from-spec: <logical-name>@<hash>`
-   >    where `<hash>` is the chain hash provided by `load_chain`.
-   > 4. Call `write_file` once per artifact, passing the logical
-   >    name, the relative file path, and the complete content.
+   >    spec (its intent, contracts, and interface), the
+   >    constraints from ancestor nodes, and any dependency
+   >    specs.
+   > 3. Generate the artifact content. The artifact must
+   >    contain the artifact tag:
+   >    `code-from-spec: <logical-name>@<chain-hash>`
+   >    where `<chain-hash>` is the hash extracted in step 1.
+   >    Place the tag as early in the file as practical, inside
+   >    a comment appropriate for the file type.
+   > 4. Call `write_file` with the complete file content
+   >    (including the artifact tag with the correct hash).
    > 5. If the spec has gaps or contradictions that prevent
    >    generation, do not guess — report the problem clearly
    >    instead of writing a file.
-   > 6. After generating, list any assumptions you made where the
-   >    spec was silent or ambiguous. Label this section
-   >    `## Assumptions`. Include: format choices, column/field
+   > 6. After generating, list any assumptions you made where
+   >    the spec was silent or ambiguous. Label this section
+   >    `## Assumptions`. Include: format choices, field
    >    mappings you inferred, interpretations of ambiguous
    >    wording. If there are none, omit the section.
-   >
-   > Do not read any file not provided by `load_chain`. Do not
-   > call any tool other than `load_chain` and `write_file`.
 
-5. After all subagents complete, run the staleness-check tool
-   again. Report the remaining stale items (if any) to the user.
+4. After all subagents complete, run `validate_specs` again.
+   Report the remaining stale items (if any) to the user.
 
 ## Rules
 
-- Dispatch one subagent per node logical name, not per artifact.
-- Independent nodes may be dispatched in parallel (single message
-  with multiple Agent tool calls).
-- Never edit generated artifacts manually — always regenerate via
+- Dispatch one subagent per artifact.
+- Artifacts with the same rank are independent — dispatch them
+  in parallel (single message with multiple Agent tool calls).
+  Wait for all artifacts in a rank to complete before starting
+  the next rank.
+- Never edit generated files manually — always regenerate via
   a subagent.
 - After each subagent completes, check its output for an
   `## Assumptions` section or any language indicating the spec
-  was ambiguous, silent, or required interpretation (e.g., "the
-  spec does not specify", "chose", "assumed", "not defined").
-  Collect all such items and present them to the user **before**
-  reporting success. These are potential spec gaps that need
-  confirmation.
+  was ambiguous, silent, or required interpretation (e.g.,
+  "the spec does not specify", "chose", "assumed", "not
+  defined"). Collect all such items and present them to the
+  user **before** reporting success. These are potential spec
+  gaps that need confirmation.
 - If a subagent reports a spec gap that prevented generation,
   surface it to the user. Do not attempt to fill the gap by
   reading the codebase yourself.
