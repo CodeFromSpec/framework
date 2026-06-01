@@ -232,6 +232,16 @@ term — it manifests only as the absence of problems,
 which no one notices. The damage surfaces months later
 in a failed audit or a silent data corruption.
 
+This is a market for lemons. When the people who hold
+domain knowledge cannot evaluate the quality of the
+implementation, quality degrades. A team that implements
+domain rules precisely is indistinguishable — from the
+stakeholder's perspective — from one that implements
+them approximately. Both pass the demo. Both look
+correct on the surface. The difference surfaces when
+the numbers don't balance, and by then the cost of
+correction is orders of magnitude higher.
+
 The spec makes quality observable. When the compliance
 officer reviews a spec node, they can tell whether the
 rules are right — before any code is generated. The
@@ -376,6 +386,31 @@ reliable agents — makes the methodology more valuable.
 
 ---
 
+## The return to engineering
+
+The word "engineering" implies rigor: analysis of
+requirements, design of solutions, specification of
+behavior, verification of correctness. Software
+engineering adopted the name but abandoned the practice.
+The bottleneck was never typing code — it was knowing
+what to type. But because code generation was expensive,
+the industry optimized for coding speed and called it
+engineering.
+
+Code from Spec restores the practice. The engineer's job
+is analysis and design: understanding the domain,
+structuring the spec tree, placing guard nodes, resolving
+ambiguities, reviewing contributions from domain experts.
+The agent types. The engineer thinks.
+
+The engineer is not hired to write code. The engineer is
+hired because they solve complex problems. Writing code
+was the mechanism available — it was never the role
+itself. What remains when the mechanism is removed is the
+work that always mattered.
+
+---
+
 ## Caveats
 
 **AI is the weakest link.** Agents hallucinate, ignore
@@ -397,6 +432,29 @@ exceeds the cost of specifying it precisely.
 **Implicit knowledge is invisible knowledge.** Every
 pattern, convention, or technique that should be followed
 must be explicit in the spec tree. If it is not written
-down, it will not be followed consistently. This is the
-methodology's core cost — and its core value: knowledge
-written once is knowledge that will never be lost.
+down, it will not be followed consistently.
+
+A concrete example: a project uses relative paths
+throughout its codebase. Tests that create temporary
+files must change the working directory first, so that
+path resolution works correctly. This pattern is obvious
+to a human who has seen it once. But a generation
+subagent that has not seen it will invent a different
+approach — one that fails on Windows when the temp
+directory is on a different drive. If the pattern is
+documented in a spec node that tests inherit, every
+test generation follows it. If it exists only in
+previously generated code, the next generation may or
+may not discover it.
+
+Another example: a project requires error comparisons
+to use `errors.Is`, never `==`, because sentinel errors
+may be wrapped. Without this rule in the spec tree, some
+generated code uses `==` and passes its own tests — but
+fails when composed with other packages that wrap errors.
+The rule must be stated once, in an ancestor node, and
+every descendant inherits it.
+
+This is the methodology's core cost — and its core
+value: knowledge written once is knowledge that will
+never be lost.
