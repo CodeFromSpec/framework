@@ -223,30 +223,3 @@ sorted alphabetically after ordered nodes. The framework
 ignores unknown frontmatter fields, so `order` can be
 added to specs today without breaking anything.
 
----
-
-## Fragment removal
-
-The `external` field currently supports `fragments` —
-line ranges with content hashes for importing specific
-portions of large files. In practice, this feature is
-difficult to use: it requires knowing exact line
-numbers, computing SHA-1 hashes manually, and
-maintaining both when the file changes.
-
-A better approach is to use a dedicated extraction node:
-import the entire file via `external`, instruct the
-agent to extract the relevant portion, and output a
-curated artifact. Other nodes consume the artifact via
-`depends_on: ARTIFACT/...`.
-
-This uses existing primitives (layers, `external`,
-`outputs`) and requires no special tooling. The
-extraction re-runs automatically when the source file
-changes (the chain hash detects staleness).
-
-**Planned:** Remove `fragments` from `external` in a
-future version. This simplifies `CODE_FROM_SPEC.md`,
-frontmatter parsing, spec tree validation, chain hash
-computation, and eliminates the `hash_fragment` MCP
-tool.
