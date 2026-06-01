@@ -58,7 +58,9 @@ and an AGENTS.md template ready to copy.
 
 ---
 
-## Methodology files
+## Methodology
+
+### Core
 
 | File | Purpose |
 |---|---|
@@ -66,7 +68,14 @@ and an AGENTS.md template ready to copy.
 | [`rules/FILE_FORMAT.md`](rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
 | [`rules/CHAIN_HASH.md`](rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
 | [`rules/ARTIFACT_GENERATION.md`](rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
-| [`docs/LAYERS.md`](docs/LAYERS.md) | Organizing specs into progressive refinement layers |
+
+### Guides
+
+| File | Purpose |
+|---|---|
+| [`docs/GETTING_STARTED.md`](docs/GETTING_STARTED.md) | Step-by-step setup: spec directory, tooling, MCP configuration |
+| [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md) | Practical guidance for spec authoring and external imports |
+| [`docs/LAYERS.md`](docs/LAYERS.md) | Progressive refinement layers and extraction layers |
 
 ---
 
@@ -74,8 +83,8 @@ and an AGENTS.md template ready to copy.
 
 | Repository | Description |
 |---|---|
+| [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | MCP server for spec validation, chain loading, artifact writing, and fragment hashing |
 | [tool-staleness-check](https://github.com/CodeFromSpec/tool-staleness-check) | CLI tool that automates staleness verification |
-| [tool-subagent-mcp](https://github.com/CodeFromSpec/tool-subagent-mcp) | MCP server that provides confined tools for artifact generation subagents |
 
 ---
 
