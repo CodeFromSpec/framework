@@ -44,6 +44,34 @@ write access (if possible).
 
 ---
 
+## Existing artifact as reference
+
+When regenerating a stale artifact, the orchestrator should
+pass the existing artifact content to the subagent alongside
+the spec chain. The subagent compares the spec with the
+existing code and produces minimal changes — preserving what
+already satisfies the spec and modifying only what needs to
+change.
+
+This reduces diff noise, avoids unnecessary churn, and makes
+code review practical. Without the existing artifact, the
+subagent generates from scratch every time, producing
+different variable names, function ordering, and formatting
+even when the behavior is identical.
+
+The existing artifact is **not** part of the chain and does
+**not** participate in the chain hash. It is passed as a
+separate input by the orchestrator — the chain remains spec
+pure.
+
+If the subagent anchors on a bug in the existing artifact
+(reproducing it instead of following the spec), delete the
+artifact and regenerate from scratch. The decision to include
+or exclude the existing artifact is the human's, case by
+case.
+
+---
+
 ## How to generate
 
 Given a logical name:
