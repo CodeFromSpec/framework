@@ -50,13 +50,13 @@ another subtree.
 code-from-spec/
 ├── domain/
 │   └── transfers/
-│       └── _node.md           ← leaf, outputs: [{id: transfers, path: ...}]
+│       └── _node.md           ← leaf, output: domain/transfers/output.md
 ├── functional/
 │   └── transfers/
-│       └── _node.md           ← input: ARTIFACT/domain/transfers(transfers)
+│       └── _node.md           ← input: ARTIFACT/domain/transfers
 └── implementation/
     └── transfers/
-        └── _node.md           ← input: ARTIFACT/functional/transfers(transfers)
+        └── _node.md           ← input: ARTIFACT/functional/transfers
 ```
 
 The `domain/` layer captures business intent. The `functional/`
@@ -96,13 +96,13 @@ code-from-spec/
 │   ├── _node.md              ← conventions for extraction
 │   ├── payments-proto/
 │   │   └── _node.md          ← external: proto/payments/v1/transfers.proto
-│   │                            outputs: [{id: transfers, path: ...}]
+│   │                            output: extraction/payments-proto/output.md
 │   └── stripe-api/
 │       └── _node.md          ← external: docs/vendor/stripe-payouts.yaml
-│                                outputs: [{id: payouts, path: ...}]
+│                                output: extraction/stripe-api/output.md
 ├── functional/
 │   └── transfers/
-│       └── _node.md          ← depends_on: ARTIFACT/extraction/payments-proto(transfers)
+│       └── _node.md          ← depends_on: ARTIFACT/extraction/payments-proto
 ```
 
 Each extraction node imports the full file and instructs

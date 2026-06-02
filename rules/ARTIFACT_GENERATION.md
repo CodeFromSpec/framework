@@ -19,23 +19,23 @@ generates the artifacts or reports gaps.
 
 Ideally, a subagent should only have access to the spec chain
 for the target node and the ability to write the declared output
-files. It should not explore the filesystem, read unrelated
+file. It should not explore the filesystem, read unrelated
 files, or fetch external information. If the chain is
 insufficient, the correct action is to report what is missing.
 
-The `subagent-mcp` tool (see Resources in
+The `framework-mcp` tool (see Resources in
 [CODE_FROM_SPEC.md](CODE_FROM_SPEC.md)) enforces this
 confinement. Its tools include:
 
 - `load_chain` — returns the complete spec chain for a logical
   name, including the current chain hash
 - `write_file` — writes a file to disk, validated against the
-  node's `outputs` list
+  node's `output` path
 
-When `subagent-mcp` is available, the orchestrator should
+When `framework-mcp` is available, the orchestrator should
 configure the subagent with access to only these tools and no
 other filesystem access. A reference subagent definition is
-provided at [subagents/code-from-spec-code-generation.md](../subagents/code-from-spec-code-generation.md).
+provided at [subagents/code-from-spec-artifact-generation.md](../subagents/code-from-spec-artifact-generation.md).
 
 When it is not available, the orchestrator is responsible for
 assembling the chain and delivering it to the subagent by other

@@ -212,9 +212,7 @@ nodes:
 order: 10
 depends_on:
   - ROOT/external/payments-api
-outputs:
-  - id: transfers
-    path: internal/transfers/transfers.go
+output: internal/transfers/transfers.go
 ---
 ```
 
