@@ -1,5 +1,5 @@
 ---
-name: check-meta-language
+name: cfs-check-meta-language
 description: Read spec nodes and identify meta-language — content that references the spec tree structure itself rather than describing the system. These expressions confuse generation subagents which receive a flat chain and have no concept of the tree.
 ---
 

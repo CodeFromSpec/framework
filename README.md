@@ -52,8 +52,36 @@ When they differ, the artifact is stale and must be regenerated.
 
 ## Getting started
 
-See [GETTING_STARTED.md](docs/GETTING_STARTED.md) for step-by-step
-setup: spec directory, tooling installation, and MCP configuration.
+### 1. Install the init skill
+
+Copy and paste the following prompt into Claude Code:
+
+````
+Download the Code from Spec init skill from
+https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init/SKILL.md
+and save it to `.claude/skills/cfs-init/skill.md`.
+Create the directory if needed.
+````
+
+### 2. Initialize the project
+
+```
+/cfs-init
+```
+
+This will create the spec root, download tooling, configure
+the MCP server, and install skills and subagent definitions.
+
+### 3. Working with the agent
+
+At the start of each session, reference the methodology file:
+
+```
+@CODE_FROM_SPEC.md
+```
+
+If context gets cluttered during a long session, `/clear`
+and `@CODE_FROM_SPEC.md` again to reset.
 
 ---
 
@@ -72,7 +100,6 @@ setup: spec directory, tooling installation, and MCP configuration.
 
 | File | Purpose |
 |---|---|
-| [`docs/GETTING_STARTED.md`](docs/GETTING_STARTED.md) | Step-by-step setup: spec directory, tooling, MCP configuration |
 | [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md) | Practical guidance for spec authoring and external imports |
 | [`docs/LAYERS.md`](docs/LAYERS.md) | Progressive refinement layers and extraction layers |
 
@@ -83,6 +110,22 @@ setup: spec directory, tooling installation, and MCP configuration.
 | Repository | Description |
 |---|---|
 | [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | MCP server for spec validation, chain loading, chain hashing, and artifact writing |
+
+---
+
+## Client compatibility
+
+The methodology is client-agnostic in principle — the spec
+tree format and the MCP server work with any MCP-compatible
+client. In practice, the skills and subagent orchestration
+currently assume **Claude Code**: the Agent tool for
+dispatching subagents, the `.claude/` directory for skills
+and agent definitions, and `/mcp` for server management.
+
+Using Code from Spec with a different client requires
+reimplementing the orchestration layer (how subagents are
+dispatched, how ranks are parallelized, how existing
+artifacts are passed). The MCP server itself is portable.
 
 ---
 
