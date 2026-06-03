@@ -116,6 +116,43 @@ a large direct import.
 
 ---
 
+## Prefer qualified depends_on
+
+### The problem
+
+When a node declares `depends_on: ROOT/x/y`, the entire
+`# Public` section of `ROOT/x/y` participates in the chain
+hash. Any change to any part of that section — a new
+subsection, a reworded paragraph, a renamed type — makes
+every dependent node stale, even if the change is irrelevant
+to what the dependent actually uses.
+
+### The practice
+
+When a node only needs a specific subsection, use a qualified
+reference:
+
+```yaml
+depends_on:
+  - ROOT/x/y(interface)
+```
+
+This imports only the `## Interface` subsection. Changes to
+other subsections (`## Context`, `## Constraints`) do not
+affect this node's chain hash.
+
+Use unqualified references only when the node genuinely needs
+everything in `# Public` — for example, when inheriting all
+constraints from a sibling branch.
+
+### The principle
+
+Qualified dependencies reduce the blast radius of changes.
+The narrower the dependency, the fewer unnecessary
+regenerations.
+
+---
+
 ## Start every session with the methodology
 
 ### The problem

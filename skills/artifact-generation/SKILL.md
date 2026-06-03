@@ -35,40 +35,56 @@ artifacts, or when stale artifacts exist.
    them. Process ranks in ascending order. Within the same
    rank, artifacts are independent and should be dispatched
    in parallel. For each artifact, dispatch a
-   `code-from-spec-artifact-generation` subagent with the following
-   prompt:
+   `code-from-spec-artifact-generation` subagent.
+
+   Prompt:
 
    > You are a confined artifact generation subagent.
    > Your only task is to generate the artifact
-   > `<artifact-id>` for the node `<logical-name>`.
+   > for the node `<logical-name>`.
    >
    > Steps:
    > 1. Call `load_chain` with logical_name `<logical-name>` to
-   >    receive the complete spec chain. The first line of the
-   >    response is `chain_hash: <hash>` — extract this hash.
-   > 2. Read the chain carefully. Identify the target node's
-   >    spec (its intent, contracts, and interface), the
-   >    constraints from ancestor nodes, and any dependency
-   >    specs.
-   > 3. Generate the artifact content. The artifact must
+   >    receive the complete spec chain. The response is a
+   >    single formatted string. The first line is
+   >    `chain_hash: <hash>` — extract this hash. After
+   >    `--- context ---` is the spec chain. If
+   >    `--- input ---` is present, it contains the input
+   >    artifact. If `--- existing artifact ---` is present,
+   >    it contains the current file on disk.
+   > 2. Read the context carefully. Identify the target
+   >    node's spec (its intent, contracts, and interface),
+   >    the constraints from ancestor nodes, and any
+   >    dependency specs.
+   > 3. If an existing artifact section is present, use it
+   >    as a starting point. Compare it against the spec
+   >    and make only the changes needed. If no existing
+   >    artifact section is present, generate from scratch.
+   > 4. Generate the artifact content. The artifact must
    >    contain the artifact tag:
    >    `code-from-spec: <logical-name>@<chain-hash>`
    >    where `<chain-hash>` is the hash extracted in step 1.
    >    Place the tag as early in the file as practical, inside
    >    a comment appropriate for the file type.
-   > 4. Call `write_file` with the complete file content
+   > 5. Call `write_file` with the complete file content
    >    (including the artifact tag with the correct hash).
-   > 5. If the spec has gaps or contradictions that prevent
+   > 6. If the spec has gaps or contradictions that prevent
    >    generation, do not guess — report the problem clearly
    >    instead of writing a file.
-   > 6. After generating, list any assumptions you made where
+   > 7. After generating, list any assumptions you made where
    >    the spec was silent or ambiguous. Label this section
    >    `## Assumptions`. Include: format choices, field
    >    mappings you inferred, interpretations of ambiguous
    >    wording. If there are none, omit the section.
 
-4. After all subagents complete, run `validate_specs` again.
-   Report the remaining stale items (if any) to the user.
+4. After each rank completes, run `validate_specs` again.
+   Regenerating a rank may cause new artifacts to become
+   stale in higher ranks (chain hashes propagate). The
+   updated report shows the current state — use it to
+   determine the next rank to process.
+5. After all ranks are processed, run `validate_specs` a
+   final time. Report the remaining stale items (if any)
+   to the user.
 
 ## Rules
 
@@ -92,3 +108,6 @@ artifacts, or when stale artifacts exist.
 - After generation, do not automatically run build or tests
   unless the user asks — report what was generated and let the
   user decide.
+- Track and report token usage. After each rank completes,
+  report the cumulative subagent tokens spent in this
+  generation session. At the end, report the total.

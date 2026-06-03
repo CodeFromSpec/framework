@@ -43,38 +43,39 @@ Set up Code from Spec tooling for this project:
 1. Add `/tools/` to `.gitignore` (with leading `/` to match only
    the root directory). Create the file if it does not exist.
 
-2. Download `staleness-check` for my platform from
-   https://github.com/CodeFromSpec/tool-staleness-check/releases/latest
+2. Download `framework-mcp` for my platform from
+   https://github.com/CodeFromSpec/tool-framework-mcp/releases/latest
    and extract it into `tools/`.
 
-3. Download `subagent-mcp` for my platform from
-   https://github.com/CodeFromSpec/tool-subagent-mcp/releases/latest
-   and extract it into `tools/`.
+3. Download the subagent definition from
+   https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/subagents/code-from-spec-artifact-generation.md
+   and save it to `.claude/agents/code-from-spec-artifact-generation.md`.
 
-4. Download the subagent definition from
-   https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/subagents/code-from-spec-code-generation.md
-   and save it to `.claude/agents/code-from-spec-code-generation.md`.
+4. Download the artifact generation skill from
+   https://raw.githubusercontent.com/CodeFromSpec/framework/refs/heads/main/skills/artifact-generation/SKILL.md
+   and save it to `.claude/skills/artifact-generation/skill.md`.
 
-5. Register the subagent-mcp MCP server. Create or update
+5. Register the framework-mcp MCP server. Create or update
    `.mcp.json` in the project root with:
 
    {
      "mcpServers": {
-       "subagent-mcp": {
+       "framework-mcp": {
          "type": "stdio",
-         "command": "tools/subagent-mcp"
+         "command": "tools/framework-mcp"
        }
      }
    }
 
-   On Windows, use `tools/subagent-mcp.exe` as the command.
+   On Windows, use `tools/framework-mcp.exe` as the command.
 
-6. Run `staleness-check` to verify everything is wired up.
+6. Run `validate_specs` via the MCP server to verify everything
+   is wired up.
 ````
 
 ---
 
-## Working with the agent
+## 4. Working with the agent
 
 At the start of each session, reference the methodology file so
 the agent has full context:
@@ -89,3 +90,17 @@ skipping the read.
 
 If context gets cluttered during a long session, `/clear` and
 `@CODE_FROM_SPEC.md` again to reset.
+
+---
+
+## Available MCP tools
+
+The `framework-mcp` server provides five tools:
+
+| Tool | Purpose |
+|------|---------|
+| `validate_specs` | Validate spec tree format, detect cycles, check artifact staleness. |
+| `load_chain` | Load the complete spec chain for a node (context, input, existing artifact). |
+| `write_file` | Write a generated file to disk, validated against the node's output. |
+| `chain_hash` | Compute the chain hash for a node. |
+| `version` | Print the tool version. |

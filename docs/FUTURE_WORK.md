@@ -98,6 +98,44 @@ tokens) for individual node generation.
 
 ---
 
+## Artifact pinning
+
+When an artifact is correct and tested, regenerating it
+because an ancestor changed a comment or added an
+unrelated constraint is wasteful. A pinning mechanism
+would let the user mark an artifact as verified:
+
+```yaml
+pinned: true
+```
+
+A pinned artifact is excluded from regeneration even
+when its chain hash changes. The staleness report would
+still flag it — but as "stale (pinned)" rather than
+"stale", so the user knows the hash diverged. Unpinning
+and regenerating would be explicit.
+
+This trades automatic consistency for reduced churn.
+It is most useful for stable leaf nodes deep in the
+tree where ancestor changes rarely affect the actual
+generated code.
+
+---
+
+## Rename tool
+
+Renaming a logical name today requires manually updating
+every reference across the spec tree: `depends_on`
+entries, `ARTIFACT/` references, `input` fields, examples
+in body text, and the node's own directory path.
+
+A `rename_logical_name` MCP tool that takes an old and
+new logical name, scans the spec tree, and updates all
+references would eliminate the most tedious and
+error-prone part of reorganizations.
+
+---
+
 ## Standard language layers
 
 Today, adopting Code from Spec for a Go project
@@ -212,9 +250,7 @@ nodes:
 order: 10
 depends_on:
   - ROOT/external/payments-api
-outputs:
-  - id: transfers
-    path: internal/transfers/transfers.go
+output: internal/transfers/transfers.go
 ---
 ```
 
