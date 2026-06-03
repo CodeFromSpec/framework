@@ -1,5 +1,5 @@
 ---
-name: artifact-generation
+name: cfs-generate
 description: Generates or regenerates artifacts from the Code from Spec tree. Use when stale artifacts exist, or when the user asks to generate or regenerate artifacts.
 ---
 
