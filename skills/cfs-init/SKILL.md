@@ -27,24 +27,24 @@ already in place.
    # ROOT
    ```
 
-3. **Download the methodology file.** Download
+2. **Download the methodology file.** Download
    `CODE_FROM_SPEC.md` from
    `https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_FROM_SPEC.md`
    and save it to the project root.
 
-4. **Download the MCP server.** Detect the platform
+3. **Download the MCP server.** Detect the platform
    (OS + architecture) and download the appropriate
    `framework-mcp` binary from
    `https://github.com/CodeFromSpec/tool-framework-mcp/releases/latest`
    into `tools/`. On Windows, the binary is
    `framework-mcp.exe`.
 
-5. **Configure .gitignore.** Add `/tools/` to `.gitignore`
+4. **Configure .gitignore.** Add `/tools/` to `.gitignore`
    (with leading `/` to match only the root directory).
    Create the file if it does not exist. Do not duplicate
    if the entry already exists.
 
-6. **Configure the MCP server.** Create or update
+5. **Configure the MCP server.** Create or update
    `.mcp.json` in the project root:
 
    ```json
@@ -62,13 +62,13 @@ already in place.
    command. If `.mcp.json` already exists and has other
    servers, merge — do not overwrite.
 
-7. **Install the subagent definition.** Download from
+6. **Install the subagent definition.** Download from
    `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-artifact-generation.md`
    and save to
    `.claude/agents/cfs-artifact-generation.md`.
    Create the directory if needed.
 
-8. **Install skills.** Download the following skills and
+7. **Install skills.** Download the following skills and
    save them to `.claude/skills/<name>/skill.md`:
 
    - `cfs-generate` from
@@ -80,9 +80,10 @@ already in place.
 
    Create directories as needed.
 
-9. **Verify.** Connect to the MCP server and call
-   `validate_specs`. Expect a report with the root node
-   and no errors. Report success to the user.
+8. **Verify.** Ask the user to restart Claude Code (or
+   run `/mcp`) so the new MCP server is detected. Once
+   reconnected, call `validate_specs` to confirm
+   everything is wired up. Expect a clean report.
 
 ## Rules
 

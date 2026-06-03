@@ -113,6 +113,22 @@ and `@CODE_FROM_SPEC.md` again to reset.
 
 ---
 
+## Client compatibility
+
+The methodology is client-agnostic in principle — the spec
+tree format and the MCP server work with any MCP-compatible
+client. In practice, the skills and subagent orchestration
+currently assume **Claude Code**: the Agent tool for
+dispatching subagents, the `.claude/` directory for skills
+and agent definitions, and `/mcp` for server management.
+
+Using Code from Spec with a different client requires
+reimplementing the orchestration layer (how subagents are
+dispatched, how ranks are parallelized, how existing
+artifacts are passed). The MCP server itself is portable.
+
+---
+
 ## Versioning
 
 `main` is the development branch. Released versions live in
