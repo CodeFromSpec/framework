@@ -27,9 +27,6 @@ already in place.
    # ROOT
    ```
 
-   Ask the user if they want to add a description for the
-   root node.
-
 3. **Download the methodology file.** Download
    `CODE_FROM_SPEC.md` from
    `https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_FROM_SPEC.md`
@@ -66,9 +63,9 @@ already in place.
    servers, merge — do not overwrite.
 
 7. **Install the subagent definition.** Download from
-   `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/code-from-spec-artifact-generation.md`
+   `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-artifact-generation.md`
    and save to
-   `.claude/agents/code-from-spec-artifact-generation.md`.
+   `.claude/agents/cfs-artifact-generation.md`.
    Create the directory if needed.
 
 8. **Install skills.** Download the following skills and

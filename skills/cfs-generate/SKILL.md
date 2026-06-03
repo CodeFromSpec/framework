@@ -35,7 +35,7 @@ artifacts, or when stale artifacts exist.
    them. Process ranks in ascending order. Within the same
    rank, artifacts are independent and should be dispatched
    in parallel. For each artifact, dispatch a
-   `code-from-spec-artifact-generation` subagent.
+   `cfs-artifact-generation` subagent.
 
    Prompt:
 
