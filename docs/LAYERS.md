@@ -35,7 +35,7 @@ Layers are built on primitives from the framework:
 - **`depends_on: ARTIFACT/`** — a leaf node imports artifact
   content as context (not as material to transform).
 - **`ARTIFACT/`** — a logical name prefix that references a
-  generated artifact by node and id.
+  generated artifact by node.
 
 A layer does not require special configuration. It is simply a
 subtree under `code-from-spec/` whose leaf nodes use `input` or

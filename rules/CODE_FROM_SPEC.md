@@ -280,10 +280,10 @@ affect the artifact's behavior. What matters is that
 
 ### Staleness check
 
-The `staleness-check` tool computes the current chain hash for
-each node that declares `output` and compares it with the hash
-in the artifact's artifact tag. If they differ, the artifact is
-stale and must be regenerated.
+The `validate_specs` tool (part of `framework-mcp`) computes
+the current chain hash for each node that declares `output`
+and compares it with the hash in the artifact's artifact tag.
+If they differ, the artifact is stale and must be regenerated.
 
 Artifacts whose files do not exist are reported as `missing`
 (a special case of staleness).
@@ -388,5 +388,4 @@ before returning or comparing them.
 
 | Tool | URL |
 |---|---|
-| `staleness-check` | https://github.com/CodeFromSpec/tool-staleness-check/releases/latest |
 | `framework-mcp` | https://github.com/CodeFromSpec/tool-framework-mcp/releases/latest |

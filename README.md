@@ -53,8 +53,7 @@ When they differ, the artifact is stale and must be regenerated.
 ## Getting started
 
 See [GETTING_STARTED.md](docs/GETTING_STARTED.md) for step-by-step
-setup: spec directory, tooling installation, MCP configuration,
-and an AGENTS.md template ready to copy.
+setup: spec directory, tooling installation, and MCP configuration.
 
 ---
 
@@ -83,8 +82,7 @@ and an AGENTS.md template ready to copy.
 
 | Repository | Description |
 |---|---|
-| [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | MCP server for spec validation, chain loading, artifact writing, and fragment hashing |
-| [tool-staleness-check](https://github.com/CodeFromSpec/tool-staleness-check) | CLI tool that automates staleness verification |
+| [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | MCP server for spec validation, chain loading, chain hashing, and artifact writing |
 
 ---
 

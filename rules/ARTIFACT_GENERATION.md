@@ -46,12 +46,15 @@ write access (if possible).
 
 ## Existing artifact as reference
 
-When regenerating a stale artifact, the orchestrator should
-pass the existing artifact content to the subagent alongside
-the spec chain. The subagent compares the spec with the
-existing code and produces minimal changes — preserving what
-already satisfies the spec and modifying only what needs to
-change.
+When regenerating a stale artifact, the subagent should
+receive the existing artifact content alongside the spec
+chain. The `load_chain` tool includes the existing artifact
+automatically when the output file exists on disk — the
+orchestrator does not need to read or relay it.
+
+The subagent compares the spec with the existing code and
+produces minimal changes — preserving what already satisfies
+the spec and modifying only what needs to change.
 
 This reduces diff noise, avoids unnecessary churn, and makes
 code review practical. Without the existing artifact, the
@@ -60,9 +63,8 @@ different variable names, function ordering, and formatting
 even when the behavior is identical.
 
 The existing artifact is **not** part of the chain and does
-**not** participate in the chain hash. It is passed as a
-separate input by the orchestrator — the chain remains spec
-pure.
+**not** participate in the chain hash. It is delivered
+alongside the chain but does not affect staleness detection.
 
 If the subagent anchors on a bug in the existing artifact
 (reproducing it instead of following the spec), delete the
