@@ -53,6 +53,25 @@ the programmer could read.
 
 ---
 
+## The programmer bottleneck
+
+The industry tried to close the gap between domain
+knowledge and software from multiple directions.
+No-code and low-code platforms attempted to let
+non-programmers build software directly. They succeeded
+for narrow cases: forms, workflows, dashboards. They
+failed for anything complex enough to require real
+engineering judgment: error handling, concurrency,
+security, integration.
+
+The fundamental issue persisted: someone had to
+translate domain knowledge into something executable.
+The programmer remained indispensable — expensive to
+train, scarce in supply, and the sole bridge between
+what the organization knew and what the software did.
+
+---
+
 ## AI changes the economics
 
 AI inverts the cost structure. Code generation is cheap.
@@ -356,14 +375,29 @@ individual AI model.
 ## Building trust
 
 Trust in AI-generated code is built through evidence,
-not optimism. Teams start by reviewing both specs and
-generated code. As confidence grows — fewer agent
-errors, more comprehensive tests, tighter specs — they
-shift to reviewing specs only, with tests and CI
-verifying the code. Trust can regress: a serious bug
-should make the team return to reviewing generated
-output. The phases are a dial to adjust, not a ladder
-to climb.
+not optimism.
+
+**Phase 1: Full review.** Humans review specs and
+generated code. Every regeneration is inspected. Specs
+are tightened based on what the agent gets wrong.
+
+**Phase 2: Sampling.** Humans review specs thoroughly
+but examine generated code by sampling. Tests and CI
+provide confidence. Focus shifts to new or complex
+leaves.
+
+**Phase 3: Spec review only.** Humans review specs.
+Code is verified by tests and CI. Humans examine code
+only when tests fail or for critical operations.
+
+**Phase 4: Governance gate.** Humans review specs only
+at the production deployment boundary. Everything else
+is automated. Guard nodes protect. Tests verify.
+
+Each transition is earned by evidence. Trust can
+regress: a serious bug should make the team return to
+a previous phase. The phases are a dial to adjust, not
+a ladder to climb.
 
 ---
 
