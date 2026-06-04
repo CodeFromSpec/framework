@@ -1,11 +1,11 @@
 ---
-name: cfs-init
-description: Initialize a new project for Code from Spec. Creates the spec directory, downloads tooling, configures the MCP server, and installs the skill and subagent definitions.
+name: cfs-init-repo
+description: Initialize a repository for Code from Spec. Creates the spec directory, downloads tooling, configures the MCP server, and installs the skill and subagent definitions. Run once per project.
 ---
 
-# Initialize Code from Spec
+# Initialize Repository for Code from Spec
 
-Set up a new project to use Code from Spec.
+One-time setup of a repository to use Code from Spec.
 
 ## When invoked
 
@@ -69,14 +69,16 @@ already in place.
    Create the directory if needed.
 
 7. **Install skills.** Download the following skills and
-   save them to `.claude/skills/<name>/skill.md`:
+   save them to `.claude/skills/<name>/SKILL.md`:
 
    - `cfs-generate` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-generate/SKILL.md`
-   - `cfs-verify` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-verify/SKILL.md`
+   - `cfs-status` from
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-status/SKILL.md`
    - `cfs-check-meta-language` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-check-meta-language/SKILL.md`
+   - `cfs-init-session` from
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-session/SKILL.md`
 
    Create directories as needed.
 
