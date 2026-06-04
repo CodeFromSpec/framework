@@ -1,31 +1,20 @@
 ---
 name: cfs-init-session
-description: Load Code from Spec guidelines into the orchestrator context. Run at the start of each session to prime the orchestrator with the methodology's working rules.
+description: Load Code from Spec guidelines into the orchestrator context. Run at the start of each session.
 ---
 
 # Initialize Code from Spec Session
-
-Load the working guidelines for a Code from Spec
-session. This skill exists to inject context into
-the orchestrator without polluting subagent context
-(which would happen if this content lived in
-CLAUDE.md).
 
 ## When invoked
 
 Run this skill at the start of each session when
 working on a project that uses Code from Spec.
-The user may invoke it explicitly (`/cfs-init-session`)
-or it may be triggered by a hook.
 
 ## What to do
 
 Read the guidelines below and follow them for the
 remainder of the session. Do not output the guidelines
-to the user — just acknowledge that the session is
-initialized.
-
-Respond with:
+to the user — just acknowledge:
 
 > Code from Spec session initialized.
 
@@ -53,19 +42,21 @@ two conflict, the spec wins.
   (`# Decisions`, `# Rationale`) with what was chosen,
   what was discarded, and why.
 - When a pattern or convention should apply broadly,
-  suggest adding it to an ancestor node (guard node)
-  rather than repeating it in each leaf.
-- When a bug repeats across multiple artifacts, fix
-  the ancestor, not each leaf individually.
+  suggest adding it to a parent `_node.md` so all
+  descendants inherit it, rather than repeating it in
+  each spec that needs it.
+- When a bug repeats across multiple generated files,
+  fix the parent spec that they all inherit from, not
+  each individual spec.
 - Implicit knowledge does not survive regeneration.
-  If the agent should know it, the tree must say it.
+  If the generated code should follow a rule, the spec
+  tree must state it.
 
 ### Generation workflow
 
-- After any spec change, run `validate_specs` (via
-  `/cfs-status`) before generating code.
+- After any spec change, run `/cfs-status` before
+  generating code.
 - Generate stale artifacts with `/cfs-generate`.
-  Process in rank order — lower ranks first.
 - After generation, run build and tests before
   reporting success.
 - If a subagent reports assumptions or spec gaps,
@@ -73,10 +64,10 @@ two conflict, the spec wins.
 
 ### Debugging
 
-- Start from the spec, not the code. Read the node
-  that generated the failing artifact and its chain.
-- Trace the artifact tag in the failing file back to
-  its source node.
+- Start from the spec, not the code. Find the
+  `code-from-spec:` tag in the failing file to
+  identify which spec produced it. Read that spec
+  and the context it inherits.
 - Check whether the spec is ambiguous at the point
   where the code went wrong.
 - Fix the spec, regenerate, verify. The fix is
@@ -89,6 +80,6 @@ two conflict, the spec wins.
   the fix.
 - Do not add comments to generated code. The spec
   tree is the documentation.
-- Do not assume the agent will infer conventions.
-  If it matters, put it in a spec node that the
-  relevant leaves inherit.
+- Do not assume the generated code will follow a
+  convention unless the spec states it. If it matters,
+  put it in a spec that the relevant files inherit.
