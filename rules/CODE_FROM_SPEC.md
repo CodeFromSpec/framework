@@ -402,3 +402,7 @@ before returning or comparing them.
 | Tool | URL |
 |---|---|
 | `framework-mcp` | https://github.com/CodeFromSpec/tool-framework-mcp/releases/latest |
+
+### Author
+
+Gustavo Silveira Neto — gustavo@codefromspec.com
