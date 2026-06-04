@@ -62,11 +62,13 @@ already in place.
    command. If `.mcp.json` already exists and has other
    servers, merge — do not overwrite.
 
-6. **Install the subagent definition.** Download from
-   `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-artifact-generation.md`
-   and save to
-   `.claude/agents/cfs-artifact-generation.md`.
-   Create the directory if needed.
+6. **Install subagent definitions.** Download and save
+   to `.claude/agents/`. Create the directory if needed.
+
+   - `cfs-artifact-generation` from
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-artifact-generation.md`
+   - `cfs-spec-review` from
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-spec-review.md`
 
 7. **Install skills.** Download the following skills and
    save them to `.claude/skills/<name>/SKILL.md`:
@@ -77,6 +79,8 @@ already in place.
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-status/SKILL.md`
    - `cfs-check-meta-language` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-check-meta-language/SKILL.md`
+   - `cfs-spec-review` from
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-spec-review/SKILL.md`
    - `cfs-init-session` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-session/SKILL.md`
 
