@@ -1,9 +1,9 @@
 ---
-name: cfs-verify
+name: cfs-status
 description: Run validate_specs and report the current state of the spec tree — format errors, cycles, and artifact staleness — in a readable format.
 ---
 
-# Verify Spec Tree
+# Spec Tree Status
 
 Run `validate_specs` and present the results in a clear,
 actionable format.
@@ -11,7 +11,7 @@ actionable format.
 ## When invoked
 
 Run this skill when the user asks to check the spec tree
-status, verify staleness, or invokes `/cfs-verify`.
+status, verify staleness, or invokes `/cfs-status`.
 
 ## Prerequisites
 

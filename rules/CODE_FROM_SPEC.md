@@ -215,8 +215,17 @@ Everything under `# Public` is available to other nodes:
 - Inherited automatically by all descendant nodes.
 - Imported by nodes that declare `depends_on: ROOT/x/y`.
 
-Content is free-form. Any `##` subsection within `# Public` can be
-imported individually via `depends_on: ROOT/x/y(subsection)`.
+All content in `# Public` must be under a `##` subsection.
+Content directly under `# Public` without a subsection
+heading is a format error.
+
+Any `##` subsection within `# Public` can be imported
+individually via `depends_on: ROOT/x/y(subsection)`.
+
+When `# Public` is included in the chain (via inheritance
+or `depends_on: ROOT/x/y`), the content is the
+concatenation of all `##` subsections in document order.
+Each subsection's heading is included.
 
 Examples of useful public subsections:
 - **`## Interface`** — types, function signatures, import paths.
@@ -306,11 +315,15 @@ The orchestrator assembles the context for each subagent by
 building the **chain**:
 
 1. The `# Public` content of each ancestor from root to the
-   target node's parent.
+   target node's parent. This is the concatenation of all
+   `##` subsections within `# Public`, in document order.
+   The `# Public` heading itself is not included — only
+   the subsection headings and their content.
 2. The target node's `depends_on` content, appended in
    alphabetical order by path. What is imported depends on the
    reference:
-   - `ROOT/x/y` — `# Public` section of the referenced node.
+   - `ROOT/x/y` — all `##` subsections of `# Public` of the
+     referenced node, concatenated in document order.
    - `ROOT/x/y(z)` — `## z` subsection of `# Public` only.
    - `ARTIFACT/x/y` — full content of the referenced artifact,
      excluding frontmatter (artifact tag hash neutralized —
