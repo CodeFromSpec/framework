@@ -29,15 +29,17 @@ already in place.
 
 2. **Download the methodology file.** Download
    `CODE_FROM_SPEC.md` from
-   `https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_FROM_SPEC.md`
+   `https://raw.githubusercontent.com/CodeFromSpec/framework/v3/rules/CODE_FROM_SPEC.md`
    and save it to the project root.
 
 3. **Download the MCP server.** Detect the platform
    (OS + architecture) and download the appropriate
-   `framework-mcp` binary from
-   `https://github.com/CodeFromSpec/tool-framework-mcp/releases/latest`
+   `framework-mcp` binary from the `v1.2.0` release:
+   `https://github.com/CodeFromSpec/tool-framework-mcp/releases/tag/v1.2.0`
    into `tools/`. On Windows, the binary is
-   `framework-mcp.exe`.
+   `framework-mcp.exe`. Do not use a newer release —
+   this version of the methodology is validated against
+   `v1.2.0`.
 
 4. **Configure .gitignore.** Add `/tools/` to `.gitignore`
    (with leading `/` to match only the root directory).
@@ -66,23 +68,23 @@ already in place.
    to `.claude/agents/`. Create the directory if needed.
 
    - `cfs-artifact-generation` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-artifact-generation.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v3/subagents/cfs-artifact-generation.md`
    - `cfs-spec-review` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-spec-review.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v3/subagents/cfs-spec-review.md`
 
 7. **Install skills.** Download the following skills and
    save them to `.claude/skills/<name>/SKILL.md`:
 
    - `cfs-generate` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-generate/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v3/skills/cfs-generate/SKILL.md`
    - `cfs-status` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-status/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v3/skills/cfs-status/SKILL.md`
    - `cfs-check-meta-language` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-check-meta-language/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v3/skills/cfs-check-meta-language/SKILL.md`
    - `cfs-spec-review` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-spec-review/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v3/skills/cfs-spec-review/SKILL.md`
    - `cfs-init-session` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-session/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v3/skills/cfs-init-session/SKILL.md`
 
    Create directories as needed.
 

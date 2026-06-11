@@ -14,16 +14,17 @@ and assisting non-technical contributors with spec authoring.
 
 ## Versions
 
-> [!WARNING] 
-> **This is the development branch (`main`) and may contain unreleased
-> changes.** 
+> [!NOTE]
+> **This is the `v3` release branch.** It is frozen — development
+> happens on [`main`](https://github.com/CodeFromSpec/framework/tree/main).
 
-For a stable release, use a version branch:
+Other versions:
 
-| Version | Branch                                                                                                 |
-|---------|--------------------------------------------------------------------------------------------------------|
-| v2      | [https://github.com/CodeFromSpec/framework/tree/v2](https://github.com/CodeFromSpec/framework/tree/v2) |
-| v1      | [https://github.com/CodeFromSpec/framework/tree/v1](https://github.com/CodeFromSpec/framework/tree/v1) |
+| Version | Branch                                                                                                       |
+|---------|--------------------------------------------------------------------------------------------------------------|
+| main    | [https://github.com/CodeFromSpec/framework/tree/main](https://github.com/CodeFromSpec/framework/tree/main) |
+| v2      | [https://github.com/CodeFromSpec/framework/tree/v2](https://github.com/CodeFromSpec/framework/tree/v2)     |
+| v1      | [https://github.com/CodeFromSpec/framework/tree/v1](https://github.com/CodeFromSpec/framework/tree/v1)     |
 
 ---
 
@@ -58,7 +59,7 @@ Copy and paste the following prompt into Claude Code:
 
 ````
 Download the Code from Spec init skill from
-https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-repo/SKILL.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v3/skills/cfs-init-repo/SKILL.md
 and save it to `.claude/skills/cfs-init-repo/SKILL.md`.
 Create the directory if needed.
 ````
@@ -162,5 +163,5 @@ To fetch a specific version of the methodology, use the raw URLs
 from the appropriate branch:
 
 ```
-https://raw.githubusercontent.com/CodeFromSpec/framework/v2/rules/CODE_FROM_SPEC.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v3/rules/CODE_FROM_SPEC.md
 ```
