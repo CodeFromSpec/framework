@@ -134,9 +134,13 @@ possible but out of scope — community contributions welcome.
 
 | Directory | Contents |
 |---|---|
-| [`docs/rationale/`](docs/rationale/) | Why the methodology works — focused documents by topic |
-| [`docs/testimonials/`](docs/testimonials/) | Experience reports from AI sessions |
 | [`docs/future-work/`](docs/future-work/) | Planned features and ideas |
+
+The rationale behind the methodology — why it exists and why it
+works — is published at
+[codefromspec.com](https://codefromspec.com/rationale), along with
+[articles](https://codefromspec.com/articles) on specific design
+decisions.
 
 ---
 
