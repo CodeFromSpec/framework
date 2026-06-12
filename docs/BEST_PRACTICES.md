@@ -79,7 +79,7 @@ step that turns a failing test into a better spec.
 
 A node needs context from a file outside the spec tree — an API
 specification, a database schema, legacy source code. The tempting
-approach is to import the entire file via `external`, regardless
+approach is to import the entire file via `EXTERNAL/`, regardless
 of size. This works but wastes context window and can introduce
 noise that causes the generation subagent to hallucinate or focus
 on irrelevant details.
@@ -91,8 +91,8 @@ entirely relevant (a `.proto` definition, a JSON contract, a
 short config file), import it directly:
 
 ```yaml
-external:
-  - path: proto/payments/v1/transfers.proto
+depends_on:
+  - EXTERNAL/proto/payments/v1/transfers.proto
 ```
 
 **Large files — extract via an intermediate artifact.** When
@@ -109,7 +109,7 @@ section — decide what is relevant.
 
 ### The principle
 
-`external` brings the outside world into the chain. The less
+`EXTERNAL/` brings the outside world into the chain. The less
 you import, the more focused the generation subagent's context
 is. When in doubt, prefer a small intermediate extraction over
 a large direct import.

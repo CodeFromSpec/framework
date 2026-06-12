@@ -67,7 +67,7 @@ nodes:
 ---
 order: 10
 depends_on:
-  - ROOT/external/payments-api
+  - ROOT/integrations/payments-api
 output: internal/transfers/transfers.go
 ---
 ```
