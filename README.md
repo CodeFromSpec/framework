@@ -156,8 +156,9 @@ decisions.
 ## Versioning
 
 `main` is the development branch. Released versions live in
-dedicated branches (`v1`, `v2`, ...) and receive only bugfix
-commits. Breaking changes always produce a new version branch.
+dedicated branches (`v1`, `v2`, ...) and are frozen — they
+receive fixes only in exceptional cases. Breaking changes
+always produce a new version branch.
 
 To fetch a specific version of the methodology, use the raw URLs
 from the appropriate branch:
