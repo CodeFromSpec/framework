@@ -1,4 +1,4 @@
-# Code From Spec v3
+# Code From Spec v4
 
 **Code From Spec** is a methodology where code is a generated
 artifact, not the source of truth. The source of truth is a
@@ -22,6 +22,7 @@ For a stable release, use a version branch:
 
 | Version | Branch                                                                                                 |
 |---------|--------------------------------------------------------------------------------------------------------|
+| v3      | [https://github.com/CodeFromSpec/framework/tree/v3](https://github.com/CodeFromSpec/framework/tree/v3) |
 | v2      | [https://github.com/CodeFromSpec/framework/tree/v2](https://github.com/CodeFromSpec/framework/tree/v2) |
 | v1      | [https://github.com/CodeFromSpec/framework/tree/v1](https://github.com/CodeFromSpec/framework/tree/v1) |
 
@@ -162,5 +163,5 @@ To fetch a specific version of the methodology, use the raw URLs
 from the appropriate branch:
 
 ```
-https://raw.githubusercontent.com/CodeFromSpec/framework/v2/rules/CODE_FROM_SPEC.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/<version>/rules/CODE_FROM_SPEC.md
 ```
