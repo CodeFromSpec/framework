@@ -24,10 +24,9 @@ assembling the chain.
 The IDE would render the full picture for any node:
 
 ```
-ROOT/.../account-close/implementation
+SPEC/.../account-close/implementation
 
 ├─ Inherited context (read-only, collapsed by default)
-│  ├─ ROOT                          # Public (3 lines)
 │  ├─ architecture                  # Public (12 lines)
 │  ├─ architecture/backend          # Public (180 lines) ← guard node
 │  ├─ internal                      # Public (8 lines)
@@ -67,7 +66,7 @@ nodes:
 ---
 order: 10
 depends_on:
-  - ROOT/integrations/payments-api
+  - SPEC/integrations/payments-api
 output: internal/transfers/transfers.go
 ---
 ```
