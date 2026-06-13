@@ -19,11 +19,17 @@ The output is 27 characters.
 
 All text content is normalized before hashing: CRLF line endings
 are converted to LF. If the file does not end with LF, a
-trailing LF is added. No other normalization is applied.
+trailing LF is added.
 
-This applies to spec node content, external file content
-(`EXTERNAL/` references), and artifact file content
-(`ARTIFACT/` references via `depends_on` or `input`).
+For whole-file content — external files (`EXTERNAL/`
+references) and artifact files (`ARTIFACT/` references via
+`depends_on` or `input`) — no other normalization is applied.
+
+Spec node content (sections and subsections) is extracted and
+boundary-normalized as defined in FILE_FORMAT.md ("Block
+extraction"). The extracted form is what is hashed, and it is
+exactly the content delivered in the chain — hash and delivery
+never diverge.
 
 ---
 
@@ -38,13 +44,13 @@ hashed normally.
 For example, the line:
 
 ```
-// code-from-spec: ROOT/x/y@k4Xz9pQ1rLmN3vB7wY2tHsJ8dFa
+// code-from-spec: SPEC/x/y@k4Xz9pQ1rLmN3vB7wY2tHsJ8dFa
 ```
 
 is hashed as:
 
 ```
-// code-from-spec: ROOT/x/y@---------------------------
+// code-from-spec: SPEC/x/y@---------------------------
 ```
 
 This prevents unnecessary staleness propagation: a change to
@@ -65,10 +71,11 @@ Each position in the chain contributes a **content hash** — the
 SHA-1 of the content that position injects into the chain.
 
 When a `# Public` section is included (from an ancestor, the
-target, or a `depends_on: ROOT/x/y` reference), the hashed
+target, or a `depends_on: SPEC/x/y` reference), the hashed
 content is the concatenation of all `##` subsections in
-document order. Each subsection's heading (e.g.
-`## Interface`) is part of the hashed content. The
+document order, extracted and joined as defined in
+FILE_FORMAT.md ("Block extraction"). Each subsection's heading
+(e.g. `## Interface`) is part of the hashed content. The
 `# Public` heading itself is not included — only the
 subsection headings and their content.
 
@@ -77,8 +84,8 @@ subsection headings and their content.
 | Ancestor | `##` subsections of `# Public`, concatenated in order |
 | Target `# Public` | `##` subsections of `# Public`, concatenated in order |
 | Target `# Agent` | `# Agent` section |
-| `depends_on: ROOT/x/y` | `##` subsections of `# Public` of the referenced node, concatenated in order |
-| `depends_on: ROOT/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
+| `depends_on: SPEC/x/y` | `##` subsections of `# Public` of the referenced node, concatenated in order |
+| `depends_on: SPEC/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
 | `depends_on: ARTIFACT/x/y` | Full content of the referenced artifact, excluding frontmatter, with artifact tag hash neutralized |
 | `depends_on: EXTERNAL/x/y.z` | Full content of the referenced file |
 | `input: ARTIFACT/x/y` | Full content of the artifact file, excluding frontmatter, with artifact tag hash neutralized |
@@ -91,9 +98,9 @@ subsection headings and their content.
 The chain hash is the SHA-1 of the concatenation of all content
 hashes (as raw bytes, not encoded) in chain assembly order:
 
-1. Each ancestor from root to the target's parent — content
-   hash of `##` subsections of `# Public`, concatenated in
-   document order.
+1. Each ancestor from the top-level node to the target's
+   parent — content hash of `##` subsections of `# Public`,
+   concatenated in document order.
 2. `depends_on` entries — content hash of each, in alphabetical
    order by logical name.
 3. The target — content hash of `# Public`, then content hash
@@ -113,30 +120,29 @@ The resulting SHA-1 is encoded as base64url to produce the 27
 character string that appears in the artifact tag:
 
 ```
-code-from-spec: ROOT/payments/fees/calculation@k4Xz9pQ1rLmN3vB7wY2tHsJ8dFa
+code-from-spec: SPEC/payments/fees/calculation@k4Xz9pQ1rLmN3vB7wY2tHsJ8dFa
 ```
 
 ---
 
 ## Example
 
-Given the chain for `ROOT/payments/fees/calculation`:
+Given the chain for `SPEC/payments/fees/calculation`:
 
 ```
-ROOT                           [# Public]            → content hash A
-ROOT/payments                  [# Public]            → content hash B
-ROOT/payments/fees             [# Public]            → content hash C
-EXTERNAL/proto/payments/v1/transfers.proto [full]    → content hash D  (depends_on)
-ROOT/integrations/database     [# Public]            → content hash E  (depends_on)
-ROOT/payments/fees/calculation [# Public]            → content hash F  (target)
-ROOT/payments/fees/calculation [# Agent]             → content hash G  (target)
-ARTIFACT/functional/calc       [file content]        → content hash H  (input)
+SPEC/payments                  [# Public]            → content hash A
+SPEC/payments/fees             [# Public]            → content hash B
+EXTERNAL/proto/payments/v1/transfers.proto [full]    → content hash C  (depends_on)
+SPEC/integrations/database     [# Public]            → content hash D  (depends_on)
+SPEC/payments/fees/calculation [# Public]            → content hash E  (target)
+SPEC/payments/fees/calculation [# Agent]             → content hash F  (target)
+ARTIFACT/functional/calc       [file content]        → content hash G  (input)
 ```
 
 The chain hash is:
 
 ```
-SHA-1( A || B || C || D || E || F || G || H )
+SHA-1( A || B || C || D || E || F || G )
 ```
 
 where `||` denotes concatenation of raw hash bytes (20 bytes
