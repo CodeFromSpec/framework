@@ -97,11 +97,11 @@ depends_on:
 
 **Large files — extract via an intermediate artifact.** When
 only part of a large file matters, create a dedicated leaf
-node that imports the whole file and generates an intermediate
-artifact containing only the relevant extract. The downstream
-node then consumes that artifact via
-`depends_on: ARTIFACT/`. See [LAYERS.md](LAYERS.md) for the
-extraction layer pattern.
+node that consumes the whole file via `input: EXTERNAL/` and
+generates an intermediate artifact containing only the
+relevant extract. The downstream node then consumes that
+artifact via `depends_on: ARTIFACT/`. See
+[LAYERS.md](LAYERS.md) for the extraction layer pattern.
 
 This keeps the large file out of the downstream chain and lets
 the extraction subagent — guided by the node's `# Agent`
@@ -120,8 +120,8 @@ a large direct import.
 
 ### The problem
 
-When a node declares `depends_on: ROOT/x/y`, the entire
-`# Public` section of `ROOT/x/y` participates in the chain
+When a node declares `depends_on: SPEC/x/y`, the entire
+`# Public` section of `SPEC/x/y` participates in the chain
 hash. Any change to any part of that section — a new
 subsection, a reworded paragraph, a renamed type — makes
 every dependent node stale, even if the change is irrelevant
@@ -134,7 +134,7 @@ reference:
 
 ```yaml
 depends_on:
-  - ROOT/x/y(interface)
+  - SPEC/x/y(interface)
 ```
 
 This imports only the `## Interface` subsection. Changes to
@@ -153,32 +153,68 @@ regenerations.
 
 ---
 
-## Start every session with the methodology
+## Give project-wide conventions an explicit home
 
 ### The problem
 
-Expecting the AI agent to fetch the methodology from a remote URL
-at the start of each session is unreliable. The agent may skip
-the read, summarize instead of reading in full, or fail silently
-due to network issues. The result is an agent that generates
-artifacts without understanding the framework's rules.
+There is no node that every other node inherits from —
+inheritance starts at each top-level node, and nothing crosses
+from one tree to another. A convention meant to apply to the
+whole project (an error-handling rule, a naming standard, a
+"no comments in artifacts" policy) has no implicit global
+place to live.
 
 ### The practice
 
-Keep `CODE_FROM_SPEC.md` at your project root. At the start of
-every session, reference it directly:
+**Most "global" conventions are not global.** Go conventions
+govern generated Go code — they belong at the top of the
+implementation tree, not above it. Test patterns belong at the
+top of the tests subtree. Place each convention at the top of
+the tree whose leaves must follow it, and inheritance does the
+rest.
 
+**For genuinely cross-tree conventions**, create a dedicated
+guard node (e.g. `SPEC/standards`) and import it explicitly
+where it applies:
+
+```yaml
+depends_on:
+  - SPEC/standards(artifact-conventions)
 ```
-@CODE_FROM_SPEC.md
-```
+
+The import is per-node and visible — which is the point. Every
+chain that carries the convention declares it.
+
+### The principle
+
+Context is never ambient. If a rule must reach an artifact,
+the artifact's chain must inherit it or declare it — and both
+are visible in the tree.
+
+### The problem
+
+An agent that works on a Code from Spec project without the
+methodology in context will improvise: edit generated files
+directly, skip staleness checks, invent conventions. The rules
+only govern the session if they are actually loaded — assuming
+the agent will fetch or remember them is unreliable.
+
+### The practice
+
+Run `/cfs-init-session` at the start of every session. It reads
+`code-from-spec/_rules/CODE_FROM_SPEC.md` (the pinned copy
+installed by `cfs-init-repo`) and loads the working guidelines.
 
 If context gets cluttered during a long session, clear and
-re-inject:
+re-initialize:
 
 ```
 /clear
-@CODE_FROM_SPEC.md
+/cfs-init-session
 ```
 
-This guarantees the agent has the complete methodology in context
-before any work begins — no network dependency, no partial reads.
+### The principle
+
+The methodology must be in context before any work begins —
+loaded from the local pinned copy, with no network dependency
+and no partial reads.
