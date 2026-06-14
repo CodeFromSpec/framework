@@ -38,7 +38,7 @@ leaves. Only leaf nodes generate artifacts.
 
 ```
 code-from-spec/
-└── payments/              ← top-level node
+└── payments/
     └── fees/
         ├── calculation/
         │   └── _node.md   ← leaf → generates artifacts
