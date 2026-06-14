@@ -98,9 +98,9 @@ subsection headings and their content.
 The chain hash is the SHA-1 of the concatenation of all content
 hashes (as raw bytes, not encoded) in chain assembly order:
 
-1. Each ancestor from the top-level node to the target's
-   parent — content hash of `##` subsections of `# Public`,
-   concatenated in document order.
+1. Each ancestor from root to the target's parent — content
+   hash of `##` subsections of `# Public`, concatenated in
+   document order.
 2. `depends_on` entries — content hash of each, in alphabetical
    order by logical name.
 3. The target — content hash of `# Public`, then content hash
@@ -130,19 +130,20 @@ code-from-spec: SPEC/payments/fees/calculation@k4Xz9pQ1rLmN3vB7wY2tHsJ8dFa
 Given the chain for `SPEC/payments/fees/calculation`:
 
 ```
-SPEC/payments                  [# Public]            → content hash A
-SPEC/payments/fees             [# Public]            → content hash B
-EXTERNAL/proto/payments/v1/transfers.proto [full]    → content hash C  (depends_on)
-SPEC/integrations/database     [# Public]            → content hash D  (depends_on)
-SPEC/payments/fees/calculation [# Public]            → content hash E  (target)
-SPEC/payments/fees/calculation [# Agent]             → content hash F  (target)
-ARTIFACT/functional/calc       [file content]        → content hash G  (input)
+SPEC                                       [# Public]      → content hash A  (root)
+SPEC/payments                              [# Public]      → content hash B
+SPEC/payments/fees                         [# Public]      → content hash C
+EXTERNAL/proto/payments/v1/transfers.proto [full]          → content hash D  (depends_on)
+SPEC/integrations/database                 [# Public]      → content hash E  (depends_on)
+SPEC/payments/fees/calculation             [# Public]      → content hash F  (target)
+SPEC/payments/fees/calculation             [# Agent]       → content hash G  (target)
+ARTIFACT/functional/calc                   [file content]  → content hash H  (input)
 ```
 
 The chain hash is:
 
 ```
-SHA-1( A || B || C || D || E || F || G )
+SHA-1( A || B || C || D || E || F || G || H )
 ```
 
 where `||` denotes concatenation of raw hash bytes (20 bytes
