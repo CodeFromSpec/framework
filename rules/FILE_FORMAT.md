@@ -124,3 +124,12 @@ subsections of `# Public`, in document order — each block is
 rendered as its heading line (with trailing whitespace
 removed) followed by its extracted content, and consecutive
 blocks are separated by exactly one blank line.
+
+### Chain delivery
+
+When the chain is delivered as text (e.g. by `load_chain`),
+the rendered output of each entry is separated from the next
+by exactly one blank line. This applies between consecutive
+ancestors, between the last ancestor and the first
+dependency, between consecutive dependencies, and so on
+through the entire chain assembly order.
