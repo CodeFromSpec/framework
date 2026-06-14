@@ -68,11 +68,11 @@ Given a file path, resolve the full diagnostic context:
 $ cfs diagnose internal/accountclose/accountClose_test.go
 
 Artifact: internal/accountclose/accountClose_test.go
-Node:     ROOT/.../account-close/test
+Node:     SPEC/.../account-close/test
 Hash:     w7NAAzpoUS-XI2VQAS6rr9WyLK0
 
-Chain (7 ancestors):
-  ROOT → architecture → backend → internal →
+Chain (6 ancestors):
+  architecture → backend → internal →
   api → operations → account-close → test
 
 Dependencies (5):
@@ -83,7 +83,7 @@ Dependencies (5):
   - database
 
 Related implementation:
-  ROOT/.../account-close/implementation
+  SPEC/.../account-close/implementation
   → internal/accountclose/accountClose.go
 ```
 

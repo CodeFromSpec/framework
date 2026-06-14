@@ -30,10 +30,11 @@ For a stable release, use a version branch:
 
 ## How it works
 
-Specifications are organized as a tree. Each node is a directory
-containing a `_node.md` file. Child nodes add precision to their
-parents — high-level intent at the root, implementation detail at
-the leaves. Only leaf nodes generate artifacts.
+Specifications are organized as a tree of nodes under
+`code-from-spec/`. Each node is a directory containing a
+`_node.md` file. Child nodes add precision to their parents —
+high-level intent at the root, implementation detail at the
+leaves. Only leaf nodes generate artifacts.
 
 ```
 code-from-spec/

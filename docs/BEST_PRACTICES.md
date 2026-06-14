@@ -79,7 +79,7 @@ step that turns a failing test into a better spec.
 
 A node needs context from a file outside the spec tree — an API
 specification, a database schema, legacy source code. The tempting
-approach is to import the entire file via `external`, regardless
+approach is to import the entire file via `EXTERNAL/`, regardless
 of size. This works but wastes context window and can introduce
 noise that causes the generation subagent to hallucinate or focus
 on irrelevant details.
@@ -91,17 +91,17 @@ entirely relevant (a `.proto` definition, a JSON contract, a
 short config file), import it directly:
 
 ```yaml
-external:
-  - path: proto/payments/v1/transfers.proto
+depends_on:
+  - EXTERNAL/proto/payments/v1/transfers.proto
 ```
 
 **Large files — extract via an intermediate artifact.** When
 only part of a large file matters, create a dedicated leaf
-node that imports the whole file and generates an intermediate
-artifact containing only the relevant extract. The downstream
-node then consumes that artifact via
-`depends_on: ARTIFACT/`. See [LAYERS.md](LAYERS.md) for the
-extraction layer pattern.
+node that consumes the whole file via `input: EXTERNAL/` and
+generates an intermediate artifact containing only the
+relevant extract. The downstream node then consumes that
+artifact via `depends_on: ARTIFACT/`. See
+[LAYERS.md](LAYERS.md) for the extraction layer pattern.
 
 This keeps the large file out of the downstream chain and lets
 the extraction subagent — guided by the node's `# Agent`
@@ -109,7 +109,7 @@ section — decide what is relevant.
 
 ### The principle
 
-`external` brings the outside world into the chain. The less
+`EXTERNAL/` brings the outside world into the chain. The less
 you import, the more focused the generation subagent's context
 is. When in doubt, prefer a small intermediate extraction over
 a large direct import.
@@ -120,8 +120,8 @@ a large direct import.
 
 ### The problem
 
-When a node declares `depends_on: ROOT/x/y`, the entire
-`# Public` section of `ROOT/x/y` participates in the chain
+When a node declares `depends_on: SPEC/x/y`, the entire
+`# Public` section of `SPEC/x/y` participates in the chain
 hash. Any change to any part of that section — a new
 subsection, a reworded paragraph, a renamed type — makes
 every dependent node stale, even if the change is irrelevant
@@ -134,7 +134,7 @@ reference:
 
 ```yaml
 depends_on:
-  - ROOT/x/y(interface)
+  - SPEC/x/y(interface)
 ```
 
 This imports only the `## Interface` subsection. Changes to
@@ -153,32 +153,60 @@ regenerations.
 
 ---
 
+## Place conventions at the right level
+
+### The problem
+
+A convention placed too high in the tree pollutes every
+descendant's chain — even those where it is irrelevant. A
+convention placed too low gets repeated across siblings and
+risks drifting between copies.
+
+### The practice
+
+**Place each convention at the lowest ancestor that governs
+all the leaves that need it.** Go conventions belong at the
+top of the implementation subtree, not at the root. Test
+patterns belong at the top of the tests subtree. The root
+node is the right place only for conventions that genuinely
+apply to every leaf in the project (e.g., "artifacts carry
+no comments," or a project-wide glossary).
+
+### The principle
+
+A convention's position in the tree determines its blast
+radius. The narrower the scope, the fewer unnecessary
+regenerations when it changes — and the more focused each
+leaf's chain stays.
+
+---
+
 ## Start every session with the methodology
 
 ### The problem
 
-Expecting the AI agent to fetch the methodology from a remote URL
-at the start of each session is unreliable. The agent may skip
-the read, summarize instead of reading in full, or fail silently
-due to network issues. The result is an agent that generates
-artifacts without understanding the framework's rules.
+An agent that works on a Code from Spec project without the
+methodology in context will improvise: edit generated files
+directly, skip staleness checks, invent conventions. The rules
+only govern the session if they are actually loaded — assuming
+the agent will fetch or remember them is unreliable.
 
 ### The practice
 
-Keep `CODE_FROM_SPEC.md` at your project root. At the start of
-every session, reference it directly:
-
-```
-@CODE_FROM_SPEC.md
-```
+Run `/cfs-init-session` at the start of every session. It reads
+`code-from-spec/_rules/CODE_FROM_SPEC.md` (the pinned copy
+installed by `cfs-init-repo`) and loads the working guidelines.
 
 If context gets cluttered during a long session, clear and
-re-inject:
+re-initialize:
 
 ```
 /clear
-@CODE_FROM_SPEC.md
+/cfs-init-session
 ```
 
-This guarantees the agent has the complete methodology in context
-before any work begins — no network dependency, no partial reads.
+### The principle
+
+The methodology must be in context before any work begins —
+loaded from the local pinned copy, with no network dependency
+and no partial reads.
