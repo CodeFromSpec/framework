@@ -6,17 +6,25 @@ document assumes familiarity with
 
 ---
 
-Specs can be organized into subtrees (layers) within the spec
-tree, each adding a domain of specialized knowledge. Layers
-enable progressive refinement — a leaf node in one layer
-generates an artifact that a leaf node in a subsequent layer
-consumes as input.
+A **layer** is a pipeline stage: a subtree whose leaf nodes
+consume artifacts produced in another subtree (via `input` or
+`depends_on: ARTIFACT/`) and produce artifacts for the next
+stage. Layers enable progressive refinement — business intent
+becomes detailed logic becomes source code, one transformation
+at a time.
 
 ```
-ROOT/domain/           ← business intent (written by non-programmers)
-ROOT/functional/       ← pseudocode logic (generated from domain artifacts)
-ROOT/implementation/   ← source code (generated from functional artifacts)
+SPEC/domain/           ← business intent (written by non-programmers)
+SPEC/functional/       ← pseudocode logic (generated from domain artifacts)
+SPEC/implementation/   ← source code (generated from functional artifacts)
 ```
+
+A layer is defined by its role in the artifact flow, not by its
+position in the tree. Top-level nodes often serve as layers —
+but not every top-level node is one (`SPEC/integrations/` may
+document third-party APIs as pure reference, not as a pipeline
+stage), and layers can nest: a subtree inside a layer can act
+as a stage of an inner pipeline — a sublayer.
 
 Within each layer, intermediate nodes provide context and
 constraints to the leaf nodes below them. For example, the
@@ -46,6 +54,62 @@ another subtree.
 
 ---
 
+## Layers compress context
+
+A layer is not only a unit of specialization — it is a unit of
+context compression. This follows directly from how `input`
+and confinement work, and it is the deeper reason the pipeline
+scales.
+
+Consider generating a leaf in the `implementation/` layer. The
+generation subagent receives exactly two things: its own
+layer's craft (the guard nodes — language, libraries,
+conventions, inherited down the implementation tree) and the
+functional artifact it transforms (`input`). It does **not**
+receive the domain context — the regulations, the rationale,
+the alternatives weighed. That context already did its work:
+it produced the functional artifact. It is spent.
+
+The artifact handoff is therefore a **context firewall**.
+Everything upstream of an `input` boundary is invisible
+downstream. The functional artifact is the complete interface
+between domain and implementation — the implementation layer
+sees the digested result, never the raw reasoning that
+produced it.
+
+This has three consequences worth internalizing:
+
+- **The artifact must be self-sufficient for the next layer,
+  and this gives you a test for where to place layer
+  boundaries.** If a downstream layer needs to reach back for
+  upstream context, the upstream layer failed to fully digest.
+  Incompleteness in the producing layer surfaces as a context
+  gap in the consuming one — an objective signal that the
+  boundary is wrong or the producing spec is underspecified.
+
+- **Compression is for generation; lineage is preserved for
+  audit.** The domain context is not lost — it lives in the
+  domain layer's nodes, versioned and auditable. It is simply
+  absent from the implementation chain. You can still trace an
+  implementation artifact back through its input artifact to
+  the domain node that produced it. Context is compressed in
+  the generation chain, while the audit trail stays intact.
+
+- **Context renews at each stage instead of accumulating.**
+  Without layers, generating an implementation would require
+  domain plus functional plus implementation context all at
+  once. With layers, it requires only the implementation
+  layer's craft plus the functional artifact. A ten-stage
+  pipeline does not produce a ten-times-larger chain at the
+  end — each stage carries only its own craft and the previous
+  artifact. Pipeline depth is effectively free in context.
+
+This is the vertical counterpart to the way the tree keeps
+each node's chain to only what it declares: there, breadth
+does not inflate context; here, depth does not either.
+
+---
+
 ## Example
 
 ```
@@ -69,16 +133,16 @@ artifacts and produces source code.
 Within each layer, intermediate nodes define the conventions for
 their leaf nodes. Some examples:
 
-- **`ROOT/domain/`** — glossary of business terms, rules for
+- **`SPEC/domain/`** — glossary of business terms, rules for
   writing acceptance criteria, tone and language for
   non-technical contributors.
-- **`ROOT/implementation/`** — programming language, framework,
+- **`SPEC/implementation/`** — programming language, framework,
   library versions, error handling patterns, logging
   conventions, project directory structure.
-- **`ROOT/database/`** — database engine, schema naming
+- **`SPEC/database/`** — database engine, schema naming
   conventions, transaction isolation rules, migration format,
   indexing guidelines.
-- **`ROOT/integrations/`** — HTTP endpoints, authentication
+- **`SPEC/integrations/`** — HTTP endpoints, authentication
   methods, JSON payload schemas, rate limits, retry policies,
   error response formats.
 
