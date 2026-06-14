@@ -20,8 +20,8 @@ SPEC/implementation/   ← source code (generated from functional artifacts)
 ```
 
 A layer is defined by its role in the artifact flow, not by its
-position in the tree. Top-level nodes often serve as layers —
-but not every top-level node is one (`SPEC/integrations/` may
+position in the tree. Direct children of the root often serve
+as layers — but not every one is (`SPEC/integrations/` may
 document third-party APIs as pure reference, not as a pipeline
 stage), and layers can nest: a subtree inside a layer can act
 as a stage of an inner pipeline — a sublayer.
