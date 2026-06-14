@@ -86,9 +86,9 @@ subsection headings and their content.
 | Target `# Agent` | `# Agent` section |
 | `depends_on: SPEC/x/y` | `##` subsections of `# Public` of the referenced node, concatenated in order |
 | `depends_on: SPEC/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
-| `depends_on: ARTIFACT/x/y` | Full content of the referenced artifact, excluding frontmatter, with artifact tag hash neutralized |
+| `depends_on: ARTIFACT/x/y` | Full content of the referenced artifact, with artifact tag hash neutralized |
 | `depends_on: EXTERNAL/x/y.z` | Full content of the referenced file |
-| `input: ARTIFACT/x/y` | Full content of the artifact file, excluding frontmatter, with artifact tag hash neutralized |
+| `input: ARTIFACT/x/y` | Full content of the artifact file, with artifact tag hash neutralized |
 | `input: EXTERNAL/x/y.z` | Full content of the referenced file |
 
 ---
