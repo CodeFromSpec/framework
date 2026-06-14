@@ -191,6 +191,10 @@ Context is never ambient. If a rule must reach an artifact,
 the artifact's chain must inherit it or declare it — and both
 are visible in the tree.
 
+---
+
+## Start every session with the methodology
+
 ### The problem
 
 An agent that works on a Code from Spec project without the
