@@ -89,6 +89,14 @@ artifacts, or when stale artifacts exist.
 ## Rules
 
 - Dispatch one subagent per artifact.
+- **Do not add guidance, hints, or corrections to the subagent
+  prompt beyond the template above.** The subagent must
+  generate from the chain alone. If a previous generation
+  produced a wrong result, the fix belongs in the spec — not
+  in an ad-hoc instruction injected into the prompt. Prompt
+  additions bypass the chain, are not versioned, do not
+  participate in the hash, and will not reproduce on the next
+  regeneration.
 - Artifacts with the same rank are independent — dispatch them
   in parallel (single message with multiple Agent tool calls).
   Wait for all artifacts in a rank to complete before starting

@@ -44,8 +44,8 @@ two conflict, the spec wins.
 - When the human makes a decision between real
   alternatives (not trivial naming or formatting — the
   kind where a future reader would ask "why this and
-  not that?"), record it in a private section
-  (`# Decisions`) on the relevant node. Include what
+  not that?"), record it under `## Decisions` in the `# Private`
+  section of the relevant node. Include what
   was chosen, what was considered and discarded, and
   why. Do not ask permission for this — it is part of
   the normal workflow, like updating a spec after a
