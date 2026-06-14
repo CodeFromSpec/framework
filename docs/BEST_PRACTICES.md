@@ -153,43 +153,31 @@ regenerations.
 
 ---
 
-## Give project-wide conventions an explicit home
+## Place conventions at the right level
 
 ### The problem
 
-There is no node that every other node inherits from —
-inheritance starts at each top-level node, and nothing crosses
-from one tree to another. A convention meant to apply to the
-whole project (an error-handling rule, a naming standard, a
-"no comments in artifacts" policy) has no implicit global
-place to live.
+A convention placed too high in the tree pollutes every
+descendant's chain — even those where it is irrelevant. A
+convention placed too low gets repeated across siblings and
+risks drifting between copies.
 
 ### The practice
 
-**Most "global" conventions are not global.** Go conventions
-govern generated Go code — they belong at the top of the
-implementation tree, not above it. Test patterns belong at the
-top of the tests subtree. Place each convention at the top of
-the tree whose leaves must follow it, and inheritance does the
-rest.
-
-**For genuinely cross-tree conventions**, create a dedicated
-guard node (e.g. `SPEC/standards`) and import it explicitly
-where it applies:
-
-```yaml
-depends_on:
-  - SPEC/standards(artifact-conventions)
-```
-
-The import is per-node and visible — which is the point. Every
-chain that carries the convention declares it.
+**Place each convention at the lowest ancestor that governs
+all the leaves that need it.** Go conventions belong at the
+top of the implementation subtree, not at the root. Test
+patterns belong at the top of the tests subtree. The root
+node is the right place only for conventions that genuinely
+apply to every leaf in the project (e.g., "artifacts carry
+no comments," or a project-wide glossary).
 
 ### The principle
 
-Context is never ambient. If a rule must reach an artifact,
-the artifact's chain must inherit it or declare it — and both
-are visible in the tree.
+A convention's position in the tree determines its blast
+radius. The narrower the scope, the fewer unnecessary
+regenerations when it changes — and the more focused each
+leaf's chain stays.
 
 ---
 
