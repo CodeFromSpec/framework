@@ -274,45 +274,9 @@ subsections to organize content:
 ## Artifact Staleness
 
 An artifact is stale when its chain has changed since it was last
-generated.
-
-### Chain hash
-
-Staleness is determined by comparing hashes. The **chain hash**
-is computed from all positions in the chain. See
-CHAIN_HASH.md (under Resources) for the full algorithm.
-
-### Artifact tag
-
-Every generated artifact must contain the string:
-
-```
-code-from-spec: <name>@<hash>
-```
-
-where `<name>` is the target node's logical name and `<hash>` is
-the chain hash at the time of generation.
-
-Place the artifact tag as early in the file as practical. It may
-appear inside a comment (`//`, `#`, `/* */`, `--`, `<!-- -->`),
-in YAML frontmatter, or in any other location that does not
-affect the artifact's behavior. What matters is that
-`code-from-spec: <name>@<hash>` appears in the file.
-
-When an artifact is referenced via `ARTIFACT/` (in `depends_on`
-or `input`), the artifact tag line is excluded from the content
-delivered in the chain. See CHAIN_HASH.md for details on how
-the tag hash is neutralized for staleness computation.
-
-### Staleness check
-
-The `validate_specs` tool (part of `framework-mcp`) computes
-the current chain hash for each node that declares `output`
-and compares it with the hash in the artifact's artifact tag.
-If they differ, the artifact is stale and must be regenerated.
-
-Artifacts whose files do not exist are reported as `missing`
-(a special case of staleness).
+generated. The manifest tracks staleness state, and the
+`validate_specs` tool reports it. See MANIFEST.md (under
+Resources) for the full mechanism.
 
 ---
 
