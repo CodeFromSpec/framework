@@ -409,9 +409,9 @@ https://github.com/CodeFromSpec/framework
 
 | Document | Description |
 |---|---|
-| [ARTIFACT_GENERATION.md](https://github.com/CodeFromSpec/framework/blob/main/rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
-| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
-| [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
+| [ARTIFACT_GENERATION.md](https://github.com/CodeFromSpec/framework/blob/v4/rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
+| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/v4/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
+| [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/v4/rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
 
 ### Tools
 

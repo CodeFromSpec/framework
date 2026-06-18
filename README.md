@@ -14,11 +14,7 @@ and assisting non-technical contributors with spec authoring.
 
 ## Versions
 
-> [!WARNING] 
-> **This is the development branch (`main`) and may contain unreleased
-> changes.** 
-
-For a stable release, use a version branch:
+This is the **v4 stable release** branch. For other versions:
 
 | Version | Branch                                                                                                 |
 |---------|--------------------------------------------------------------------------------------------------------|
@@ -60,7 +56,7 @@ Copy and paste the following prompt into Claude Code:
 
 ````
 Download the Code from Spec init skill from
-https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-repo/SKILL.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v4/skills/cfs-init-repo/SKILL.md
 and save it to `.claude/skills/cfs-init-repo/SKILL.md`.
 Create the directory if needed.
 ````
@@ -132,12 +128,6 @@ possible but out of scope — community contributions welcome.
 | [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md) | Practical guidance for spec authoring |
 | [`docs/LAYERS.md`](docs/LAYERS.md) | Progressive refinement layers |
 
-### Documentation
-
-| Directory | Contents |
-|---|---|
-| [`docs/future-work/`](docs/future-work/) | Planned features and ideas |
-
 The rationale behind the methodology — why it exists and why it
 works — is published at
 [codefromspec.com](https://codefromspec.com/rationale), along with
@@ -156,14 +146,12 @@ decisions.
 
 ## Versioning
 
-`main` is the development branch. Released versions live in
-dedicated branches (`v1`, `v2`, ...) and are frozen — they
-receive fixes only in exceptional cases. Breaking changes
-always produce a new version branch.
+This is the `v4` stable branch. It is frozen — it receives
+fixes only in exceptional cases. Development continues on
+`main`.
 
-To fetch a specific version of the methodology, use the raw URLs
-from the appropriate branch:
+To fetch v4 files, use the raw URLs from this branch:
 
 ```
-https://raw.githubusercontent.com/CodeFromSpec/framework/<version>/rules/CODE_FROM_SPEC.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v4/rules/CODE_FROM_SPEC.md
 ```

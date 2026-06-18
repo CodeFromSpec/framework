@@ -29,7 +29,7 @@ already in place.
 
 2. **Download the methodology file.** Download
    `CODE_FROM_SPEC.md` from
-   `https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_FROM_SPEC.md`
+   `https://raw.githubusercontent.com/CodeFromSpec/framework/v4/rules/CODE_FROM_SPEC.md`
    and save it to `code-from-spec/_rules/CODE_FROM_SPEC.md`.
    Create the directory if needed.
 
@@ -66,23 +66,23 @@ already in place.
    to `.claude/agents/`. Create the directory if needed.
 
    - `cfs-artifact-generation` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-artifact-generation.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v4/subagents/cfs-artifact-generation.md`
    - `cfs-spec-review` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-spec-review.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v4/subagents/cfs-spec-review.md`
 
 7. **Install skills.** Download the following skills and
    save them to `.claude/skills/<name>/SKILL.md`:
 
    - `cfs-generate` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-generate/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v4/skills/cfs-generate/SKILL.md`
    - `cfs-status` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-status/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v4/skills/cfs-status/SKILL.md`
    - `cfs-check-meta-language` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-check-meta-language/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v4/skills/cfs-check-meta-language/SKILL.md`
    - `cfs-spec-review` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-spec-review/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v4/skills/cfs-spec-review/SKILL.md`
    - `cfs-init-session` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-session/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v4/skills/cfs-init-session/SKILL.md`
 
    Create directories as needed.
 
