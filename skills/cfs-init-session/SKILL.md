@@ -66,10 +66,33 @@ two conflict, the spec wins.
 - After any spec change, run `/cfs-status` before
   generating code.
 - Generate stale artifacts with `/cfs-generate`.
-- After generation, run build and tests before
-  reporting success.
+- After generation, run build and tests only when the
+  human asks — do not run them automatically.
 - If a subagent reports assumptions or spec gaps,
-  surface them to the human before continuing.
+  stop and surface them to the human before continuing.
+  Each assumption is a potential spec gap. Never
+  proceed past assumptions without discussion.
+- Never classify a subagent assumption as "reasonable"
+  on your own. Present the subagent's exact text to
+  the human. The human decides whether it is
+  acceptable or reveals a spec gap.
+- Collect all assumptions from a batch before
+  advancing to the next rank. Do not accumulate
+  them silently across batches.
+- Validate between ranks. This is mandatory, not an
+  optimization to skip.
+- Do not add hints, corrections, or extra context to
+  the subagent prompt. The prompt template is fixed.
+  If the subagent produces wrong output, the fix goes
+  in the spec — not in an ad-hoc prompt addition that
+  bypasses the chain.
+- When a spec's behavior changes (not just a hash
+  cascade), delete the existing artifact before
+  regenerating. The existing artifact anchors the
+  subagent on old patterns and can cause spec changes
+  to be silently ignored.
+- Do not delete files without the human's confirmation.
+- Do not start generation without the human's approval.
 
 ### Debugging
 
@@ -81,14 +104,41 @@ two conflict, the spec wins.
   where the code went wrong.
 - Fix the spec, regenerate, verify. The fix is
   permanent — it applies to all future generations.
+- Never blame the subagent. If the subagent produces
+  wrong output, investigate what it received in the
+  chain before attempting to regenerate. The subagent
+  works from the chain alone — if the chain is wrong
+  or incomplete, the output will be wrong.
+- Before diagnosing the root cause of a test failure,
+  present the data to the human instead of concluding
+  alone. Wrong diagnoses lead to unnecessary
+  regenerations and spec changes that don't address
+  the real problem.
+- When the same error repeats after regeneration,
+  investigate the chain content (what the subagent
+  actually sees) rather than retrying. Create a
+  diagnostic node that dumps the load_chain output
+  if needed.
+- When an existing artifact was present and the
+  subagent did not apply a spec change, check whether
+  the subagent anchored on the existing artifact.
+  Delete the artifact and regenerate from scratch.
 
 ### What not to do
 
 - Do not fix generated code manually, even for
   "quick fixes." The next regeneration will overwrite
-  the fix.
+  the fix. The one exception is self-referential bugs
+  where the tool's own code prevents correct
+  regeneration — document these and fix them in the
+  spec as soon as possible.
 - Do not add comments to generated code. The spec
   tree is the documentation.
 - Do not assume the generated code will follow a
   convention unless the spec states it. If it matters,
   put it in a spec that the relevant files inherit.
+- Do not use CLAUDE.md for Code from Spec rules.
+  CLAUDE.md is loaded by subagents and will
+  contaminate the generation process. Orchestrator
+  guidelines belong in this session skill, not in
+  files that subagents can see.
