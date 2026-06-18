@@ -194,7 +194,7 @@ the agent will fetch or remember them is unreliable.
 ### The practice
 
 Run `/cfs-init-session` at the start of every session. It reads
-`code-from-spec/_rules/CODE_FROM_SPEC.md` (the pinned copy
+`code-from-spec/.rules/CODE_FROM_SPEC.md` (the pinned copy
 installed by `cfs-init-repo`) and loads the working guidelines.
 
 If context gets cluttered during a long session, clear and

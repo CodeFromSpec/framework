@@ -20,8 +20,8 @@ artifacts.
 
 ```
 code-from-spec/
-├── _rules/                ← reserved: methodology
-├── _tools/                ← reserved: tooling
+├── .rules/                ← reserved: methodology
+├── .tools/                ← reserved: tooling
 └── payments/
     └── fees/
         ├── calculation/   ← leaf, generates artifacts
@@ -39,8 +39,9 @@ generated.
 
 Specifications live under `<project root>/code-from-spec/`.
 
-Subdirectories starting with `_` directly under
-`code-from-spec/` are ignored by the framework.
+Directories starting with `.` anywhere inside
+`code-from-spec/` are ignored by the framework,
+along with their contents and subdirectories.
 
 ### Structure
 
@@ -57,8 +58,7 @@ filesystem is its position in the hierarchy. Other files in the
 directory are permitted but are ignored by the framework. A
 subdirectory that does not contain a `_node.md` is a format
 error — it would break the inheritance chain. The exception
-is `_`-prefixed directories directly under `code-from-spec/`,
-which are ignored (see Location).
+is `.`-prefixed directories, which are ignored (see Location).
 
 Each `_node.md` describes one aspect of the system at a specific
 level of abstraction.
