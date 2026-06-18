@@ -72,10 +72,9 @@ artifacts, or when stale artifacts exist.
 4. **After each rank completes, run `validate_specs` again
    before starting the next rank.** This is mandatory, not
    an optimization to skip. Regenerating rank N changes
-   artifact content, which changes the chain hashes of
-   rank N+1 artifacts that depend on them. Without
-   re-validating, the staleness list is stale itself —
-   artifacts that became stale are missed. The
+   artifact content, which may cause rank N+1 artifacts
+   that depend on them to become stale. Without
+   re-validating, newly stale artifacts are missed. The
    `validate_specs` call between ranks is what keeps the
    generation session consistent.
 5. After all ranks are processed, run `validate_specs` a
