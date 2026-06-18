@@ -72,6 +72,13 @@ two conflict, the spec wins.
   stop and surface them to the human before continuing.
   Each assumption is a potential spec gap. Never
   proceed past assumptions without discussion.
+- Never classify a subagent assumption as "reasonable"
+  on your own. Present the subagent's exact text to
+  the human. The human decides whether it is
+  acceptable or reveals a spec gap.
+- Collect all assumptions from a batch before
+  advancing to the next rank. Do not accumulate
+  them silently across batches.
 - Validate between ranks. This is mandatory, not an
   optimization to skip.
 - Do not add hints, corrections, or extra context to
@@ -102,6 +109,11 @@ two conflict, the spec wins.
   chain before attempting to regenerate. The subagent
   works from the chain alone — if the chain is wrong
   or incomplete, the output will be wrong.
+- Before diagnosing the root cause of a test failure,
+  present the data to the human instead of concluding
+  alone. Wrong diagnoses lead to unnecessary
+  regenerations and spec changes that don't address
+  the real problem.
 - When the same error repeats after regeneration,
   investigate the chain content (what the subagent
   actually sees) rather than retrying. Create a
