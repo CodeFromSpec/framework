@@ -13,24 +13,28 @@ The manifest is a single file at
 `code-from-spec/.manifest`. It is committed to version
 control.
 
-If the manifest is lost, the framework has no record of
-what was generated — all artifacts are treated as stale.
+If the manifest is lost, it can be regenerated, but the
+record of which chain hash produced each artifact is lost.
+All artifacts are treated as stale and must be regenerated.
 
 ---
 
 ## Format
 
-One entry per artifact. Each entry has four fields:
+The manifest is a YAML file. One entry per artifact, keyed
+by logical name. Each entry has three fields:
 
 ```
-SPEC/payments/fees/calculation:
+ARTIFACT/payments/fees/calculation:
   output: internal/fees/calculation.go
   artifact: Kx9mP2vB7wY2tHsJ8dFak4Xz9pQ
   chain: Jz3qR7nL5cW1gT4yK8mDfAx0vBe
 ```
 
-- **Key** — the logical name of the leaf node. Unique
-  identifier for the entry.
+The YAML key is the `ARTIFACT/` logical name of the
+generated artifact. Entries are ordered alphabetically
+by logical name.
+
 - **output** — the artifact file path, relative to the
   project root.
 - **artifact** — hash of the file content at the time of
