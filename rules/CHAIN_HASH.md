@@ -33,38 +33,6 @@ never diverge.
 
 ---
 
-## Artifact tag neutralization
-
-When hashing artifact file content (`ARTIFACT/` references in
-`depends_on` or `input`), the 27-character hash in the artifact tag is
-replaced with 27 hyphens (`---------------------------`) before
-hashing. The rest of the line — including the logical name — is
-hashed normally.
-
-For example, the line:
-
-```
-// code-from-spec: SPEC/x/y@k4Xz9pQ1rLmN3vB7wY2tHsJ8dFa
-```
-
-is hashed as:
-
-```
-// code-from-spec: SPEC/x/y@---------------------------
-```
-
-This prevents unnecessary staleness propagation: a change to
-an ancestor's chain hash updates the tag in downstream artifacts,
-but the neutralized hash produces the same content hash — so
-further downstream artifacts are not affected unless their
-actual content changed.
-
-The logical name in the tag still participates in the hash. If
-an artifact is moved to a different node and the tag is updated,
-the content hash changes correctly.
-
----
-
 ## Content hash
 
 Each position in the chain contributes a **content hash** — the
@@ -86,9 +54,9 @@ subsection headings and their content.
 | Target `# Agent` | `# Agent` section |
 | `depends_on: SPEC/x/y` | `##` subsections of `# Public` of the referenced node, concatenated in order |
 | `depends_on: SPEC/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
-| `depends_on: ARTIFACT/x/y` | Full content of the referenced artifact, with artifact tag hash neutralized |
+| `depends_on: ARTIFACT/x/y` | Full content of the referenced artifact |
 | `depends_on: EXTERNAL/x/y.z` | Full content of the referenced file |
-| `input: ARTIFACT/x/y` | Full content of the artifact file, with artifact tag hash neutralized |
+| `input: ARTIFACT/x/y` | Full content of the artifact file |
 | `input: EXTERNAL/x/y.z` | Full content of the referenced file |
 
 ---
@@ -116,12 +84,8 @@ duplicates (same path, same qualifier) are also removed. Each
 remaining entry contributes its content hash in alphabetical
 order by logical name.
 
-The resulting SHA-1 is encoded as base64url to produce the 27
-character string that appears in the artifact tag:
-
-```
-code-from-spec: SPEC/payments/fees/calculation@k4Xz9pQ1rLmN3vB7wY2tHsJ8dFa
-```
+The resulting SHA-1 is encoded as base64url to produce the
+27-character chain hash recorded in the manifest.
 
 ---
 
