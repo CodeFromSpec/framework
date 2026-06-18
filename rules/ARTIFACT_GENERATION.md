@@ -1,7 +1,9 @@
 # Artifact Generation with Subagents
 
 How to generate artifacts for a given logical name using a
-confined subagent. This document assumes familiarity with
+confined subagent.
+
+This document assumes familiarity with
 [CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
 
 ---

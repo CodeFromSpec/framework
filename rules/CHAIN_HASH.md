@@ -1,10 +1,9 @@
 # Chain Hash
 
-How the chain hash is computed for artifact staleness detection.
+How the chain hash is computed for artifact staleness detection. This level of detail is primarily relevant for tool implementors.
+
 This document assumes familiarity with
 [CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
-
-This level of detail is primarily relevant for tool implementors.
 
 ---
 
