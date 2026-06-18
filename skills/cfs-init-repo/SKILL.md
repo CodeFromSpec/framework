@@ -36,7 +36,7 @@ already in place.
 3. **Download the MCP server.** Detect the platform
    (OS + architecture) and download the appropriate
    `framework-mcp` binary from
-   `https://github.com/CodeFromSpec/tool-framework-mcp/releases/latest`
+   `https://github.com/CodeFromSpec/tool-framework-mcp/releases/tag/v4.0.0`
    into `code-from-spec/_tools/`. On Windows, the binary is
    `framework-mcp.exe`.
 

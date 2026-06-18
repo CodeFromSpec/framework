@@ -417,7 +417,7 @@ https://github.com/CodeFromSpec/framework
 
 | Tool | URL |
 |---|---|
-| `framework-mcp` | https://github.com/CodeFromSpec/tool-framework-mcp/releases/latest |
+| `framework-mcp` | https://github.com/CodeFromSpec/tool-framework-mcp/releases/tag/v4.0.0 |
 
 ### Author
 
