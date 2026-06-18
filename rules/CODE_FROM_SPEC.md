@@ -104,12 +104,17 @@ Resolution rules:
 configuration, data files, third-party documentation, or any
 other text file. The referenced file may live anywhere in the
 project, including inside `code-from-spec/`. The content is
-always taken raw, exactly as it is on disk. This matters when
-pointing at framework-managed files: an `EXTERNAL/` reference
-to a `_node.md` imports the whole file (frontmatter and private
-sections included — no `# Public` extraction). If the file
+always taken raw, exactly as it is on disk. If the file
 referenced by `EXTERNAL/` does not exist, it is reported as
 an error.
+
+Do not use `EXTERNAL/` to reference spec nodes or generated
+artifacts. For spec nodes, use `SPEC/` — it extracts the
+`# Public` section. `EXTERNAL/` would import the raw file
+including frontmatter and private sections. For generated
+artifacts, use `ARTIFACT/` — it establishes a dependency in
+the generation graph. Without it, a consuming node may be
+generated before the artifact it depends on is up to date.
 
 ### Frontmatter
 
