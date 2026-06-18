@@ -87,5 +87,15 @@ artifact generation. When `write_file` writes an artifact,
 it records the chain hash and the artifact hash in the
 manifest atomically.
 
-No other operation modifies the manifest. The manifest is
-never edited manually.
+The manifest is never edited manually.
+
+---
+
+## Concurrency
+
+The manifest may be read and written concurrently during
+artifact generation. Any process that reads the manifest
+must acquire a shared lock; any process that writes it
+must acquire an exclusive lock. A read must not see a
+partially-written manifest, and two writes must not
+interleave.
