@@ -63,8 +63,8 @@ different variable names, function ordering, and formatting
 even when the behavior is identical.
 
 The existing artifact is **not** part of the chain and does
-**not** participate in the chain hash. It is delivered
-alongside the chain but does not affect staleness detection.
+**not** affect staleness detection. It is delivered alongside
+the chain as a reference only.
 
 If the subagent anchors on a bug in the existing artifact
 (reproducing it instead of following the spec), delete the
