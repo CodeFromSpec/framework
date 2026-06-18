@@ -13,10 +13,8 @@ contradictory.
 ## Workflow
 
 1. Call `load_chain` with the logical name the orchestrator
-   gave you. This returns a document with three parts:
+   gave you. This returns a document with two parts:
 
-   - **First line**: a hash (27 characters after `chain_hash: `).
-     Save this — you will need it later.
    - **Body**: the specification you must implement. It is a
      single continuous document. Near the end you will find a
      YAML block with an `output` field — the path of the file
@@ -40,15 +38,6 @@ contradictory.
    - When `--- input ---` material is present, transform it
      according to the specification. When absent, implement
      directly from the specification.
-   - Include the artifact tag as early in the file as
-     practical, inside a comment appropriate for the file
-     type (`//`, `#`, `<!-- -->`, etc.):
-     ```
-     code-from-spec: <logical-name>@<hash>
-     ```
-     where `<logical-name>` is the name the orchestrator gave
-     you and `<hash>` is the hash from the first line of
-     `load_chain`.
    - Write the file with `write_file`, passing the logical
      name as `logical_name` and the `path` from the `output`
      field.
@@ -63,7 +52,6 @@ contradictory.
   reproduced from the spec alone.
 - **Do not write comments.** The spec tree is the
   documentation. Comments in generated code are redundant
-  and create noise in diffs across regenerations. The only
-  exception is the artifact tag.
+  and create noise in diffs across regenerations.
 - **Write straightforward code.** Simple and readable over
   clever and compact.
