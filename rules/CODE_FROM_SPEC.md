@@ -378,12 +378,13 @@ https://github.com/CodeFromSpec/framework
 | [ARTIFACT_GENERATION.md](https://github.com/CodeFromSpec/framework/blob/main/rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
 | [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
 | [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
 
-### Tools
+### Reference implementation
 
-| Tool | URL |
+| Repository | Description |
 |---|---|
-| `framework-mcp` | https://github.com/CodeFromSpec/tool-framework-mcp/releases/latest |
+| [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | MCP server implementing spec validation, chain loading, artifact writing, and manifest management |
 
 ### Author
 
