@@ -107,19 +107,16 @@ project, including inside `code-from-spec/`. The content is
 always taken raw, exactly as it is on disk. This matters when
 pointing at framework-managed files: an `EXTERNAL/` reference
 to a `_node.md` imports the whole file (frontmatter and private
-sections included — no `# Public` extraction), and an
-`EXTERNAL/` reference to a generated artifact does not
-neutralize the artifact tag hash (use `ARTIFACT/` for that —
-see CHAIN_HASH.md). If the file referenced by `EXTERNAL/` does
-not exist, it is reported as an error.
+sections included — no `# Public` extraction). If the file
+referenced by `EXTERNAL/` does not exist, it is reported as
+an error.
 
 ### Frontmatter
 
 Frontmatter is optional YAML metadata. It is not part of the
 node's content — it does not participate in inheritance or
 `depends_on`. Projects may use custom fields on any node; the
-framework ignores them. The `code-from-spec` field name is
-reserved (see Artifact tag).
+framework ignores them.
 
 The following fields are recognized by the framework and are
 only permitted on leaf nodes. Circular references across
