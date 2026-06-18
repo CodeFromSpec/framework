@@ -88,6 +88,15 @@ context for the current session.
 
 ## Scope
 
+Code from Spec turns knowledge into verified software. It
+owns the path from specification to generated code — not
+the infrastructure the code runs on. Provisioning,
+deployment, and operations (databases, clusters, CI/CD)
+are out of scope. Technical decisions like "use Postgres
+with serializable isolation" enter the spec tree as
+constraints that shape generation, but the framework does
+not make or execute those decisions.
+
 The tooling (skills, subagents, orchestration) targets
 **Claude Code**. The spec tree format and the MCP server
 are client-agnostic, but the orchestration layer assumes
