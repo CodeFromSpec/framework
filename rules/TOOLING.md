@@ -35,7 +35,7 @@ raises an error. Problems are collected in the report.
    dependency between them and can be processed in
    parallel.
 4. Report all findings: format errors, cycles, and
-   artifact status (stale, tampered, missing, orphan).
+   artifact status (stale, modified, missing, orphan).
 
 Nodes without `output` are not checked for staleness —
 they do not generate artifacts.
@@ -102,10 +102,10 @@ manifest.
    that `path` matches the `output` declared in the
    node's frontmatter.
 2. Write the file to disk.
-3. Compute the artifact hash (hash of the written
-   content) and the current chain hash.
+3. Compute the checksum (hash of the written content)
+   and the current chain hash.
 4. Update the manifest entry for this node with the
-   new artifact hash and chain hash.
+   new checksum and chain hash.
 
 The manifest must be updated atomically. See
 MANIFEST.md ("Concurrency") for locking requirements.
