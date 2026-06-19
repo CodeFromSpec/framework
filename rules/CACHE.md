@@ -109,8 +109,8 @@ changed in the chain since the last generation.
    - **Removed** — label exists in old but not in
      current.
    - **Unchanged** — same label, same content hash.
-5. Deliver the delta to the subagent (see TOOLING.md
-   for the delivery format).
+5. Deliver the delta to the subagent. The delivery
+   format is not yet defined.
 
 If the old chain file is not in the cache, delta
 computation is not possible. The subagent receives
