@@ -26,11 +26,10 @@ Tracing from symptom to cause requires **6 manual
 jumps**:
 
 1. Read the test output
-2. Find the failing line in the .go file
-3. Extract the artifact tag from that file
-4. Map the tag to the spec node
-5. Read the node's chain (ancestors + dependencies)
-6. Identify which spec is ambiguous or wrong
+2. Find the failing line in the generated file
+3. Look up the file in the manifest to find the node
+4. Read the node's chain (ancestors + dependencies)
+5. Identify which spec is ambiguous or wrong
 
 Today, steps 3–6 are entirely manual. The human greps,
 opens files, and mentally reconstructs the chain. The
@@ -46,9 +45,8 @@ test D").
 
 The framework already has the information needed:
 
-- **Artifact tag → node**: every generated file has
-  `code-from-spec: <node>@<hash>`, and the `output`
-  field in each leaf node maps the reverse direction.
+- **File → node**: the manifest maps each output path
+  to the node that generated it.
 - **Node → chain**: `load_chain` assembles the full
   context for any node.
 - **Node → dependencies**: `depends_on` in the
