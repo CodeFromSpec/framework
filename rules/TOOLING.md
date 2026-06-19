@@ -112,6 +112,25 @@ MANIFEST.md ("Concurrency") for locking requirements.
 
 ---
 
+## reconstruct_cache
+
+Populate the cache from the current state of the
+repository.
+
+**Parameters:** none.
+
+**Behavior:**
+
+For each entry in the manifest, resolve the chain and
+populate `.cache/.content/` with the processed content
+of each position, and `.cache/.chains/` with the chain
+structure. Idempotent — skips files that already exist
+in the cache.
+
+See CACHE.md for details on the cache structure.
+
+---
+
 ## version
 
 Report the tool version.
