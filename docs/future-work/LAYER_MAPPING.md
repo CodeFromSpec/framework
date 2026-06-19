@@ -52,8 +52,8 @@ provide conventions via inheritance, as usual.
 **Tension:** breaks the axiom that a node's position in the
 filesystem is its position in the hierarchy. Implied nodes
 exist in the tree but not on disk — not visible in the file
-explorer, not versioned individually, and artifact tags point
-at nodes that cannot be opened. Power bought with opacity, in
+explorer, not versioned individually, and manifest entries
+reference nodes that cannot be opened. Power bought with opacity, in
 a framework whose core thesis is "everything visible,
 everything declared."
 

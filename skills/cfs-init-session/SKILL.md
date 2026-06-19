@@ -16,9 +16,14 @@ working on a project that uses Code from Spec.
    This is the methodology specification — understand
    it and follow it for the remainder of the session.
 
-2. Read the guidelines below.
+2. If the `reconstruct_cache` tool is available (via
+   the framework-mcp MCP server), call it. This
+   rebuilds the cache from the current state of the
+   repository.
 
-3. Acknowledge:
+3. Read the guidelines below.
+
+4. Acknowledge:
 
    > Code from Spec session initialized.
 
@@ -96,10 +101,9 @@ two conflict, the spec wins.
 
 ### Debugging
 
-- Start from the spec, not the code. Find the
-  `code-from-spec:` tag in the failing file to
-  identify which spec produced it. Read that spec
-  and the context it inherits.
+- Start from the spec, not the code. Use the manifest
+  to identify which spec produced the failing file.
+  Read that spec and the context it inherits.
 - Check whether the spec is ambiguous at the point
   where the code went wrong.
 - Fix the spec, regenerate, verify. The fix is

@@ -1,10 +1,9 @@
 # Chain Hash
 
-How the chain hash is computed for artifact staleness detection.
+How the chain hash is computed for artifact staleness detection. This level of detail is primarily relevant for tool implementors.
+
 This document assumes familiarity with
 [CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
-
-This level of detail is primarily relevant for tool implementors.
 
 ---
 
@@ -33,38 +32,6 @@ never diverge.
 
 ---
 
-## Artifact tag neutralization
-
-When hashing artifact file content (`ARTIFACT/` references in
-`depends_on` or `input`), the 27-character hash in the artifact tag is
-replaced with 27 hyphens (`---------------------------`) before
-hashing. The rest of the line — including the logical name — is
-hashed normally.
-
-For example, the line:
-
-```
-// code-from-spec: SPEC/x/y@k4Xz9pQ1rLmN3vB7wY2tHsJ8dFa
-```
-
-is hashed as:
-
-```
-// code-from-spec: SPEC/x/y@---------------------------
-```
-
-This prevents unnecessary staleness propagation: a change to
-an ancestor's chain hash updates the tag in downstream artifacts,
-but the neutralized hash produces the same content hash — so
-further downstream artifacts are not affected unless their
-actual content changed.
-
-The logical name in the tag still participates in the hash. If
-an artifact is moved to a different node and the tag is updated,
-the content hash changes correctly.
-
----
-
 ## Content hash
 
 Each position in the chain contributes a **content hash** — the
@@ -86,9 +53,9 @@ subsection headings and their content.
 | Target `# Agent` | `# Agent` section |
 | `depends_on: SPEC/x/y` | `##` subsections of `# Public` of the referenced node, concatenated in order |
 | `depends_on: SPEC/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
-| `depends_on: ARTIFACT/x/y` | Full content of the referenced artifact, with artifact tag hash neutralized |
+| `depends_on: ARTIFACT/x/y` | Full content of the referenced artifact |
 | `depends_on: EXTERNAL/x/y.z` | Full content of the referenced file |
-| `input: ARTIFACT/x/y` | Full content of the artifact file, with artifact tag hash neutralized |
+| `input: ARTIFACT/x/y` | Full content of the artifact file |
 | `input: EXTERNAL/x/y.z` | Full content of the referenced file |
 
 ---
@@ -105,8 +72,8 @@ hashes (as raw bytes, not encoded) in chain assembly order:
    order by logical name.
 3. The target — content hash of `# Public`, then content hash
    of `# Agent`.
-4. `input` entry (if present) — content hash of the referenced
-   file.
+4. `input` entry (if present) — the byte `0x49` (`I`), followed
+   by the content hash of the referenced file.
 
 Redundant `depends_on` entries are deduplicated before hashing.
 When an entry without a qualifier exists for a given path, entries
@@ -116,16 +83,20 @@ duplicates (same path, same qualifier) are also removed. Each
 remaining entry contributes its content hash in alphabetical
 order by logical name.
 
-The resulting SHA-1 is encoded as base64url to produce the 27
-character string that appears in the artifact tag:
+The `0x49` marker ensures that moving a reference from
+`depends_on` to `input` (or vice versa) always changes the
+chain hash, even when the target node has no `# Public` or
+`# Agent` section and the content hash is the same in both
+positions.
 
-```
-code-from-spec: SPEC/payments/fees/calculation@k4Xz9pQ1rLmN3vB7wY2tHsJ8dFa
-```
+The resulting SHA-1 is encoded as base64url to produce the
+27-character chain hash recorded in the manifest.
 
 ---
 
-## Example
+## Examples
+
+### With input
 
 Given the chain for `SPEC/payments/fees/calculation`:
 
@@ -143,8 +114,28 @@ ARTIFACT/functional/calc                   [file content]  → content hash H  (
 The chain hash is:
 
 ```
-SHA-1( A || B || C || D || E || F || G || H )
+SHA-1( A || B || C || D || E || F || G || 0x49 || H )
 ```
 
 where `||` denotes concatenation of raw hash bytes (20 bytes
 each), and the result is encoded as base64url.
+
+### Without input
+
+Given the chain for `SPEC/payments/fees/rounding`:
+
+```
+SPEC                                       [# Public]      → content hash A  (root)
+SPEC/payments                              [# Public]      → content hash B
+SPEC/payments/fees                         [# Public]      → content hash C
+SPEC/payments/fees/rounding                [# Public]      → content hash D  (target)
+SPEC/payments/fees/rounding                [# Agent]       → content hash E  (target)
+```
+
+The chain hash is:
+
+```
+SHA-1( A || B || C || D || E )
+```
+
+No `0x49` marker — the input position is absent.

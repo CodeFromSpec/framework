@@ -1,7 +1,8 @@
 # Layers
 
-How to organize specs into progressive refinement layers. This
-document assumes familiarity with
+How to organize specs into progressive refinement layers.
+
+This document assumes familiarity with
 [CODE_FROM_SPEC.md](../rules/CODE_FROM_SPEC.md).
 
 ---
@@ -178,8 +179,7 @@ downstream nodes need. The output is a clean artifact that
 other nodes reference via `depends_on: ARTIFACT/`.
 
 When the source file changes, the extraction node becomes
-stale (the `EXTERNAL/` reference's content participates in
-the chain hash). Regeneration re-extracts the relevant
+stale. Regeneration re-extracts the relevant
 portion — the subagent reads the updated file and produces
 a new artifact. No line numbers or hashes to maintain
 manually.

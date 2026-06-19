@@ -1,12 +1,12 @@
 # File Format
 
 Detailed file format rules for Code from Spec specification
-files. This document assumes familiarity with
-[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
-
-This level of detail is primarily relevant for tool implementors
+files. This level of detail is primarily relevant for tool implementors
 (parsers, staleness checkers, chain assemblers). Spec authors
 and AI agents can rely on the summary in CODE_FROM_SPEC.md.
+
+This document assumes familiarity with
+[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
 
 ---
 

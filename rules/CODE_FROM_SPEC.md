@@ -104,22 +104,24 @@ Resolution rules:
 configuration, data files, third-party documentation, or any
 other text file. The referenced file may live anywhere in the
 project, including inside `code-from-spec/`. The content is
-always taken raw, exactly as it is on disk. This matters when
-pointing at framework-managed files: an `EXTERNAL/` reference
-to a `_node.md` imports the whole file (frontmatter and private
-sections included — no `# Public` extraction), and an
-`EXTERNAL/` reference to a generated artifact does not
-neutralize the artifact tag hash (use `ARTIFACT/` for that —
-see CHAIN_HASH.md). If the file referenced by `EXTERNAL/` does
-not exist, it is reported as an error.
+always taken raw, exactly as it is on disk. If the file
+referenced by `EXTERNAL/` does not exist, it is reported as
+an error.
+
+Do not use `EXTERNAL/` to reference spec nodes or generated
+artifacts. For spec nodes, use `SPEC/` — it extracts the
+`# Public` section. `EXTERNAL/` would import the raw file
+including frontmatter and private sections. For generated
+artifacts, use `ARTIFACT/` — it establishes a dependency in
+the generation graph. Without it, a consuming node may be
+generated before the artifact it depends on is up to date.
 
 ### Frontmatter
 
 Frontmatter is optional YAML metadata. It is not part of the
 node's content — it does not participate in inheritance or
 `depends_on`. Projects may use custom fields on any node; the
-framework ignores them. The `code-from-spec` field name is
-reserved (see Artifact tag).
+framework ignores them.
 
 The following fields are recognized by the framework and are
 only permitted on leaf nodes. Circular references across
@@ -274,45 +276,9 @@ subsections to organize content:
 ## Artifact Staleness
 
 An artifact is stale when its chain has changed since it was last
-generated.
-
-### Chain hash
-
-Staleness is determined by comparing hashes. The **chain hash**
-is computed from all positions in the chain. See
-CHAIN_HASH.md (under Resources) for the full algorithm.
-
-### Artifact tag
-
-Every generated artifact must contain the string:
-
-```
-code-from-spec: <name>@<hash>
-```
-
-where `<name>` is the target node's logical name and `<hash>` is
-the chain hash at the time of generation.
-
-Place the artifact tag as early in the file as practical. It may
-appear inside a comment (`//`, `#`, `/* */`, `--`, `<!-- -->`),
-in YAML frontmatter, or in any other location that does not
-affect the artifact's behavior. What matters is that
-`code-from-spec: <name>@<hash>` appears in the file.
-
-When an artifact is referenced via `ARTIFACT/` (in `depends_on`
-or `input`), the artifact tag line is excluded from the content
-delivered in the chain. See CHAIN_HASH.md for details on how
-the tag hash is neutralized for staleness computation.
-
-### Staleness check
-
-The `validate_specs` tool (part of `framework-mcp`) computes
-the current chain hash for each node that declares `output`
-and compares it with the hash in the artifact's artifact tag.
-If they differ, the artifact is stale and must be regenerated.
-
-Artifacts whose files do not exist are reported as `missing`
-(a special case of staleness).
+generated. The manifest tracks staleness state, and the
+`validate_specs` tool reports it. See MANIFEST.md (under
+Resources) for the full mechanism.
 
 ---
 
@@ -412,12 +378,15 @@ https://github.com/CodeFromSpec/framework
 | [ARTIFACT_GENERATION.md](https://github.com/CodeFromSpec/framework/blob/main/rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
 | [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
 | [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
+| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CACHE.md) | Cache structure for delta computation |
+| [TOOLING.md](https://github.com/CodeFromSpec/framework/blob/main/rules/TOOLING.md) | Operations a tool must implement |
 
-### Tools
+### Reference implementation
 
-| Tool | URL |
+| Repository | Description |
 |---|---|
-| `framework-mcp` | https://github.com/CodeFromSpec/tool-framework-mcp/releases/latest |
+| [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | MCP server implementing spec validation, chain loading, artifact writing, and manifest management |
 
 ### Author
 

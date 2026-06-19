@@ -1,7 +1,9 @@
 # Artifact Generation with Subagents
 
 How to generate artifacts for a given logical name using a
-confined subagent. This document assumes familiarity with
+confined subagent.
+
+This document assumes familiarity with
 [CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
 
 ---
@@ -28,7 +30,7 @@ The `framework-mcp` tool (see Resources in
 confinement. Its tools include:
 
 - `load_chain` — returns the complete spec chain for a logical
-  name, including the current chain hash
+  name
 - `write_file` — writes a file to disk, validated against the
   node's `output` path
 
@@ -63,8 +65,8 @@ different variable names, function ordering, and formatting
 even when the behavior is identical.
 
 The existing artifact is **not** part of the chain and does
-**not** participate in the chain hash. It is delivered
-alongside the chain but does not affect staleness detection.
+**not** affect staleness detection. It is delivered alongside
+the chain as a reference only.
 
 If the subagent anchors on a bug in the existing artifact
 (reproducing it instead of following the spec), delete the
@@ -83,9 +85,8 @@ Given a logical name:
 2. The subagent obtains the spec chain, reviews the
    specification, and produces one of two results:
 
-   - **Generated artifacts** — written to disk. Each file
-     contains a artifact tag identifying the source node and
-     chain hash.
+   - **Generated artifacts** — written to disk via `write_file`.
+     The manifest is updated automatically.
 
    - **Findings report** — the specification is ambiguous,
      incomplete, or contradictory. The subagent reports exactly

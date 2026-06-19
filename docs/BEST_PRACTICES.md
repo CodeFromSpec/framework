@@ -139,7 +139,7 @@ depends_on:
 
 This imports only the `## Interface` subsection. Changes to
 other subsections (`## Context`, `## Constraints`) do not
-affect this node's chain hash.
+cause this node to become stale.
 
 Use unqualified references only when the node genuinely needs
 everything in `# Public` — for example, when inheriting all

@@ -15,8 +15,7 @@ is ambiguous, missing, or contradictory.
 
 1. Call `load_chain` with the logical name the
    orchestrator gave you. This returns a single
-   document. The first line is `chain_hash: <hash>`
-   (ignore it). After `--- context ---` is the
+   document. After `--- context ---` is the
    specification. If `--- input ---` is present, it
    contains source material. If
    `--- existing artifact ---` is present, it contains

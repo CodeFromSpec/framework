@@ -115,6 +115,9 @@ possible but out of scope — community contributions welcome.
 | [`rules/CODE_FROM_SPEC.md`](rules/CODE_FROM_SPEC.md) | Full methodology: spec structure, staleness, artifact generation |
 | [`rules/FILE_FORMAT.md`](rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
 | [`rules/CHAIN_HASH.md`](rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
+| [`rules/MANIFEST.md`](rules/MANIFEST.md) | Manifest format and artifact status |
+| [`rules/CACHE.md`](rules/CACHE.md) | Cache structure for delta computation |
+| [`rules/TOOLING.md`](rules/TOOLING.md) | Operations a tool must implement |
 | [`rules/ARTIFACT_GENERATION.md`](rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
 
 ### Skills (Claude Code)
@@ -147,6 +150,7 @@ possible but out of scope — community contributions welcome.
 | Directory | Contents |
 |---|---|
 | [`docs/future-work/`](docs/future-work/) | Planned features and ideas |
+| [`docs/misc/`](docs/misc/) | Conceptual notes and reference material |
 
 The rationale behind the methodology — why it exists and why it
 works — is published at
@@ -156,11 +160,11 @@ decisions.
 
 ---
 
-## Tools
+## Reference implementation
 
 | Repository | Description |
 |---|---|
-| [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | MCP server for spec validation, chain loading, chain hashing, and artifact writing |
+| [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | MCP server implementing spec validation, chain loading, artifact writing, and manifest management |
 
 ---
 
