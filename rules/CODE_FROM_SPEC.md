@@ -379,6 +379,8 @@ https://github.com/CodeFromSpec/framework
 | [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
 | [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
 | [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
+| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CACHE.md) | Cache structure for delta computation |
+| [TOOLING.md](https://github.com/CodeFromSpec/framework/blob/main/rules/TOOLING.md) | Operations a tool must implement |
 
 ### Reference implementation
 

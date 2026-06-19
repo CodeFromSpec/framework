@@ -116,6 +116,8 @@ possible but out of scope — community contributions welcome.
 | [`rules/FILE_FORMAT.md`](rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
 | [`rules/CHAIN_HASH.md`](rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
 | [`rules/MANIFEST.md`](rules/MANIFEST.md) | Manifest format and artifact status |
+| [`rules/CACHE.md`](rules/CACHE.md) | Cache structure for delta computation |
+| [`rules/TOOLING.md`](rules/TOOLING.md) | Operations a tool must implement |
 | [`rules/ARTIFACT_GENERATION.md`](rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
 
 ### Skills (Claude Code)
