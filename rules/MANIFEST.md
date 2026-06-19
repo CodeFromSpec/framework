@@ -21,14 +21,19 @@ All artifacts are treated as stale and must be regenerated.
 
 ## Format
 
-One line per artifact. Entries are ordered alphabetically
-by logical name.
+One line per artifact, terminated by a newline (LF).
+Entries are ordered alphabetically by logical name.
 
 ```
-ARTIFACT/payments/fees/calculation path:internal/fees/calculation.go checksum:Kx9mP2vB7wY2tHsJ8dFak4Xz9pQ chain:Jz3qR7nL5cW1gT4yK8mDfAx0vBe
+code-from-spec: v5
+ARTIFACT/payments/fees/calculation;path:internal/fees/calculation.go;checksum:Kx9mP2vB7wY2tHsJ8dFak4Xz9pQ;chain:Jz3qR7nL5cW1gT4yK8mDfAx0vBe
 ```
 
-Each line has four fields separated by spaces:
+The first line identifies the framework and version.
+Subsequent lines are artifact entries.
+
+Each line has four fields in fixed order, separated by
+`;`:
 
 - **`ARTIFACT/<name>`** — the logical name of the
   artifact.
