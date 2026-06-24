@@ -20,8 +20,6 @@ artifacts.
 
 ```
 code-from-spec/
-├── .rules/                ← reserved: methodology
-├── .tools/                ← reserved: tooling
 └── payments/
     └── fees/
         ├── calculation/   ← leaf, generates artifacts
@@ -39,16 +37,18 @@ generated.
 
 Specifications live under `<project root>/code-from-spec/`.
 
+### Structure
+
+Specifications are organized as a hierarchical tree of nodes.
+
+Child nodes inherit the public content of all their ancestors —
+only what is explicitly marked public propagates down the tree
+(see Body). This inheritance is automatic and mandatory.
+
 Directories starting with `.` anywhere inside
 `code-from-spec/` are ignored by the framework,
 along with their contents and subdirectories.
 
-### Structure
-
-Specifications are organized as a hierarchical tree of nodes.
-Child nodes inherit the public content of all their ancestors —
-only what is explicitly marked public propagates down the tree
-(see Body). This inheritance is automatic and mandatory.
 
 ### Nodes
 
@@ -58,7 +58,7 @@ filesystem is its position in the hierarchy. Other files in the
 directory are permitted but are ignored by the framework. A
 subdirectory that does not contain a `_node.md` is a format
 error — it would break the inheritance chain. The exception
-is `.`-prefixed directories, which are ignored (see Location).
+is `.`-prefixed directories, which are ignored (see Structure).
 
 Each `_node.md` describes one aspect of the system at a specific
 level of abstraction.
@@ -310,8 +310,11 @@ building the **chain**:
    - `SPEC/x/y(z)` — `## z` subsection of `# Public` only.
    - `ARTIFACT/x/y` — full content of the referenced artifact.
    - `EXTERNAL/x/y.z` — full content of the referenced file.
-3. The target node's `# Public` section.
-4. The target node's `# Agent` section.
+3. The target node's `# Public` — same format as
+   ancestors: `##` subsections only, `# Public` heading
+   not included.
+4. The target node's `# Agent` section, including the
+   `# Agent` heading.
 5. If the target node has an `input` field, the content of the
    referenced file is included as the input to transform.
 

@@ -32,17 +32,12 @@ confinement. Its tools include:
 - `load_chain` — returns the complete spec chain for a logical
   name
 - `write_file` — writes a file to disk, validated against the
-  node's `output` path
+  node's `output` path, and updates the manifest
 
-When `framework-mcp` is available, the orchestrator should
-configure the subagent with access to only these tools and no
-other filesystem access. A reference subagent definition is
-provided at [subagents/cfs-artifact-generation.md](../subagents/cfs-artifact-generation.md).
-
-When it is not available, the orchestrator is responsible for
-assembling the chain and delivering it to the subagent by other
-means (e.g., in the prompt), and for restricting the subagent's
-write access (if possible).
+The orchestrator configures the subagent with access to only
+these tools and no other filesystem access. A reference
+subagent definition is provided at
+[subagents/cfs-artifact-generation.md](../subagents/cfs-artifact-generation.md).
 
 ---
 
