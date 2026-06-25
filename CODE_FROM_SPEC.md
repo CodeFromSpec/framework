@@ -22,10 +22,12 @@ detail at the leaves. Only leaf nodes generate artifacts.
 
 ```
 code-from-spec/
-└── payments/
-    └── fees/
-        ├── calculation/   ← leaf, generates artifacts
-        └── rounding/      ← leaf, generates artifacts
+├── payments/
+│   └── fees/
+│       ├── calculation/   ← leaf, generates artifacts
+│       └── rounding/      ← leaf, generates artifacts
+└── integrations/
+    └── database/          ← leaf
 ```
 
 ---
@@ -115,8 +117,6 @@ on the prefix:
 - `ARTIFACT/x` — full file content.
 - `EXTERNAL/x` — full file content.
 
-#### EXTERNAL/ and spec nodes
-
 Do not use `EXTERNAL/` to name spec nodes or generated
 artifacts. For spec nodes, use `SPEC/` — it extracts
 the `# Public` section. `EXTERNAL/` would import the
@@ -172,25 +172,13 @@ transform.
 
 ```yaml
 ---
-input: SPEC/functional/notifications
----
-```
-
-```yaml
----
-input: SPEC/functional/notifications(acceptance-tests)
----
-```
-
-```yaml
----
 input: ARTIFACT/functional/notifications
 ---
 ```
 
 ```yaml
 ---
-input: EXTERNAL/docs/vendor/api-spec.yaml
+input: SPEC/functional/notifications(acceptance-tests)
 ---
 ```
 
@@ -287,7 +275,7 @@ appear directly under `# Private` or under `##` subsections:
 ## Artifact Generation
 
 An **orchestrator** dispatches a generation subagent for
-each stale artifact with the target node's logical name.
+each stale artifact with the target node's name.
 The tooling assembles the chain. The subagent receives
 a self-contained set of instructions and a structured
 input — it should not explore the filesystem or read
@@ -339,7 +327,7 @@ inheritance are prohibited.
 
 All paths in the framework use forward slash (`/`) as the
 separator, regardless of the operating system. This applies to
-logical names, `output` paths, and file paths in the chain.
+names, `output` paths, and file paths in the chain.
 Backslash (`\`) is never used as a separator. Tools that interact
 with the OS filesystem must normalize paths to forward slashes
 before returning or comparing them.
