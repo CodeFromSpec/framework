@@ -22,15 +22,15 @@ All text content is normalized before hashing: CRLF line endings
 are converted to LF. If the file does not end with LF, a
 trailing LF is added.
 
-For whole-file content — external files (`EXTERNAL/`
-references) and artifact files (`ARTIFACT/` references via
-`depends_on` or `input`) — no other normalization is applied.
-
 Spec node content (sections and subsections) is extracted and
 boundary-normalized as defined in FILE_FORMAT.md ("Block
 extraction"). The extracted form is what is hashed, and it is
 exactly the content delivered in the spec chain — hash
 and delivery never diverge.
+
+For whole-file content — external files (`EXTERNAL/`
+references) and artifact files (`ARTIFACT/` references via
+`depends_on` or `input`) — no other normalization is applied.
 
 ---
 
@@ -98,6 +98,7 @@ The resulting SHA-1 is encoded as base64url to produce the
 
 ## Ordering example
 
+Generating the artifact for `SPEC/payments/transfers`.
 A node with mixed dependencies:
 
 ```yaml
@@ -189,4 +190,5 @@ No `0x49` marker — the input position is absent.
 |---|---|
 | [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/main/CODE_FROM_SPEC.md) | Full methodology specification |
 | [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Block extraction and normalization rules |
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
 | [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
