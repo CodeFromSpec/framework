@@ -80,7 +80,7 @@ constraints to its descendants. Only leaf nodes may generate
 artifacts. Not all leaf nodes do; some serve as documentation
 only.
 
-### Names
+### Logical names
 
 The framework uses three prefixes to name things:
 
@@ -275,7 +275,7 @@ appear directly under `# Private` or under `##` subsections:
 ## Artifact Generation
 
 An **orchestrator** dispatches a generation subagent for
-each stale artifact with the target node's name.
+each stale artifact with the target node's logical name.
 The tooling assembles the chain. The subagent receives
 a self-contained set of instructions and a structured
 input — it should not explore the filesystem or read
@@ -327,7 +327,7 @@ inheritance are prohibited.
 
 All paths in the framework use forward slash (`/`) as the
 separator, regardless of the operating system. This applies to
-names, `output` paths, and file paths in the chain.
+logical names, `output` paths, and file paths in the chain.
 Backslash (`\`) is never used as a separator. Tools that interact
 with the OS filesystem must normalize paths to forward slashes
 before returning or comparing them.
