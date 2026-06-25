@@ -56,7 +56,6 @@ produced the chain hash. Each line has a label and a
 content hash:
 
 ```
-SPEC: a1b2c3d4e5f6g7h8i9j0k1l2m3n
 SPEC/payments: d4e5f6g7h8i9j0k1l2m3n4o5p6q
 SPEC/payments/fees: g7h8i9j0k1l2m3n4o5p6q7r8s
 SPEC/integrations/database: j0k1l2m3n4o5p6q7r8s9t0u

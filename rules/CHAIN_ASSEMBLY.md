@@ -101,7 +101,6 @@ Generating an artifact for
 ```xml
 <chain>
   <previous_constraints>
-    <entry name="SPEC" disposition="unchanged"/>
     <entry name="SPEC/payments" disposition="unchanged"/>
     <entry name="SPEC/payments/fees" disposition="changed">
     ...old content...
@@ -122,7 +121,6 @@ Generating an artifact for
   </existing_artifact>
 
   <constraints>
-    <entry name="SPEC">...</entry>
     <entry name="SPEC/payments">...</entry>
     <entry name="SPEC/payments/fees">...</entry>
     <entry name="SPEC/integrations/database">...</entry>

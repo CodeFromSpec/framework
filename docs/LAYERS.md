@@ -134,11 +134,11 @@ artifacts and produces source code.
 Within each layer, intermediate nodes define the conventions for
 their leaf nodes. Some examples:
 
-- **`SPEC/domain/`** — glossary of business terms, rules for
-  writing acceptance criteria, tone and language for
+- **`SPEC/domain/`** — glossary of business terms, rules
+  for writing acceptance criteria, tone and language for
   non-technical contributors.
-- **`SPEC/implementation/`** — programming language, framework,
-  library versions, error handling patterns, logging
+- **`SPEC/implementation/`** — programming language,
+  framework, library versions, error handling patterns, logging
   conventions, project directory structure.
 - **`SPEC/database/`** — database engine, schema naming
   conventions, transaction isolation rules, migration format,

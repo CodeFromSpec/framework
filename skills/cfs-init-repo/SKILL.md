@@ -20,12 +20,8 @@ if so. This makes the skill safe to re-run — it fills
 in whatever is missing without overwriting what is
 already in place.
 
-1. **Create the spec root.** If `code-from-spec/_node.md`
-   does not exist, create it with minimal content:
-
-   ```markdown
-   # SPEC
-   ```
+1. **Create the spec directory.** If `code-from-spec/`
+   does not exist, create it.
 
 2. **Download the methodology file.** Download
    `CODE_FROM_SPEC.md` from

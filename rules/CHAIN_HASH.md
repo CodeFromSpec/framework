@@ -44,14 +44,14 @@ Content is boundary-normalized as defined in FILE_FORMAT.md
 | Ancestor | `##` subsections of `# Public`, concatenated in order |
 | Target `# Public` | `##` subsections of `# Public`, concatenated in order |
 | Target `# Agent` | `# Agent` section |
-| `depends_on: SPEC/x/y` | `##` subsections of `# Public` of the referenced node, concatenated in order |
-| `depends_on: SPEC/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
-| `depends_on: ARTIFACT/x/y` | Full content of the referenced artifact |
-| `depends_on: EXTERNAL/x/y.z` | Full content of the referenced file |
-| `input: SPEC/x/y` | `##` subsections of `# Public` of the referenced node, concatenated in order |
-| `input: SPEC/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
-| `input: ARTIFACT/x/y` | Full content of the artifact file |
-| `input: EXTERNAL/x/y.z` | Full content of the referenced file |
+| `depends_on: SPEC/x` | `##` subsections of `# Public` of the referenced node, concatenated in order |
+| `depends_on: SPEC/x(y)` | `## y` subsection of `# Public` of the referenced node |
+| `depends_on: ARTIFACT/x` | Full content of the referenced artifact |
+| `depends_on: EXTERNAL/x` | Full content of the referenced file |
+| `input: SPEC/x` | `##` subsections of `# Public` of the referenced node, concatenated in order |
+| `input: SPEC/x(y)` | `## y` subsection of `# Public` of the referenced node |
+| `input: ARTIFACT/x` | Full content of the artifact file |
+| `input: EXTERNAL/x` | Full content of the referenced file |
 
 ---
 
@@ -96,20 +96,19 @@ The resulting SHA-1 is encoded as base64url to produce the
 Given the chain for `SPEC/payments/fees/calculation`:
 
 ```
-SPEC                                       [# Public]      → content hash A  (root)
-SPEC/payments                              [# Public]      → content hash B
-SPEC/payments/fees                         [# Public]      → content hash C
-EXTERNAL/proto/payments/v1/transfers.proto [full]          → content hash D  (depends_on)
-SPEC/integrations/database                 [# Public]      → content hash E  (depends_on)
-SPEC/payments/fees/calculation             [# Public]      → content hash F  (target)
-SPEC/payments/fees/calculation             [# Agent]       → content hash G  (target)
-ARTIFACT/functional/calc                   [file content]  → content hash H  (input)
+SPEC/payments                              [# Public]      → content hash A  (ancestor)
+SPEC/payments/fees                         [# Public]      → content hash B  (ancestor)
+EXTERNAL/proto/payments/v1/transfers.proto [full]          → content hash C  (depends_on)
+SPEC/integrations/database                 [# Public]      → content hash D  (depends_on)
+SPEC/payments/fees/calculation             [# Public]      → content hash E  (target)
+SPEC/payments/fees/calculation             [# Agent]       → content hash F  (target)
+ARTIFACT/functional/calc                   [file content]  → content hash G  (input)
 ```
 
 The chain hash is:
 
 ```
-SHA-1( A || B || C || D || E || F || G || 0x49 || H )
+SHA-1( A || B || C || D || E || F || 0x49 || G )
 ```
 
 where `||` denotes concatenation of raw hash bytes (20 bytes
@@ -120,17 +119,16 @@ each), and the result is encoded as base64url.
 Given the chain for `SPEC/payments/fees/rounding`:
 
 ```
-SPEC                                       [# Public]      → content hash A  (root)
-SPEC/payments                              [# Public]      → content hash B
-SPEC/payments/fees                         [# Public]      → content hash C
-SPEC/payments/fees/rounding                [# Public]      → content hash D  (target)
-SPEC/payments/fees/rounding                [# Agent]       → content hash E  (target)
+SPEC/payments                              [# Public]      → content hash A  (ancestor)
+SPEC/payments/fees                         [# Public]      → content hash B  (ancestor)
+SPEC/payments/fees/rounding                [# Public]      → content hash C  (target)
+SPEC/payments/fees/rounding                [# Agent]       → content hash D  (target)
 ```
 
 The chain hash is:
 
 ```
-SHA-1( A || B || C || D || E )
+SHA-1( A || B || C || D )
 ```
 
 No `0x49` marker — the input position is absent.
