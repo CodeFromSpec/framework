@@ -5,7 +5,7 @@ subagents. This level of detail is primarily relevant
 for tool implementors.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md) and
+[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md) and
 [CACHE.md](CACHE.md).
 
 ---

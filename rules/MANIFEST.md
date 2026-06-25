@@ -3,7 +3,7 @@
 The manifest tracks the state of every generated artifact.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
+[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md).
 
 ---
 

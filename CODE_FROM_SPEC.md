@@ -7,7 +7,9 @@ the specifications, and regenerate the code.
 
 This methodology is designed for AI agent participation at every
 stage — writing specs, generating artifacts, and assisting
-non-technical contributors with spec authoring.
+non-technical contributors with spec authoring. It requires
+tooling for chain assembly, staleness detection, and manifest
+management. See Resources for the reference implementation.
 
 ---
 
@@ -39,26 +41,27 @@ Specifications live under `<project root>/code-from-spec/`.
 
 ### Structure
 
-Specifications are organized as a hierarchical tree of nodes.
+Specifications are organized as a tree — or multiple
+independent trees — of spec nodes.
 
-Child nodes inherit the public content of all their ancestors —
-only what is explicitly marked public propagates down the tree
-(see Body). This inheritance is automatic and mandatory.
+Child nodes inherit the public content of all their ancestors.
+This inheritance is automatic and mandatory.
 
-Directories starting with `.` anywhere inside
-`code-from-spec/` are ignored by the framework,
-along with their contents and subdirectories.
+Within `code-from-spec/`, any directory starting with `.`
+is not part of the spec tree. It is not traversed as nodes,
+and its contents do not participate in inheritance or
+chain assembly.
 
 
-### Nodes
+### Spec nodes
 
 Every spec node is a directory containing a `_node.md` file.
 The directory structure is the spec tree — a node's position
 in the filesystem is its position in the hierarchy. Nodes
 are subdirectories of `code-from-spec/`; the `code-from-spec/`
 directory itself is not a node and does not contain a
-`_node.md`. Other files in a node's directory are permitted
-but are ignored by the framework. A subdirectory that does
+`_node.md`. Other files in a node's directory are permitted but are
+not part of the spec tree. A subdirectory that does
 not contain a `_node.md` is a format error — it would break
 the inheritance chain. The exception is `.`-prefixed
 directories, which are ignored (see Structure).
@@ -66,11 +69,14 @@ directories, which are ignored (see Structure).
 Each `_node.md` describes one aspect of the system at a
 specific level of abstraction.
 
-A node with child directories is an **intermediate node**. A
-node without children is a **leaf node**. Each node provides
-context and constraints to its descendants. Only leaf nodes
-may generate artifacts. Not all leaf nodes do; some serve as
-documentation only.
+A node directly under `code-from-spec/` is a **root node** —
+it has no ancestors and does not inherit from anything. A
+node with child directories is an **intermediate node**. A
+node without children is a **leaf node**. A root node can
+also be a leaf node. Each node provides context and
+constraints to its descendants. Only leaf nodes may generate
+artifacts. Not all leaf nodes do; some serve as documentation
+only.
 
 ### Logical names
 
@@ -287,15 +293,6 @@ subsections to organize content:
 
 ---
 
-## Artifact Staleness
-
-An artifact is stale when its chain has changed since it was last
-generated. The manifest tracks staleness state, and the
-`validate_specs` tool reports it. See MANIFEST.md (under
-Resources) for the full mechanism.
-
----
-
 ## Artifact Generation
 
 An **orchestrator** dispatches a generation subagent for each
@@ -313,11 +310,20 @@ the current spec, generation instructions, and when
 available, temporal context from the previous generation
 (what the spec said before, what was generated from it).
 
-The chain is the complete context. Nothing outside the
-chain is needed. Nothing inside the chain is redundant.
+The chain is the complete context; nothing outside the
+chain is needed.
 
 See CHAIN_ASSEMBLY.md (under Resources) for the full
 format, assembly order, and examples.
+
+---
+
+## Artifact Staleness
+
+An artifact is stale when its chain has changed since it was last
+generated. The manifest tracks staleness state, and the
+`validate_specs` tool reports it. See MANIFEST.md (under
+Resources) for the full mechanism.
 
 ---
 
@@ -327,16 +333,6 @@ Specification files are CommonMark Markdown, UTF-8 encoded. Only
 ATX headings (`#` prefix) are recognized. Frontmatter is optional
 YAML between `---` delimiters at the top of the file. See
 FILE_FORMAT.md (under Resources) for detailed parsing rules.
-
----
-
-## Hashes
-
-All hashes in the framework are SHA-1 digests. Their text
-representation is base64url encoded (RFC 4648 §5, no padding),
-27 characters long. All text content is normalized before
-hashing: CRLF line endings are converted to LF. The framework
-operates exclusively on text files.
 
 ---
 

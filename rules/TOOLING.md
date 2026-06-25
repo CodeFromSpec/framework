@@ -5,7 +5,7 @@ reference implementation is
 [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp).
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md) and
+[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md) and
 [MANIFEST.md](MANIFEST.md).
 
 ---

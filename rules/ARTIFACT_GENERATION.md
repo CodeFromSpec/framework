@@ -4,7 +4,7 @@ How to generate artifacts for a given logical name using a
 confined subagent.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
+[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md).
 
 ---
 
@@ -26,7 +26,7 @@ files, or fetch external information. If the chain is
 insufficient, the correct action is to report what is missing.
 
 The `framework-mcp` tool (see Resources in
-[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md)) enforces this
+[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md)) enforces this
 confinement. Its tools include:
 
 - `load_chain` — returns the complete spec chain for a logical

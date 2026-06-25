@@ -3,7 +3,7 @@
 How to organize specs into progressive refinement layers.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](../rules/CODE_FROM_SPEC.md).
+[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md).
 
 ---
 

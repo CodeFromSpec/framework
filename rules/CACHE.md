@@ -7,7 +7,7 @@ part of the framework specification — tools may implement
 delta computation by other means or not at all.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md),
+[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md),
 [CHAIN_HASH.md](CHAIN_HASH.md), and
 [MANIFEST.md](MANIFEST.md).
 

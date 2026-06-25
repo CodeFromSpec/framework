@@ -6,7 +6,7 @@ files. This level of detail is primarily relevant for tool implementors
 and AI agents can rely on the summary in CODE_FROM_SPEC.md.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md).
+[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md).
 
 ---
 

@@ -25,7 +25,7 @@ already in place.
 
 2. **Download the methodology file.** Download
    `CODE_FROM_SPEC.md` from
-   `https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_FROM_SPEC.md`
+   `https://raw.githubusercontent.com/CodeFromSpec/framework/main/CODE_FROM_SPEC.md`
    and save it to `code-from-spec/.rules/CODE_FROM_SPEC.md`.
    Create the directory if needed.
 
