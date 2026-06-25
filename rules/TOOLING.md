@@ -53,9 +53,10 @@ Load the complete spec chain for a given node.
 
 **Returns:** an XML document as defined in
 CODE_FROM_SPEC.md ("Chain assembly"). The document
-contains up to six sections: `<previous_constraints>`,
-`<previous_instructions>`, `<existing_artifact>`,
-`<constraints>`, `<instructions>`, and `<input>`.
+contains up to seven sections: `<previous_constraints>`,
+`<previous_instructions>`, `<previous_input>`,
+`<existing_artifact>`, `<constraints>`,
+`<instructions>`, and `<input>`.
 
 The `<previous_constraints>` and
 `<previous_instructions>` sections are populated from
@@ -68,8 +69,35 @@ The content within `<constraints>` entries matches
 exactly what is hashed — hash and delivery never
 diverge (see FILE_FORMAT.md, "Block extraction").
 
+If the artifact is modified (checksum in the manifest
+does not match the file on disk), returns an error.
+The artifact must be accepted or deleted before
+regeneration.
+
 If any file in the chain (other than the existing
 artifact) is unreadable, returns an error.
+
+---
+
+## load_chain_for_review
+
+Load the spec chain for a given node without cache
+or temporal context. Intended for spec review
+subagents that evaluate the current spec without
+generating artifacts.
+
+**Parameters:**
+
+- `logical_name` (string, required) — the logical name
+  of the target node. The node must declare `output`.
+
+**Returns:** an XML document containing only
+`<constraints>`, `<instructions>`, and optionally
+`<input>`. No `<previous_*>` sections, no
+`<existing_artifact>`, no disposition attributes.
+
+If any file in the chain is unreadable, returns an
+error.
 
 ---
 
@@ -119,6 +147,68 @@ structure. Idempotent — skips files that already exist
 in the cache.
 
 See CACHE.md for details on the cache structure.
+
+---
+
+## prune_cache
+
+Remove unreferenced files from the cache.
+
+**Parameters:** none.
+
+**Behavior:**
+
+Delete content files in `.cache/.content/` whose hash
+is not referenced by any chain file in
+`.cache/.chains/`. Delete chain files in
+`.cache/.chains/` whose hash is not referenced by any
+manifest entry.
+
+See CACHE.md for details on the cache structure.
+
+---
+
+## accept
+
+Accept a modified artifact without regenerating it.
+Updates the manifest checksum to match the current
+file on disk.
+
+**Parameters:**
+
+- `logical_name` (string, required) — the logical name
+  of the node whose artifact was modified.
+
+**Behavior:**
+
+1. Verify the artifact is in "modified" status
+   (checksum mismatch). If not, return an error.
+2. Compute the hash of the file on disk.
+3. Update the manifest entry's checksum to match.
+
+The chain hash in the manifest is not changed — the
+artifact is accepted as-is against the same spec
+version that produced it.
+
+---
+
+## dump_chain
+
+Save the spec chain for a given node to a file for
+inspection.
+
+**Parameters:**
+
+- `logical_name` (string, required) — the logical name
+  of the target node. The node must declare `output`.
+
+**Behavior:**
+
+Assemble the spec chain exactly as `load_chain` would,
+and write it to `<project root>/dump_chain.md`. This
+produces the same document the generation subagent
+would receive, allowing the orchestrator or the human
+to inspect it.
 
 ---
 
