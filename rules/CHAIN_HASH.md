@@ -38,9 +38,8 @@ and delivery never diverge.
 
 Each position in the spec chain contributes a **content
 hash** — the SHA-1 of the content that position injects
-into the spec chain.
-Content is boundary-normalized as defined in FILE_FORMAT.md
-("Block extraction").
+into the spec chain. Content is boundary-normalized as
+defined in FILE_FORMAT.md ("Block extraction").
 
 | Position | Content hashed |
 |---|---|
@@ -60,8 +59,9 @@ Content is boundary-normalized as defined in FILE_FORMAT.md
 
 ## Chain hash
 
-The **chain hash** is the SHA-1 of the concatenation of all content
-hashes (as raw bytes, not encoded) in chain assembly order:
+The **chain hash** is the SHA-1 of the concatenation of
+all content hashes (as raw bytes, not encoded) in chain
+assembly order:
 
 1. Each ancestor from root to the target node's parent — content
    hash of `##` subsections of `# Public`, concatenated in
@@ -82,7 +82,8 @@ with qualifiers for the same path are removed (the full
 `# Public` section already includes every subsection). Exact
 duplicates (same path, same qualifier) are also removed. Each
 remaining entry contributes its content hash in alphabetical
-order by logical name.
+order by the full logical name (including prefix and
+qualifier).
 
 The `0x49` marker ensures that moving a reference from
 `depends_on` to `input` (or vice versa) always changes the
@@ -149,7 +150,7 @@ EXTERNAL/proto/payments/v1/transfers.proto [full]          → content hash C  (
 SPEC/integrations/database                 [# Public]      → content hash D  (depends_on)
 SPEC/payments/fees/calculation             [# Public]      → content hash E  (target node)
 SPEC/payments/fees/calculation             [# Agent]       → content hash F  (target node)
-ARTIFACT/functional/calc                   [file content]  → content hash G  (input)
+ARTIFACT/functional/calc                   [full]          → content hash G  (input)
 ```
 
 The chain hash is:
