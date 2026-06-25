@@ -274,12 +274,31 @@ appear directly under `# Private` or under `##` subsections:
 
 ## Artifact Generation
 
-An **orchestrator** dispatches a generation subagent for
-each stale artifact with the target node's logical name.
-The tooling assembles the chain. The subagent receives
-a self-contained set of instructions and a structured
-input — it should not explore the filesystem or read
-anything beyond what it receives.
+Artifact generation must be performed by confined
+subagents. For each stale artifact, an **orchestrator**
+dispatches a subagent and provides it with the target
+node's logical name. The subagent uses the tooling to receive the spec
+chain (`load_chain`), generates the artifact (or
+reports gaps), and uses the tooling to save the
+result (`write_file`).
+The tooling handles chain assembly, manifest updates,
+and confinement enforcement. See TOOLING.md (under
+Resources) for the available operations.
+
+### Manifest
+
+The manifest is a file at `code-from-spec/.manifest`
+that records the state of every generated artifact. See
+MANIFEST.md (under Resources) for the full format.
+
+### Confinement
+
+A subagent must only have access to the spec chain for
+the target node and the ability to write the declared
+output file. It must not explore the filesystem, read
+unrelated files, or fetch external information. If the
+chain is insufficient, the correct action is to report
+what is missing.
 
 ### Chain
 
@@ -293,11 +312,19 @@ chain is needed.
 See CHAIN_ASSEMBLY.md (under Resources) for the full
 format, assembly order, and examples.
 
-### Manifest
+### Outcomes
 
-The manifest is a file at `code-from-spec/.manifest`
-that records the state of every generated artifact. See
-MANIFEST.md (under Resources) for the full format.
+The subagent produces one of two results:
+
+- **Generated artifact** — written to disk via
+  `write_file`. The manifest is updated automatically.
+
+- **Findings report** — the specification is ambiguous,
+  incomplete, or contradictory. The subagent reports
+  exactly what is wrong. This is correct output — fix
+  the spec and retry.
+
+Both outcomes are equally valid.
 
 ### Staleness
 
@@ -344,7 +371,6 @@ https://github.com/CodeFromSpec/framework
 
 | Document | Description |
 |---|---|
-| [ARTIFACT_GENERATION.md](https://github.com/CodeFromSpec/framework/blob/main/rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
 | [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
 | [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
 | [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
