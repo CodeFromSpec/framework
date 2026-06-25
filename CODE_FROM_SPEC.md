@@ -274,63 +274,56 @@ appear directly under `# Private` or under `##` subsections:
 
 ## Artifact Generation
 
-Artifact generation must be performed by confined
-subagents. For each stale artifact, an **orchestrator**
-dispatches a subagent and provides it with the target
-node's logical name. The subagent uses the tooling to receive the spec
-chain (`load_chain`), generates the artifact (or
-reports gaps), and uses the tooling to save the
-result (`write_file`).
-The tooling handles chain assembly, manifest updates,
-and confinement enforcement. See TOOLING.md (under
-Resources) for the available operations.
+For each stale artifact, an **orchestrator** dispatches
+a confined **subagent** to regenerate it, providing the
+logical name of the node that produces that artifact
+(the **target node**).
 
-### Manifest
+### Spec chain
 
-The manifest is a file at `code-from-spec/.manifest`
-that records the state of every generated artifact. See
-MANIFEST.md (under Resources) for the full format.
-
-### Confinement
-
-A subagent must only have access to the spec chain for
-the target node and the ability to write the declared
-output file. It must not explore the filesystem, read
-unrelated files, or fetch external information. If the
-chain is insufficient, the correct action is to report
-what is missing.
-
-### Chain
-
-The tooling assembles the context for each subagent as
-a **chain** — a self-contained document with everything
-the subagent needs to generate the artifact.
-
-The chain is the complete context; nothing outside the
-chain is needed.
+The tooling assembles the context for each subagent
+as a **spec chain** — a self-contained document with
+everything the subagent needs to generate the artifact.
 
 See CHAIN_ASSEMBLY.md (under Resources) for the full
 format, assembly order, and examples.
 
+### Confinement
+
+A subagent must only have access to the spec chain
+for the target node and the ability to write the
+declared output file. It must not explore the
+filesystem, read unrelated files, or fetch external
+information. If the chain is insufficient, the correct
+action is to report what is missing. The tooling
+enforces this confinement — see TOOLING.md (under
+Resources) for the available operations.
+
 ### Outcomes
 
-The subagent produces one of two results:
+The subagent may produce:
 
-- **Generated artifact** — written to disk via
-  `write_file`. The manifest is updated automatically.
+- **Generated artifact** — the tooling writes the file
+  to disk and updates the manifest. The subagent may
+  also report assumptions or ambiguities it encountered
+  during generation.
 
 - **Findings report** — the specification is ambiguous,
-  incomplete, or contradictory. The subagent reports
-  exactly what is wrong. This is correct output — fix
-  the spec and retry.
+  incomplete, or contradictory to the point where
+  generation is not possible. The subagent reports
+  exactly what is wrong.
 
-Both outcomes are equally valid.
+### Manifest
+
+The manifest is a file at `code-from-spec/.manifest`
+that records the state of every generated artifact.
+See MANIFEST.md (under Resources) for the full format.
 
 ### Staleness
 
-An artifact is stale when its chain has changed since it
-was last generated. The `validate_specs` tool reports
-staleness.
+An artifact is stale when its chain has changed since
+it was last generated. The `validate_specs` tool
+reports staleness.
 
 ---
 
