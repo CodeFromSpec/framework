@@ -45,7 +45,7 @@ defined in FILE_FORMAT.md ("Block extraction").
 |---|---|
 | Ancestor | `##` subsections of `# Public`, concatenated in order |
 | Target node `# Public` | `##` subsections of `# Public`, concatenated in order |
-| Target node `# Agent` | `# Agent` section |
+| Target node `# Agent` | Content of `# Agent` (heading not included) |
 | `depends_on: ARTIFACT/x` | Full content of the referenced artifact |
 | `depends_on: EXTERNAL/x` | Full content of the referenced file |
 | `depends_on: SPEC/x` | `##` subsections of `# Public` of the referenced node, concatenated in order |
