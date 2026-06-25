@@ -4,29 +4,32 @@ How to generate artifacts for a given logical name using a
 confined subagent.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md).
+CODE_FROM_SPEC.md.
 
 ---
 
 ## Overview
 
-Artifact generation should be performed by confined subagents.
-Given a logical name, the orchestrator dispatches a subagent that
-receives the spec chain, reviews the specification, and either
-generates the artifacts or reports gaps.
+Artifact generation must be performed by confined
+subagents. The orchestrator dispatches a subagent and
+provides it with the target node's logical name. The subagent
+calls `load_chain` to receive the spec chain, generates
+the artifact (or reports gaps), and calls `write_file`
+to save the result. The tooling handles chain assembly,
+manifest updates, and confinement enforcement.
 
 ---
 
 ## Confinement
 
-Ideally, a subagent should only have access to the spec chain
-for the target node and the ability to write the declared output
-file. It should not explore the filesystem, read unrelated
-files, or fetch external information. If the chain is
-insufficient, the correct action is to report what is missing.
+A subagent must only have access to the spec chain for
+the target node and the ability to write the declared
+output file. It must not explore the filesystem, read
+unrelated files, or fetch external information. If the
+chain is insufficient, the correct action is to report
+what is missing.
 
-The `framework-mcp` tool (see Resources in
-[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md)) enforces this
+The `framework-mcp` tool enforces this
 confinement. Its tools include:
 
 - `load_chain` — returns the complete spec chain for a logical
@@ -35,41 +38,8 @@ confinement. Its tools include:
   node's `output` path, and updates the manifest
 
 The orchestrator configures the subagent with access to only
-these tools and no other filesystem access. A reference
-subagent definition is provided at
-[subagents/cfs-artifact-generation.md](../subagents/cfs-artifact-generation.md).
-
----
-
-## Regeneration context
-
-The `load_chain` tool assembles the full chain as an XML
-document (see CODE_FROM_SPEC.md, "Chain assembly"). When
-regenerating a stale artifact, the chain may include
-temporal context beyond the current spec:
-
-- **Previous constraints and instructions** — when the
-  cache is available, `load_chain` includes the
-  constraints and `# Agent` section from the previous
-  generation. This lets the subagent see what changed
-  in the spec without having to infer it.
-
-- **Existing artifact** — when the output file exists
-  on disk, `load_chain` includes its content. The
-  subagent uses it as a starting point, producing
-  minimal changes and preserving what already satisfies
-  the spec. This reduces diff noise and makes code
-  review practical.
-
-Neither the existing artifact nor the previous chain
-content affects staleness detection. They are delivered
-alongside the current chain as reference only.
-
-If the subagent anchors on the existing artifact
-(reproducing a bug instead of following the spec),
-delete the artifact and regenerate from scratch. The
-decision to include or exclude the existing artifact
-is the human's, case by case.
+these tools and no other filesystem access. A reference subagent definition is provided at
+cfs-artifact-generation.md (see Resources).
 
 ---
 
@@ -82,7 +52,7 @@ Given a logical name:
 2. The subagent obtains the spec chain, reviews the
    specification, and produces one of two results:
 
-   - **Generated artifacts** — written to disk via `write_file`.
+   - **Generated artifact** — written to disk via `write_file`.
      The manifest is updated automatically.
 
    - **Findings report** — the specification is ambiguous,
@@ -90,6 +60,15 @@ Given a logical name:
      what is wrong. This is correct output — fix the spec and
      retry.
 
-   Both outcomes are equally valid. The subagent may be
-   dispatched during specification design specifically to find
-   gaps, or during artifact generation to produce files.
+   Both outcomes are equally valid.
+
+---
+
+## Resources
+
+| Document | Description |
+|---|---|
+| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/main/CODE_FROM_SPEC.md) | Full methodology specification |
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
+| [cfs-artifact-generation.md](https://github.com/CodeFromSpec/framework/blob/main/subagents/cfs-artifact-generation.md) | Reference subagent definition |
