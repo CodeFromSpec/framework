@@ -41,33 +41,35 @@ subagent definition is provided at
 
 ---
 
-## Existing artifact as reference
+## Regeneration context
 
-When regenerating a stale artifact, the subagent should
-receive the existing artifact content alongside the spec
-chain. The `load_chain` tool includes the existing artifact
-automatically when the output file exists on disk — the
-orchestrator does not need to read or relay it.
+The `load_chain` tool assembles the full chain as an XML
+document (see CODE_FROM_SPEC.md, "Chain assembly"). When
+regenerating a stale artifact, the chain may include
+temporal context beyond the current spec:
 
-The subagent compares the spec with the existing code and
-produces minimal changes — preserving what already satisfies
-the spec and modifying only what needs to change.
+- **Previous constraints and instructions** — when the
+  cache is available, `load_chain` includes the
+  constraints and `# Agent` section from the previous
+  generation. This lets the subagent see what changed
+  in the spec without having to infer it.
 
-This reduces diff noise, avoids unnecessary churn, and makes
-code review practical. Without the existing artifact, the
-subagent generates from scratch every time, producing
-different variable names, function ordering, and formatting
-even when the behavior is identical.
+- **Existing artifact** — when the output file exists
+  on disk, `load_chain` includes its content. The
+  subagent uses it as a starting point, producing
+  minimal changes and preserving what already satisfies
+  the spec. This reduces diff noise and makes code
+  review practical.
 
-The existing artifact is **not** part of the chain and does
-**not** affect staleness detection. It is delivered alongside
-the chain as a reference only.
+Neither the existing artifact nor the previous chain
+content affects staleness detection. They are delivered
+alongside the current chain as reference only.
 
-If the subagent anchors on a bug in the existing artifact
-(reproducing it instead of following the spec), delete the
-artifact and regenerate from scratch. The decision to include
-or exclude the existing artifact is the human's, case by
-case.
+If the subagent anchors on the existing artifact
+(reproducing a bug instead of following the spec),
+delete the artifact and regenerate from scratch. The
+decision to include or exclude the existing artifact
+is the human's, case by case.
 
 ---
 

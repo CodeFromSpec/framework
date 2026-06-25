@@ -164,9 +164,9 @@ code-from-spec/
 │   ├── payments-proto/
 │   │   └── _node.md          ← input: EXTERNAL/proto/payments/v1/transfers.proto
 │   │                            output: extraction/payments-proto/output.md
-│   └── stripe-api/
-│       └── _node.md          ← input: EXTERNAL/docs/vendor/stripe-payouts.yaml
-│                                output: extraction/stripe-api/output.md
+│   └── vendor-api/
+│       └── _node.md          ← input: EXTERNAL/docs/vendor/api-spec.yaml
+│                                output: extraction/vendor-api/output.md
 ├── functional/
 │   └── transfers/
 │       └── _node.md          ← depends_on: ARTIFACT/extraction/payments-proto

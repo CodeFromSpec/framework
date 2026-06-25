@@ -93,8 +93,9 @@ handles cleanup of unreferenced files separately.
 
 ## Delta computation
 
-When an artifact is stale, the delta shows exactly what
-changed in the chain since the last generation.
+When an artifact is stale, the tooling computes a
+`disposition` for each chain position by comparing
+the old and current chains:
 
 1. Read the old chain hash from the manifest entry.
 2. Look up the old chain structure in
@@ -102,20 +103,27 @@ changed in the chain since the last generation.
 3. Compute the current chain positions (labels and
    content hashes).
 4. Compare old and current positions by label:
-   - **Changed** — same label, different content hash.
-     Read old content from `.cache/.content/` and
-     compare with current content.
-   - **Added** — label exists in current but not in old.
-   - **Removed** — label exists in old but not in
-     current.
-   - **Unchanged** — same label, same content hash.
-5. Deliver the delta to the subagent. The delivery
-   format is not yet defined.
+   - **`unchanged`** — same label, same content hash.
+   - **`changed`** — same label, different content hash.
+     Old content is read from `.cache/.content/`.
+   - **`added`** — label exists in current but not in
+     old.
+   - **`removed`** — label exists in old but not in
+     current. Old content is read from
+     `.cache/.content/`.
+
+The disposition is delivered as an attribute on each
+`<entry>` in `<previous_constraints>` and on the
+`<previous_instructions>` element in the chain XML
+(see CODE_FROM_SPEC.md, "Chain assembly"). Entries
+with disposition `unchanged` or `added` are
+self-closing (no content to deliver). Entries with
+disposition `changed` or `removed` include the old
+content from the cache.
 
 If the old chain file is not in the cache, delta
-computation is not possible. The subagent receives
-the full chain without a delta — the same behavior
-as a first-time generation.
+computation is not possible. The `<previous_*>`
+sections are omitted from the chain entirely.
 
 ---
 

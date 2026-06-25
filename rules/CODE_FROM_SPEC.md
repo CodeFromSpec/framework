@@ -94,27 +94,40 @@ specific public subsection of the node (see Body).
 | `EXTERNAL/docker-compose.yaml` | The file `docker-compose.yaml` at the project root |
 
 Resolution rules:
-- `SPEC` → `code-from-spec/_node.md` (`# Public`)
-- `SPEC/x` → `code-from-spec/x/_node.md` (`# Public`)
-- `SPEC/x(y)` → `## y` subsection of `# Public` in `code-from-spec/x/_node.md`
+- `SPEC` → `code-from-spec/_node.md`
+- `SPEC/x` → `code-from-spec/x/_node.md`
+- `SPEC/x(y)` → `code-from-spec/x/_node.md`, subsection `## y`
 - `ARTIFACT/x` → the file at the `output` path of `SPEC/x`
 - `EXTERNAL/x` → the file at `<project root>/x`
 
-`EXTERNAL/` references are for plain files — source code,
-configuration, data files, third-party documentation, or any
-other text file. The referenced file may live anywhere in the
-project, including inside `code-from-spec/`. The content is
-always taken raw, exactly as it is on disk. If the file
-referenced by `EXTERNAL/` does not exist, it is reported as
-an error.
+When a logical name is included in the chain (via
+inheritance, `depends_on`, or `input`), the content
+delivered depends on the prefix:
 
-Do not use `EXTERNAL/` to reference spec nodes or generated
-artifacts. For spec nodes, use `SPEC/` — it extracts the
-`# Public` section. `EXTERNAL/` would import the raw file
-including frontmatter and private sections. For generated
-artifacts, use `ARTIFACT/` — it establishes a dependency in
-the generation graph. Without it, a consuming node may be
-generated before the artifact it depends on is up to date.
+- `SPEC/x` — the `# Public` section: all `##`
+  subsections concatenated in document order. The
+  `# Public` heading is not included.
+- `SPEC/x(y)` — only the `## y` subsection of
+  `# Public`.
+- `ARTIFACT/x` — full file content.
+- `EXTERNAL/x` — full file content.
+
+`EXTERNAL/` references are for plain files — source
+code, configuration, data files, third-party
+documentation, or any other text file. The referenced
+file may live anywhere in the project, including inside
+`code-from-spec/`. The content is always taken raw,
+exactly as it is on disk. If the file referenced by
+`EXTERNAL/` does not exist, it is reported as an error.
+
+Do not use `EXTERNAL/` to reference spec nodes or
+generated artifacts. For spec nodes, use `SPEC/` — it
+extracts the `# Public` section. `EXTERNAL/` would
+import the raw file including frontmatter and private
+sections. For generated artifacts, use `ARTIFACT/` — it
+establishes a dependency in the generation graph.
+Without it, a consuming node may be generated before
+the artifact it depends on is up to date.
 
 ### Frontmatter
 
@@ -129,18 +142,9 @@ only permitted on leaf nodes. Circular references across
 
 #### depends_on
 
-Dependencies. Each entry uses a `SPEC/`, `ARTIFACT/`, or
-`EXTERNAL/` logical name.
-
-- `SPEC/x/y` — imports the `# Public` section of the referenced
-  node.
-- `SPEC/x/y(z)` — imports only the `## z` subsection of
-  `# Public` of the referenced node.
-- `ARTIFACT/x/y` — imports the content of the referenced
-  artifact as context (not as material to transform; see
-  `input` for that).
-- `EXTERNAL/x/y.z` — imports the full content of the
-  referenced project file as context.
+Dependencies that provide context for generation. Each
+entry uses a `SPEC/`, `ARTIFACT/`, or `EXTERNAL/` logical
+name.
 
 `SPEC/` references may only point to nodes in other branches
 of the tree. Pointing to an ancestor would be redundant — its
@@ -159,12 +163,23 @@ depends_on:
 
 #### input
 
-A single file consumed as input for generation. Uses an
-`ARTIFACT/` or `EXTERNAL/` logical name. The content of the
-referenced file is included in the chain as the material to
-be transformed. While `depends_on` brings in context that
-informs generation, `input` brings in content that the
-generation subagent transforms into a new artifact.
+Material to be transformed into a new artifact. Uses a
+`SPEC/`, `ARTIFACT/`, or `EXTERNAL/` logical name. While
+`depends_on` brings in context that informs generation,
+`input` brings in content that the generation subagent
+transforms.
+
+```yaml
+---
+input: SPEC/functional/notifications
+---
+```
+
+```yaml
+---
+input: SPEC/functional/notifications(acceptance-tests)
+---
+```
 
 ```yaml
 ---
@@ -174,7 +189,7 @@ input: ARTIFACT/functional/notifications
 
 ```yaml
 ---
-input: EXTERNAL/docs/vendor/stripe-payouts.yaml
+input: EXTERNAL/docs/vendor/api-spec.yaml
 ---
 ```
 
@@ -228,19 +243,12 @@ section is not included in the chain.
 
 Everything under `# Public` is available to other nodes:
 - Inherited automatically by all descendant nodes.
-- Imported by nodes that declare `depends_on: SPEC/x/y`.
+- Imported by nodes that declare `depends_on: SPEC/x/y`
+  or `input: SPEC/x/y`.
 
 All content in `# Public` must be under a `##` subsection.
 Content directly under `# Public` without a subsection
 heading is a format error.
-
-Any `##` subsection within `# Public` can be imported
-individually via `depends_on: SPEC/x/y(subsection)`.
-
-When `# Public` is included in the chain (via inheritance
-or `depends_on: SPEC/x/y`), the content is the
-concatenation of all `##` subsections in document order.
-Each subsection's heading is included.
 
 Examples of useful public subsections:
 - **`## Interface`** — types, function signatures, import paths.
@@ -285,56 +293,25 @@ Resources) for the full mechanism.
 ## Artifact Generation
 
 An **orchestrator** dispatches a generation subagent for each
-stale artifact. The subagent receives a self-contained set of
-instructions and a structured input — ideally, it does not explore
-the filesystem or read anything beyond what it receives. The
-orchestrator is responsible for assembling the correct input; if
-the input is wrong or incomplete, the subagent's output will be
-wrong.
+stale artifact with the target node's logical name. The
+tooling assembles the chain. The subagent receives a
+self-contained set of instructions and a structured input —
+it should not explore the filesystem or read anything beyond
+what it receives.
 
-### Chain assembly
+### Chain
 
-The orchestrator assembles the context for each subagent by
-building the **chain**:
+The tooling assembles the context for each subagent as
+a **chain** — a self-contained XML document containing
+the current spec, generation instructions, and when
+available, temporal context from the previous generation
+(what the spec said before, what was generated from it).
 
-1. The `# Public` content of each ancestor from root to the
-   target node's parent. This is the concatenation
-   of all `##` subsections within `# Public`, in document order.
-   The `# Public` heading itself is not included — only
-   the subsection headings and their content.
-2. The target node's `depends_on` content, appended in
-   alphabetical order by logical name. What is imported
-   depends on the reference:
-   - `SPEC/x/y` — all `##` subsections of `# Public` of the
-     referenced node, concatenated in document order.
-   - `SPEC/x/y(z)` — `## z` subsection of `# Public` only.
-   - `ARTIFACT/x/y` — full content of the referenced artifact.
-   - `EXTERNAL/x/y.z` — full content of the referenced file.
-3. The target node's `# Public` — same format as
-   ancestors: `##` subsections only, `# Public` heading
-   not included.
-4. The target node's `# Agent` section, including the
-   `# Agent` heading.
-5. If the target node has an `input` field, the content of the
-   referenced file is included as the input to transform.
+The chain is the complete context. Nothing outside the
+chain is needed. Nothing inside the chain is redundant.
 
-Example — generating an artifact for
-`SPEC/payments/fees/calculation`:
-
-```
-SPEC                                       [# Public]  ← ancestor (root)
-SPEC/payments                              [# Public]  ← ancestor
-SPEC/payments/fees                         [# Public]  ← ancestor
-ARTIFACT/extraction/proto                  [full]      ← depends_on
-EXTERNAL/proto/payments/v1/transfers.proto [full]      ← depends_on
-SPEC/integrations/database                 [# Public]  ← depends_on
-SPEC/payments/fees/calculation             [# Public]  ← target
-SPEC/payments/fees/calculation             [# Agent]   ← target
-ARTIFACT/functional/fees/calculation       [full]      ← input
-```
-
-The chain is the complete context. Nothing outside the chain is
-needed. Nothing inside the chain is redundant.
+See CHAIN_ASSEMBLY.md (under Resources) for the full
+format, assembly order, and examples.
 
 ---
 
@@ -379,6 +356,7 @@ https://github.com/CodeFromSpec/framework
 | Document | Description |
 |---|---|
 | [ARTIFACT_GENERATION.md](https://github.com/CodeFromSpec/framework/blob/main/rules/ARTIFACT_GENERATION.md) | Artifact generation with subagents |
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
 | [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
 | [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
 | [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |

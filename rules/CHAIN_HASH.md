@@ -36,15 +36,8 @@ never diverge.
 
 Each position in the chain contributes a **content hash** — the
 SHA-1 of the content that position injects into the chain.
-
-When a `# Public` section is included (from an ancestor, the
-target, or a `depends_on: SPEC/x/y` reference), the hashed
-content is the concatenation of all `##` subsections in
-document order, extracted and joined as defined in
-FILE_FORMAT.md ("Block extraction"). Each subsection's heading
-(e.g. `## Interface`) is part of the hashed content. The
-`# Public` heading itself is not included — only the
-subsection headings and their content.
+Content is boundary-normalized as defined in FILE_FORMAT.md
+("Block extraction").
 
 | Position | Content hashed |
 |---|---|
@@ -55,6 +48,8 @@ subsection headings and their content.
 | `depends_on: SPEC/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
 | `depends_on: ARTIFACT/x/y` | Full content of the referenced artifact |
 | `depends_on: EXTERNAL/x/y.z` | Full content of the referenced file |
+| `input: SPEC/x/y` | `##` subsections of `# Public` of the referenced node, concatenated in order |
+| `input: SPEC/x/y(z)` | `## z` subsection of `# Public` of the referenced node |
 | `input: ARTIFACT/x/y` | Full content of the artifact file |
 | `input: EXTERNAL/x/y.z` | Full content of the referenced file |
 

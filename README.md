@@ -114,6 +114,7 @@ possible but out of scope — community contributions welcome.
 |---|---|
 | [`rules/CODE_FROM_SPEC.md`](rules/CODE_FROM_SPEC.md) | Full methodology: spec structure, staleness, artifact generation |
 | [`rules/FILE_FORMAT.md`](rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
+| [`rules/CHAIN_ASSEMBLY.md`](rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
 | [`rules/CHAIN_HASH.md`](rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
 | [`rules/MANIFEST.md`](rules/MANIFEST.md) | Manifest format and artifact status |
 | [`rules/CACHE.md`](rules/CACHE.md) | Cache structure for delta computation |

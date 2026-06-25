@@ -51,31 +51,22 @@ Load the complete spec chain for a given node.
 - `logical_name` (string, required) — the logical name
   of the target node. The node must declare `output`.
 
-**Returns:** a single document with the following
-structure:
+**Returns:** an XML document as defined in
+CODE_FROM_SPEC.md ("Chain assembly"). The document
+contains up to six sections: `<previous_constraints>`,
+`<previous_instructions>`, `<existing_artifact>`,
+`<constraints>`, `<instructions>`, and `<input>`.
 
-```
---- context ---
-<chain content>
---- input ---
-<input content>
---- existing artifact ---
-<existing artifact content>
-```
+The `<previous_constraints>` and
+`<previous_instructions>` sections are populated from
+the cache when available (see CACHE.md). The
+`<existing_artifact>` section is present only when the
+output file exists on disk — if the file does not exist
+or cannot be read, the section is omitted silently.
 
-The `--- input ---` section is present only when the
-node declares an `input` field. The
-`--- existing artifact ---` section is present only
-when the output file exists on disk — if the file does
-not exist or cannot be read, the section is omitted
-silently.
-
-The chain content is the concatenation of all chain
-positions in assembly order, as defined in
-CODE_FROM_SPEC.md ("Chain assembly"). The delivered
-content matches exactly what is hashed — hash and
-delivery never diverge (see FILE_FORMAT.md, "Block
-extraction").
+The content within `<constraints>` entries matches
+exactly what is hashed — hash and delivery never
+diverge (see FILE_FORMAT.md, "Block extraction").
 
 If any file in the chain (other than the existing
 artifact) is unreadable, returns an error.
