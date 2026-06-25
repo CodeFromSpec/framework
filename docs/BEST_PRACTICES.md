@@ -210,3 +210,41 @@ re-initialize:
 The methodology must be in context before any work begins —
 loaded from the local pinned copy, with no network dependency
 and no partial reads.
+
+---
+
+## Session lifecycle and cache
+
+### The problem
+
+The cache stores spec chain content from previous
+generations. Without proper lifecycle management, the
+cache accumulates stale data or loses entries that are
+still relevant.
+
+### The practice
+
+Treat `cfs-init-session` as the boundary between tasks.
+The recommended workflow:
+
+1. **Start of task**: `cfs-init-session` — prunes the
+   cache and reconstructs it from the current state.
+   The git state is stable (fresh clone, post-merge,
+   or start of new work).
+2. **Work**: edit specs, regenerate, test. The cache
+   grows as new chains are computed. No pruning during
+   work.
+3. **End of task**: PR, merge.
+4. **Next task**: `cfs-init-session` again — prune and
+   reconstruct.
+
+Pruning at the start of a session is safe because the
+git state has not been modified yet — there is no risk
+of discarding cache entries that a `git restore` might
+make relevant again. During work, the cache only grows.
+
+### The principle
+
+The cache is a session-scoped resource. It is built at
+the start, grows during work, and is cleaned at the
+start of the next session.

@@ -1,7 +1,7 @@
 ---
 name: cfs-spec-review
 description: Use this agent to review a spec node for ambiguities, omissions, and precision gaps before generating artifacts.
-tools: "mcp__framework-mcp__load_chain"
+tools: "mcp__framework-mcp__load_chain_for_review"
 model: claude-sonnet-4-6[1m]
 effort: medium
 ---

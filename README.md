@@ -117,7 +117,7 @@ possible but out of scope — community contributions welcome.
 | [`rules/CHAIN_ASSEMBLY.md`](rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
 | [`rules/CHAIN_HASH.md`](rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
 | [`rules/MANIFEST.md`](rules/MANIFEST.md) | Manifest format and artifact status |
-| [`rules/CACHE.md`](rules/CACHE.md) | Cache structure for delta computation |
+| [`rules/CACHE.md`](rules/CACHE.md) | Cache structure for disposition computation |
 | [`rules/TOOLING.md`](rules/TOOLING.md) | Operations a tool must implement |
 
 ### Skills (Claude Code)
@@ -128,7 +128,6 @@ possible but out of scope — community contributions welcome.
 | [`cfs-init-session`](skills/cfs-init-session/SKILL.md) | Load guidelines at session start |
 | [`cfs-status`](skills/cfs-status/SKILL.md) | Report spec tree health (errors, cycles, staleness) |
 | [`cfs-generate`](skills/cfs-generate/SKILL.md) | Regenerate stale artifacts |
-| [`cfs-spec-review`](skills/cfs-spec-review/SKILL.md) | Review a spec for ambiguities before generating |
 | [`cfs-check-meta-language`](skills/cfs-check-meta-language/SKILL.md) | Detect tree-structure references in spec content |
 
 ### Subagents
@@ -136,7 +135,6 @@ possible but out of scope — community contributions welcome.
 | Agent | Purpose |
 |---|---|
 | [`cfs-artifact-generation`](subagents/cfs-artifact-generation.md) | Confined subagent for generating one artifact |
-| [`cfs-spec-review`](subagents/cfs-spec-review.md) | Confined subagent for reviewing one spec |
 
 ### Guides
 

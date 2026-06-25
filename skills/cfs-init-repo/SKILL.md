@@ -63,8 +63,6 @@ already in place.
 
    - `cfs-artifact-generation` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-artifact-generation.md`
-   - `cfs-spec-review` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-spec-review.md`
 
 7. **Install skills.** Download the following skills and
    save them to `.claude/skills/<name>/SKILL.md`:
@@ -75,8 +73,6 @@ already in place.
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-status/SKILL.md`
    - `cfs-check-meta-language` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-check-meta-language/SKILL.md`
-   - `cfs-spec-review` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-spec-review/SKILL.md`
    - `cfs-init-session` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-session/SKILL.md`
 

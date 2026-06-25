@@ -13,42 +13,44 @@ contradictory. Both are correct outcomes.
 ## What you receive
 
 Call `load_chain` with the logical name the orchestrator gave
-you. It returns a `<chain>` document. These blocks may appear,
-always in this order:
+you. It returns a `<chain>` document. These blocks may
+appear:
 
 - `<constraints>` — the specification you must satisfy. A
-  sequence of `<entry name="...">` blocks, each one a part of the
-  spec that governs this artifact. This is the current,
-  authoritative truth.
+  sequence of `<entry name="...">` blocks, each one a part of
+  the spec that governs this artifact. This is the current,
+  authoritative truth. Each entry may carry a `disposition`:
+  - `disposition="unchanged"` — this position has not changed.
+  - `disposition="changed"` — this position changed since the
+    last generation.
+  - `disposition="added"` — this position is new.
 - `<instructions>` — implementation guidance directed
   specifically at you. Prioritize it. It is part of the spec.
-- `<input name="...">` — source material to transform into the
-  output. May be absent. When present, transform this material
+  May carry `disposition`.
+- `<input>` — source material to transform into the output.
+  May be absent. When present, transform this material
   according to the specification; do not invent output from
   nothing.
 
-When you are regenerating an artifact that already exists, up to
-three more blocks may appear **before** `<constraints>`, in this
-order:
+When you are regenerating an artifact that already exists, up
+to three more blocks may appear **before** `<constraints>`,
+in this order:
 
-- `<previous_constraints>` — what the spec looked like when the
-  existing artifact was last generated, given to you as a record
-  of what changed. It lists one `<entry name="...">` for every
-  current spec position, each carrying a `disposition`:
-  - `disposition="unchanged"` — this position is identical to the
-    current one. Name only, no content.
+- `<previous_constraints>` — what the spec looked like when
+  the existing artifact was last generated. Each
+  `<entry name="...">` carries a `disposition`:
+  - `disposition="unchanged"` — this position is identical to
+    the current one. Name only, no content.
   - `disposition="changed"` — this position changed. The old
-    content is included; the current content is in `<constraints>`.
-  - `disposition="removed"` — this position existed before and is
-    gone now. The old content is included; there is no current
-    counterpart.
-  - `disposition="added"` — this position is new. Name only; the
-    content is in `<constraints>`, where you will see it as a
-    position with no previous counterpart.
-- `<previous_instructions>` — the instructions as they were then,
-  carrying the same `disposition` (`unchanged`, `changed`,
-  `added`, or `removed`). Old content is included only when it
-  changed or was removed.
+    content is included; the current content is in
+    `<constraints>`.
+  - `disposition="removed"` — this position existed before and
+    is gone now. The old content is included; there is no
+    current counterpart.
+- `<previous_instructions>` — the instructions as they were
+  then, carrying `disposition` (`unchanged`, `changed`, or
+  `removed`). Old content is included only when it changed
+  or was removed.
 - `<existing_artifact>` — the file you produced last time.
 
 The `<existing_artifact>` is present whenever the artifact
@@ -82,15 +84,14 @@ spec says, not what the old code did.
 1. **Identify what changed, if anything.** How you do this
    depends on which blocks you received:
    - **With `previous_*` blocks:** the `disposition` on each
-     entry tells you where to look — you do not have to discover
-     the changes yourself. Read every entry marked `changed`
-     against its current counterpart in `<constraints>`; read
-     each `removed` entry to understand what no longer governs
-     you; note each `added` entry as a position that is new this
-     time. Skip the `unchanged` entries — they did not move. Do
-     the same for `<previous_instructions>` against
-     `<instructions>`. These are the spec changes since the last
-     generation.
+     entry tells you where to look — you do not have to
+     discover the changes yourself. In `<constraints>`, focus
+     on entries marked `changed` or `added`. In
+     `<previous_constraints>`, read each `removed` entry to
+     understand what no longer governs you. Skip `unchanged`
+     entries — they did not move. Do the same for
+     `<instructions>` and `<previous_instructions>`. These
+     are the spec changes since the last generation.
    - **With `<existing_artifact>` but no `previous_*`:** the prior
      spec is unavailable, so nothing tells you where it changed.
      Read the current spec and compare it against the existing

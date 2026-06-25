@@ -1,15 +1,16 @@
 # Cache
 
-Implementation detail of the reference tooling. The cache
-stores chain position content and chain structure to
-enable delta computation between generations. It is not
-part of the framework specification — tools may implement
-delta computation by other means or not at all.
+The cache stores spec chain content from previous
+generations so that the tooling can show the subagent
+what changed. 
+
+The cache is best-effort infrastructure
+— without it, the framework works, but the subagent
+cannot see what the spec looked like in the previous
+generation.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md),
-[CHAIN_HASH.md](CHAIN_HASH.md), and
-[MANIFEST.md](MANIFEST.md).
+CODE_FROM_SPEC.md, CHAIN_HASH.md, and MANIFEST.md.
 
 ---
 
@@ -30,13 +31,16 @@ code-from-spec/.cache/
 
 `.cache/.content/` stores the processed content of each
 chain position — the exact content that participates in
-the chain hash (see CHAIN_HASH.md, "Content hash").
+the chain hash.
 
 Each file is named `.<content-hash>` (dot-prefixed,
 27-character base64url hash, no extension). The file
-content is the processed text of the position: the
-block-extracted `# Public` subsections for spec nodes,
-the full file content for artifacts and externals.
+content is the processed text of the position: for
+unqualified `SPEC/` references, the concatenation of
+all `##` subsections of `# Public`; for qualified
+`SPEC/x(y)` references, the single `## y` subsection;
+for `ARTIFACT/` and `EXTERNAL/` references, the full
+file content.
 
 Deduplication is automatic — identical content produces
 the same hash and is stored once regardless of how many
@@ -58,86 +62,49 @@ content hash:
 ```
 SPEC/payments: d4e5f6g7h8i9j0k1l2m3n4o5p6q
 SPEC/payments/fees: g7h8i9j0k1l2m3n4o5p6q7r8s
+SPEC/architecture/backend/config(interface): a3b4c5d6e7f8g9h0i1j2k3l4m5n
 SPEC/integrations/database: j0k1l2m3n4o5p6q7r8s9t0u
-SPEC/payments/fees/calculation (Public): m3n4o5p6q7r8s9t0u1v2w3x
-SPEC/payments/fees/calculation (Agent): p6q7r8s9t0u1v2w3x4y5z6a
-ARTIFACT/functional/calc (input): s9t0u1v2w3x4y5z6a7b8c9d
+SPEC/payments/fees/calculation: m3n4o5p6q7r8s9t0u1v2w3x
+AGENT[SPEC/payments/fees/calculation]: p6q7r8s9t0u1v2w3x4y5z6a
+INPUT[ARTIFACT/functional/calc]: s9t0u1v2w3x4y5z6a7b8c9d
 ```
 
-The label identifies the position: which node, which
-section, and the role (ancestor, dependency, target, or
-input). The content hash points to the corresponding
+The label identifies the position. Labels for
+ancestors, dependencies, and the target node's
+`# Public` use the logical name directly. The target node's `# Agent` section, if present, is
+wrapped as `AGENT[...]` and the input, if present,
+as `INPUT[...]`. The content hash points to the corresponding
 file in `.cache/.content/`.
 
 ---
 
-## Population
+## Cache population
 
 The cache is populated as a side effect of normal
-operations. Every time the tooling reads content for a
-chain position — during `load_chain`, `validate_specs`,
-or `write_file` — it writes the processed content to
+operations. Whenever the tooling processes a spec
+chain, it writes the content of each position to
 `.cache/.content/` and the chain structure to
 `.cache/.chains/`.
 
 Over the course of a session, the cache self-completes.
 
-A `reconstruct_cache` operation reads the manifest and
-populates the cache from the current state of all files.
-It is idempotent — only fills gaps, skipping content
-and chain files that already exist. Pruning (see below)
-handles cleanup of unreferenced files separately.
+The tooling may implement a `reconstruct_cache`
+operation that reads the manifest and populates the
+cache from the current state of all files. It is
+idempotent — only fills gaps, skipping content and
+chain files that already exist.
 
 ---
 
-## Delta computation
+## Pruning
 
-When an artifact is stale, the tooling computes a
-`disposition` for each chain position by comparing
-the old and current chains:
+The tooling may implement a `prune_cache` operation
+that removes unreferenced files from the cache:
 
-1. Read the old chain hash from the manifest entry.
-2. Look up the old chain structure in
-   `.cache/.chains/<old-chain-hash>`.
-3. Compute the current chain positions (labels and
-   content hashes).
-4. Compare old and current positions by label:
-   - **`unchanged`** — same label, same content hash.
-   - **`changed`** — same label, different content hash.
-     Old content is read from `.cache/.content/`.
-   - **`added`** — label exists in current but not in
-     old.
-   - **`removed`** — label exists in old but not in
-     current. Old content is read from
-     `.cache/.content/`.
-
-The disposition is delivered as an attribute on each
-`<entry>` in `<previous_constraints>` and on the
-`<previous_instructions>` element in the chain XML
-(see CODE_FROM_SPEC.md, "Chain assembly"). Entries
-with disposition `unchanged` or `added` are
-self-closing (no content to deliver). Entries with
-disposition `changed` or `removed` include the old
-content from the cache.
-
-If the old chain file is not in the cache, delta
-computation is not possible. The `<previous_*>`
-sections are omitted from the chain entirely.
-
----
-
-## Graceful degradation
-
-The cache is best-effort infrastructure. Without it,
-the framework works — staleness, tamper, and orphan
-detection all depend on the manifest, not the cache.
-What degrades without cache:
-
-- **Delta computation** — unavailable. The subagent
-  receives the full chain without a changes section.
-- **Auditing** — the chain that produced an artifact
-  is not reconstructible until the cache is
-  repopulated.
+- Content files in `.cache/.content/` whose hash is
+  not referenced by any chain file in `.cache/.chains/`.
+- Chain files in `.cache/.chains/` whose hash is not
+  referenced by any manifest entry.
 
 ---
 
@@ -159,10 +126,54 @@ locking on the cache.
 
 ---
 
-## Pruning
+## Cache usage
 
-Content files in `.cache/.content/` whose hash is not
-referenced by any chain file in `.cache/.chains/` can
-be deleted. Chain files in `.cache/.chains/` whose hash
-is not referenced by any manifest entry can be deleted.
-Pruning is safe to run at any time.
+When assembling the spec chain for a stale artifact,
+the tooling checks whether cache data is available
+for the previous generation:
+
+1. Read the old chain hash from the manifest entry.
+2. Look up `.cache/.chains/<old-chain-hash>`. If the
+   file does not exist, cache is not available.
+3. For each position in the old chain structure,
+   verify that `.cache/.content/<content-hash>` exists.
+   If any content file is missing, cache is not
+   available.
+
+When cache is not available, the spec chain is
+assembled without `<previous_*>` sections or
+`disposition` attributes.
+
+When cache is available, the tooling compares old and
+current chains to compute a `disposition` for each
+position:
+
+1. Read the old chain structure from
+   `.cache/.chains/<old-chain-hash>`.
+2. Compute the current chain positions (labels and
+   content hashes).
+3. Compare old and current positions by label:
+   - **`unchanged`** — same label, same content hash.
+   - **`changed`** — same label, different content
+     hash. Old content is read from
+     `.cache/.content/`.
+   - **`removed`** — label exists in old but not in
+     current. Old content is read from
+     `.cache/.content/`.
+   - **`added`** — label exists in current but not
+     in old.
+
+The disposition is delivered as an attribute in the
+spec chain XML. See CHAIN_ASSEMBLY.md for how each
+disposition maps to the XML sections.
+
+---
+
+## Resources
+
+| Document | Description |
+|---|---|
+| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/main/CODE_FROM_SPEC.md) | Full methodology specification |
+| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
