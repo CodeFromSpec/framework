@@ -2,7 +2,7 @@
 
 The cache stores spec chain content from previous
 generations so that the tooling can show the subagent
-what changed. 
+what changed.
 
 The cache is best-effort infrastructure
 — without it, the framework works, but the subagent
@@ -10,7 +10,7 @@ cannot see what the spec looked like in the previous
 generation.
 
 This document assumes familiarity with
-CODE_FROM_SPEC.md, CHAIN_HASH.md, and MANIFEST.md.
+CODE_FROM_SPEC.md and MANIFEST.md.
 
 ---
 
@@ -71,10 +71,11 @@ INPUT[ARTIFACT/functional/calc]: s9t0u1v2w3x4y5z6a7b8c9d
 
 The label identifies the position. Labels for
 ancestors, dependencies, and the target node's
-`# Public` use the logical name directly. The target node's `# Agent` section, if present, is
-wrapped as `AGENT[...]` and the input, if present,
-as `INPUT[...]`. The content hash points to the corresponding
-file in `.cache/.content/`.
+`# Public` use the logical name directly. The target
+node's `# Agent` section, if present, is wrapped as
+`AGENT[...]` and the input, if present, as
+`INPUT[...]`. The content hash points to the
+corresponding file in `.cache/.content/`.
 
 ---
 
