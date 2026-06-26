@@ -76,7 +76,7 @@ before it.
 The current `<constraints>` and `<instructions>` are the only
 authoritative truth. Everything that appears before them —
 `<previous_constraints>`, `<previous_instructions>`,
-`<existing_artifact>` — is history. It is there so you can see
+`<previous_input>`, `<existing_artifact>` — is history. It is there so you can see
 what changed, not so you can preserve it. When the existing
 artifact or the previous spec disagrees with the current spec,
 the current spec wins, every time. Generate what the current
@@ -93,8 +93,9 @@ spec says, not what the old code did.
      `<previous_constraints>`, read each `removed` entry to
      understand what no longer governs you. Skip `unchanged`
      entries — they did not move. Do the same for
-     `<instructions>` and `<previous_instructions>`. These
-     are the spec changes since the last generation.
+     `<instructions>` and `<previous_instructions>`, and
+     for `<input>` and `<previous_input>`. These are the
+     spec changes since the last generation.
    - **With `<existing_artifact>` but no `previous_*`:** the prior
      spec is unavailable, so nothing tells you where it changed.
      Read the current spec and compare it against the existing
