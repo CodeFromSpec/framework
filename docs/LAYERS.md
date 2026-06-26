@@ -3,7 +3,7 @@
 How to organize specs into progressive refinement layers.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](../rules/CODE_FROM_SPEC.md).
+[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md).
 
 ---
 
@@ -134,11 +134,11 @@ artifacts and produces source code.
 Within each layer, intermediate nodes define the conventions for
 their leaf nodes. Some examples:
 
-- **`SPEC/domain/`** — glossary of business terms, rules for
-  writing acceptance criteria, tone and language for
+- **`SPEC/domain/`** — glossary of business terms, rules
+  for writing acceptance criteria, tone and language for
   non-technical contributors.
-- **`SPEC/implementation/`** — programming language, framework,
-  library versions, error handling patterns, logging
+- **`SPEC/implementation/`** — programming language,
+  framework, library versions, error handling patterns, logging
   conventions, project directory structure.
 - **`SPEC/database/`** — database engine, schema naming
   conventions, transaction isolation rules, migration format,
@@ -164,9 +164,9 @@ code-from-spec/
 │   ├── payments-proto/
 │   │   └── _node.md          ← input: EXTERNAL/proto/payments/v1/transfers.proto
 │   │                            output: extraction/payments-proto/output.md
-│   └── stripe-api/
-│       └── _node.md          ← input: EXTERNAL/docs/vendor/stripe-payouts.yaml
-│                                output: extraction/stripe-api/output.md
+│   └── vendor-api/
+│       └── _node.md          ← input: EXTERNAL/docs/vendor/api-spec.yaml
+│                                output: extraction/vendor-api/output.md
 ├── functional/
 │   └── transfers/
 │       └── _node.md          ← depends_on: ARTIFACT/extraction/payments-proto

@@ -20,16 +20,12 @@ if so. This makes the skill safe to re-run — it fills
 in whatever is missing without overwriting what is
 already in place.
 
-1. **Create the spec root.** If `code-from-spec/_node.md`
-   does not exist, create it with minimal content:
-
-   ```markdown
-   # SPEC
-   ```
+1. **Create the spec directory.** If `code-from-spec/`
+   does not exist, create it.
 
 2. **Download the methodology file.** Download
    `CODE_FROM_SPEC.md` from
-   `https://raw.githubusercontent.com/CodeFromSpec/framework/main/rules/CODE_FROM_SPEC.md`
+   `https://raw.githubusercontent.com/CodeFromSpec/framework/main/CODE_FROM_SPEC.md`
    and save it to `code-from-spec/.rules/CODE_FROM_SPEC.md`.
    Create the directory if needed.
 
@@ -67,8 +63,6 @@ already in place.
 
    - `cfs-artifact-generation` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-artifact-generation.md`
-   - `cfs-spec-review` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-spec-review.md`
 
 7. **Install skills.** Download the following skills and
    save them to `.claude/skills/<name>/SKILL.md`:
@@ -79,8 +73,6 @@ already in place.
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-status/SKILL.md`
    - `cfs-check-meta-language` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-check-meta-language/SKILL.md`
-   - `cfs-spec-review` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-spec-review/SKILL.md`
    - `cfs-init-session` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-session/SKILL.md`
 

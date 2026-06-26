@@ -1,12 +1,9 @@
 # Tooling
 
-Operations that a Code from Spec tool must implement. The
-reference implementation is
-[tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp).
+Operations that a Code from Spec tool must implement.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](CODE_FROM_SPEC.md) and
-[MANIFEST.md](MANIFEST.md).
+CODE_FROM_SPEC.md and MANIFEST.md.
 
 ---
 
@@ -51,31 +48,28 @@ Load the complete spec chain for a given node.
 - `logical_name` (string, required) — the logical name
   of the target node. The node must declare `output`.
 
-**Returns:** a single document with the following
-structure:
+**Returns:** an XML document as defined in
+CHAIN_ASSEMBLY.md. The document contains up to seven
+sections: `<previous_constraints>`,
+`<previous_instructions>`, `<previous_input>`,
+`<existing_artifact>`, `<constraints>`,
+`<instructions>`, and `<input>`.
 
-```
---- context ---
-<chain content>
---- input ---
-<input content>
---- existing artifact ---
-<existing artifact content>
-```
-
-The `--- input ---` section is present only when the
-node declares an `input` field. The
-`--- existing artifact ---` section is present only
-when the output file exists on disk — if the file does
-not exist or cannot be read, the section is omitted
+The `<previous_*>` sections are populated from the
+cache when available (see CACHE.md). The
+`<existing_artifact>` section is present only when the
+output file exists on disk — if the file does not
+exist or cannot be read, the section is omitted
 silently.
 
-The chain content is the concatenation of all chain
-positions in assembly order, as defined in
-CODE_FROM_SPEC.md ("Chain assembly"). The delivered
-content matches exactly what is hashed — hash and
-delivery never diverge (see FILE_FORMAT.md, "Block
-extraction").
+The content within `<constraints>` entries matches
+exactly what is hashed — hash and delivery never
+diverge (see FILE_FORMAT.md, "Block extraction").
+
+If the artifact is modified (checksum in the manifest
+does not match the file on disk), returns an error.
+The artifact must be accepted or deleted before
+regeneration.
 
 If any file in the chain (other than the existing
 artifact) is unreadable, returns an error.
@@ -131,6 +125,68 @@ See CACHE.md for details on the cache structure.
 
 ---
 
+## prune_cache
+
+Remove unreferenced files from the cache.
+
+**Parameters:** none.
+
+**Behavior:**
+
+Delete content files in `.cache/.content/` whose hash
+is not referenced by any chain file in
+`.cache/.chains/`. Delete chain files in
+`.cache/.chains/` whose hash is not referenced by any
+manifest entry.
+
+See CACHE.md for details on the cache structure.
+
+---
+
+## accept
+
+Accept a modified artifact without regenerating it.
+Updates the manifest checksum to match the current
+file on disk.
+
+**Parameters:**
+
+- `logical_name` (string, required) — the logical name
+  of the node whose artifact was modified.
+
+**Behavior:**
+
+1. Verify the artifact is in "modified" status
+   (checksum mismatch). If not, return an error.
+2. Compute the hash of the file on disk.
+3. Update the manifest entry's checksum to match.
+
+The chain hash in the manifest is not changed — the
+artifact is accepted as-is against the same spec
+version that produced it.
+
+---
+
+## dump_chain
+
+Save the spec chain for a given node to a file for
+inspection.
+
+**Parameters:**
+
+- `logical_name` (string, required) — the logical name
+  of the target node. The node must declare `output`.
+
+**Behavior:**
+
+Assemble the spec chain exactly as `load_chain` would,
+and write it to `<project root>/dump_chain.xml`. This
+produces the same document the generation subagent
+would receive, allowing the orchestrator or the human
+to inspect it.
+
+---
+
 ## version
 
 Report the tool version.
@@ -138,3 +194,15 @@ Report the tool version.
 **Parameters:** none.
 
 **Returns:** the version string.
+
+---
+
+## Resources
+
+| Document | Description |
+|---|---|
+| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/main/CODE_FROM_SPEC.md) | Full methodology specification |
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
+| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CACHE.md) | Cache structure for disposition computation |
+| [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | Reference implementation |
