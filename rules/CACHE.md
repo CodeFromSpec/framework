@@ -153,7 +153,7 @@ position:
    `.cache/.chains/<old-chain-hash>`.
 2. Compute the current chain positions (labels and
    content hashes).
-3. Compare old and current positions by label:
+3. For constraints entries, compare by label:
    - **`unchanged`** — same label, same content hash.
    - **`changed`** — same label, different content
      hash. Old content is read from
@@ -163,6 +163,15 @@ position:
      `.cache/.content/`.
    - **`added`** — label exists in current but not
      in old.
+4. For instructions and input, compare by content
+   hash only (the name of the reference does not
+   matter):
+   - **`unchanged`** — same content hash.
+   - **`changed`** — different content hash. Old
+     content is read from `.cache/.content/`.
+   - **`removed`** — existed before, absent now.
+     Old content is read from `.cache/.content/`.
+   - **`added`** — absent before, exists now.
 
 The disposition is delivered in the spec chain XML:
 current sections (`<constraints>`, `<instructions>`,

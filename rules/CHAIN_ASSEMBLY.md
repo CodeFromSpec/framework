@@ -65,6 +65,7 @@ The document has up to seven sections, in this order:
 
 6. **`<instructions>`** — the target node's `# Agent`
    section. The `# Agent` heading is not included.
+   Present only when the node has an `# Agent` section.
    When cache is available and the existing artifact
    is present, carries a `disposition` attribute:
    `unchanged`, `changed`, or `added`.
