@@ -21,34 +21,31 @@ terminology used elsewhere in the framework.
 
 The document has up to seven sections, in this order:
 
-1. **`<previous_constraints>`** — the spec content from
-   the previous generation, as recorded in the cache.
-   Present only when the cache is available and the
-   existing artifact is present on disk. Each `<entry>`
-   carries a `disposition` attribute:
-   - `unchanged` — same name, same content hash.
-     Entry is self-closing (content not repeated).
-   - `changed` — same name, different content hash.
-     Entry contains the old content.
-   - `removed` — name existed before but not in the
-     current chain. Entry contains the old content.
+1. **`<previous_constraints>`** — old spec content for
+   positions that changed or were removed, as recorded
+   in the cache. Present only when the cache is
+   available and the existing artifact is present on
+   disk. Contains only entries with
+   `disposition="changed"` or `disposition="removed"`,
+   each with their old content. Positions that did not
+   change are not listed — their `unchanged`
+   disposition is on the corresponding entry in
+   `<constraints>`.
 
-2. **`<previous_instructions>`** — the `# Agent`
-   section from the previous generation (excluding the
-   `# Agent` heading), as recorded in the cache.
-   Present only when the cache is available and the
-   existing artifact is present on disk. Carries a
-   `disposition` attribute: `unchanged` (self-closing),
-   `changed` (old content included), or `removed`
-   (old content included, `<instructions>` absent).
+2. **`<previous_instructions>`** — the previous
+   `# Agent` section (excluding the `# Agent` heading),
+   as recorded in the cache. Present only when the
+   cache is available, the existing artifact is present
+   on disk, and the instructions changed or were
+   removed. Carries `disposition="changed"` or
+   `disposition="removed"`. Contains the old content.
 
-3. **`<previous_input>`** — the input content from the
-   previous generation, as recorded in the cache.
-   Present only when the cache is available and the
-   existing artifact is present on disk. Carries a
-   `disposition` attribute: `unchanged` (self-closing),
-   `changed` (old content included), or `removed`
-   (old content included, `<input>` absent).
+3. **`<previous_input>`** — the previous input content,
+   as recorded in the cache. Present only when the
+   cache is available, the existing artifact is present
+   on disk, and the input changed or was removed.
+   Carries `disposition="changed"` or
+   `disposition="removed"`. Contains the old content.
 
 4. **`<existing_artifact>`** — the current content of
    the artifact file on disk. Present only when the
@@ -171,21 +168,17 @@ The resulting spec chain:
 ```xml
 <chain>
   <previous_constraints>
-    <entry name="SPEC/payments" disposition="unchanged"/>
     <entry name="SPEC/payments/fees" disposition="changed">
     ...old content...
     </entry>
     <entry name="SPEC/legacy/old-fees" disposition="removed">
     ...old content...
     </entry>
-    <entry name="SPEC/payments/fees/calculation" disposition="unchanged"/>
   </previous_constraints>
 
   <previous_instructions disposition="changed">
-  ...# Agent from previous generation...
+  ...previous # Agent content...
   </previous_instructions>
-
-  <previous_input disposition="unchanged"/>
 
   <existing_artifact>
   ...current file on disk...

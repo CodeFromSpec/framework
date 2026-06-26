@@ -35,24 +35,20 @@ When you are regenerating an artifact that already exists, up
 to four more blocks may appear **before** `<constraints>`,
 in this order:
 
-- `<previous_constraints>` — what the spec looked like when
-  the existing artifact was last generated. Each
-  `<entry name="...">` carries a `disposition`:
-  - `disposition="unchanged"` — this position is identical to
-    the current one. Name only, no content.
-  - `disposition="changed"` — this position changed. The old
-    content is included; the current content is in
-    `<constraints>`.
-  - `disposition="removed"` — this position existed before and
-    is gone now. The old content is included; there is no
-    current counterpart.
-- `<previous_instructions>` — the instructions as they were
-  then, carrying `disposition` (`unchanged`, `changed`, or
-  `removed`). Old content is included only when it changed
-  or was removed.
-- `<previous_input>` — the input as it was then, carrying
-  `disposition` (`unchanged`, `changed`, or `removed`). Old
-  content is included only when it changed or was removed.
+- `<previous_constraints>` — old content for spec positions
+  that changed or were removed since the last generation.
+  Only positions that moved are listed here — unchanged
+  positions are not included. Each `<entry name="...">`
+  carries `disposition="changed"` or
+  `disposition="removed"` and contains the old content.
+  Pair `changed` entries by name with the corresponding
+  entry in `<constraints>` to see what changed.
+- `<previous_instructions>` — the old instructions. Carries
+  `disposition="changed"` or `disposition="removed"`. Present
+  only when the instructions changed or were removed.
+- `<previous_input>` — the old input. Carries
+  `disposition="changed"` or `disposition="removed"`. Present
+  only when the input changed or were removed.
 - `<existing_artifact>` — the file you produced last time.
 
 The `<existing_artifact>` is present whenever the artifact

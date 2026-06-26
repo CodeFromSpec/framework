@@ -164,9 +164,13 @@ position:
    - **`added`** — label exists in current but not
      in old.
 
-The disposition is delivered as an attribute in the
-spec chain XML. See CHAIN_ASSEMBLY.md for how each
-disposition maps to the XML sections.
+The disposition is delivered in the spec chain XML:
+current sections (`<constraints>`, `<instructions>`,
+`<input>`) carry disposition on every entry. Previous
+sections (`<previous_constraints>`,
+`<previous_instructions>`, `<previous_input>`) contain
+only `changed` and `removed` entries with their old
+content. See CHAIN_ASSEMBLY.md for the full format.
 
 ---
 
