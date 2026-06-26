@@ -30,10 +30,10 @@ appear:
 - `<input>` — source material to transform into the output.
   May be absent. When present, transform this material
   according to the specification; do not invent output from
-  nothing.
+  nothing. May carry `disposition`.
 
 When you are regenerating an artifact that already exists, up
-to three more blocks may appear **before** `<constraints>`,
+to four more blocks may appear **before** `<constraints>`,
 in this order:
 
 - `<previous_constraints>` — what the spec looked like when
@@ -51,12 +51,15 @@ in this order:
   then, carrying `disposition` (`unchanged`, `changed`, or
   `removed`). Old content is included only when it changed
   or was removed.
+- `<previous_input>` — the input as it was then, carrying
+  `disposition` (`unchanged`, `changed`, or `removed`). Old
+  content is included only when it changed or was removed.
 - `<existing_artifact>` — the file you produced last time.
 
 The `<existing_artifact>` is present whenever the artifact
-already exists on disk. The two `previous_*` blocks depend on
-cached history from the last generation, so they may be absent
-even during a regeneration: you may receive `<existing_artifact>`
+already exists on disk. The `previous_*` blocks depend on cached history from
+the last generation, so they may be absent even during
+a regeneration: you may receive `<existing_artifact>`
 alone, with no `previous_*` to compare against. Their absence is
 not an error — it means the prior spec is unavailable, so you
 compare the existing artifact directly against the current spec

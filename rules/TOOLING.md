@@ -1,12 +1,9 @@
 # Tooling
 
-Operations that a Code from Spec tool must implement. The
-reference implementation is
-[tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp).
+Operations that a Code from Spec tool must implement.
 
 This document assumes familiarity with
-[CODE_FROM_SPEC.md](../CODE_FROM_SPEC.md) and
-[MANIFEST.md](MANIFEST.md).
+CODE_FROM_SPEC.md and MANIFEST.md.
 
 ---
 
@@ -52,18 +49,18 @@ Load the complete spec chain for a given node.
   of the target node. The node must declare `output`.
 
 **Returns:** an XML document as defined in
-CODE_FROM_SPEC.md ("Chain assembly"). The document
-contains up to seven sections: `<previous_constraints>`,
+CHAIN_ASSEMBLY.md. The document contains up to seven
+sections: `<previous_constraints>`,
 `<previous_instructions>`, `<previous_input>`,
 `<existing_artifact>`, `<constraints>`,
 `<instructions>`, and `<input>`.
 
-The `<previous_constraints>` and
-`<previous_instructions>` sections are populated from
-the cache when available (see CACHE.md). The
+The `<previous_*>` sections are populated from the
+cache when available (see CACHE.md). The
 `<existing_artifact>` section is present only when the
-output file exists on disk — if the file does not exist
-or cannot be read, the section is omitted silently.
+output file exists on disk — if the file does not
+exist or cannot be read, the section is omitted
+silently.
 
 The content within `<constraints>` entries matches
 exactly what is hashed — hash and delivery never
@@ -76,28 +73,6 @@ regeneration.
 
 If any file in the chain (other than the existing
 artifact) is unreadable, returns an error.
-
----
-
-## load_chain_for_review
-
-Load the spec chain for a given node without cache
-or temporal context. Intended for spec review
-subagents that evaluate the current spec without
-generating artifacts.
-
-**Parameters:**
-
-- `logical_name` (string, required) — the logical name
-  of the target node. The node must declare `output`.
-
-**Returns:** an XML document containing only
-`<constraints>`, `<instructions>`, and optionally
-`<input>`. No `<previous_*>` sections, no
-`<existing_artifact>`, no disposition attributes.
-
-If any file in the chain is unreadable, returns an
-error.
 
 ---
 
@@ -205,7 +180,7 @@ inspection.
 **Behavior:**
 
 Assemble the spec chain exactly as `load_chain` would,
-and write it to `<project root>/dump_chain.md`. This
+and write it to `<project root>/dump_chain.xml`. This
 produces the same document the generation subagent
 would receive, allowing the orchestrator or the human
 to inspect it.
@@ -219,3 +194,15 @@ Report the tool version.
 **Parameters:** none.
 
 **Returns:** the version string.
+
+---
+
+## Resources
+
+| Document | Description |
+|---|---|
+| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/main/CODE_FROM_SPEC.md) | Full methodology specification |
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
+| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CACHE.md) | Cache structure for disposition computation |
+| [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | Reference implementation |
