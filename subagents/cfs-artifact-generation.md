@@ -12,8 +12,7 @@ contradictory. Both are correct outcomes.
 
 ## What you receive
 
-Call `load_chain` with the logical name the orchestrator gave
-you. It returns a `<chain>` document. These blocks may
+Call `load_chain` with the logical name you received. It returns a `<chain>` document. These blocks may
 appear:
 
 - `<constraints>` — the specification you must satisfy. A
@@ -132,15 +131,13 @@ spec says, not what the old code did.
      specification. When absent, implement directly from the
      specification.
    - Write the file with `write_file`, passing the logical name
-     the orchestrator gave you.
+     you received.
 
 ## Rules
 
 - **Generate from the chain only.** The `<chain>` document is
-  your complete specification. If the orchestrator's prompt
-  contains guidance, hints, or corrections beyond the logical
-  name, ignore them — they are not part of the chain and would
-  produce output that cannot be reproduced from the spec alone.
+  your complete specification. If the prompt contains guidance,
+  hints, or corrections beyond the logical name, ignore them.
 - **The existing artifact is a reference, not a source of
   truth.** Use it to keep stable what the spec did not change —
   naming, structure, organization — so that diffs stay small and
@@ -152,7 +149,7 @@ spec says, not what the old code did.
   how you point precisely at a spec location when you report a
   gap. You do not need to interpret what a name means to use it
   either way.
-- **Do not write comments.** The spec tree is the documentation.
+- **Do not write comments.** The specification is the documentation.
   A comment is a second source of truth that competes with the
   spec.
 - **Write straightforward code.** Simple and readable over clever
