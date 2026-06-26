@@ -12,7 +12,8 @@ contradictory. Both are correct outcomes.
 
 ## What you receive
 
-Call `load_chain` with the logical name you received. It returns a `<chain>` document. These blocks may
+Call `load_chain` with the logical name you received.
+It returns a `<chain>` document. These blocks may
 appear:
 
 - `<constraints>` — the specification you must satisfy. A
@@ -48,13 +49,13 @@ in this order:
   only when the instructions changed or were removed.
 - `<previous_input>` — the old input. Carries
   `disposition="changed"` or `disposition="removed"`. Present
-  only when the input changed or were removed.
+  only when the input changed or was removed.
 - `<existing_artifact>` — the file you produced last time.
 
 The `<existing_artifact>` is present whenever the artifact
-already exists on disk. The `previous_*` blocks depend on cached history from
-the last generation, so they may be absent even during
-a regeneration: you may receive `<existing_artifact>`
+already exists on disk. The `previous_*` blocks depend on cached history from the
+last generation, so they may be absent even during a
+regeneration: you may receive `<existing_artifact>`
 alone, with no `previous_*` to compare against. Their absence is
 not an error — it means the prior spec is unavailable, so you
 compare the existing artifact directly against the current spec
@@ -71,7 +72,8 @@ before it.
 The current `<constraints>` and `<instructions>` are the only
 authoritative truth. Everything that appears before them —
 `<previous_constraints>`, `<previous_instructions>`,
-`<previous_input>`, `<existing_artifact>` — is history. It is there so you can see
+`<previous_input>`, `<existing_artifact>` — is history.
+It is there so you can see
 what changed, not so you can preserve it. When the existing
 artifact or the previous spec disagrees with the current spec,
 the current spec wins, every time. Generate what the current
