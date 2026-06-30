@@ -91,11 +91,6 @@ two conflict, the spec wins.
   If the subagent produces wrong output, the fix goes
   in the spec — not in an ad-hoc prompt addition that
   bypasses the chain.
-- When a spec's behavior changes (not just a hash
-  cascade), delete the existing artifact before
-  regenerating. The existing artifact anchors the
-  subagent on old patterns and can cause spec changes
-  to be silently ignored.
 - Do not delete files without the human's confirmation.
 - Do not start generation without the human's approval.
 
@@ -123,19 +118,12 @@ two conflict, the spec wins.
   actually sees) rather than retrying. Create a
   diagnostic node that dumps the load_chain output
   if needed.
-- When an existing artifact was present and the
-  subagent did not apply a spec change, check whether
-  the subagent anchored on the existing artifact.
-  Delete the artifact and regenerate from scratch.
 
 ### What not to do
 
 - Do not fix generated code manually, even for
   "quick fixes." The next regeneration will overwrite
-  the fix. The one exception is self-referential bugs
-  where the tool's own code prevents correct
-  regeneration — document these and fix them in the
-  spec as soon as possible.
+  the fix. 
 - Do not add comments to generated code. The spec
   tree is the documentation.
 - Do not assume the generated code will follow a
