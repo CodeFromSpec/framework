@@ -21,9 +21,26 @@ working on a project that uses Code from Spec.
    rebuilds the cache from the current state of the
    repository.
 
-3. Read the guidelines below.
+3. If an `AGENTS.md` file exists at the repository
+   root, read it. It contains project-specific
+   instructions that apply for the remainder of the
+   session.
 
-4. Acknowledge:
+4. Check for a `CLAUDE.md` file only at the repository
+   root — do not search the whole repository, which is
+   slower and unnecessary. If it exists, warn the human:
+   `CLAUDE.md` is loaded automatically by subagents,
+   including generation subagents, and contaminates their
+   context — which violates the Code from Spec confinement
+   rules. Advise the human to move any project instructions
+   into `AGENTS.md` at the repository root, which only the
+   orchestrator reads (see step 3). If no `CLAUDE.md` exists
+   at the root, say nothing about it — do not mention its
+   absence or otherwise reference `CLAUDE.md`.
+
+5. Read the guidelines below.
+
+6. Acknowledge:
 
    > Code from Spec session initialized.
 
@@ -129,8 +146,10 @@ two conflict, the spec wins.
 - Do not assume the generated code will follow a
   convention unless the spec states it. If it matters,
   put it in a spec that the relevant files inherit.
-- Do not use CLAUDE.md for Code from Spec rules.
-  CLAUDE.md is loaded by subagents and will
-  contaminate the generation process. Orchestrator
-  guidelines belong in this session skill, not in
+- Do not use CLAUDE.md for Code from Spec rules or
+  project instructions. CLAUDE.md is loaded by
+  subagents and will contaminate the generation
+  process. Orchestrator guidelines belong in this
+  session skill, and project-specific instructions
+  belong in `AGENTS.md` at the repository root — not in
   files that subagents can see.
