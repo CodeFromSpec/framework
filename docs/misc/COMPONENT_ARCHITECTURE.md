@@ -107,3 +107,58 @@ nothing tool-specific), reusable shelf bricks; `chain/`,
 infrastructure kind is the candidate for off-the-shelf,
 engineer-vetted technical layers; the domain kind is bespoke,
 born from the problem.
+
+---
+
+## Addendum (2026-07-05): the defect economics of small components
+
+Captured from the essay-revision conversation. These extend
+section 3's economics from chain size to defect mass.
+
+### 6. The safe-resampling regime
+
+"Write a spec large enough that any sample from it is safe"
+fails in general — diminishing returns chase an infinite tail —
+but approaches truth for a component with low intent
+dimensionality and a narrow interface: a spec covering its
+load-bearing dimensions is affordable, an oracle over its
+behavior can be driven near-exhaustive (near-closed), and the
+residual probability mass of unsafe samples becomes negligible.
+Decomposition in CFS is therefore not hygiene: it
+**manufactures the regime in which per-node regeneration is
+safe**. This is the deeper "why" under section 3 — not just
+cheaper chains, but bounded defect exposure per generation.
+
+### 7. Seams are their own battlefield
+
+Splitting adds dimensions at the seam: what the contract means,
+how a failure crosses it, what either side may assume. If every
+component has a leaf but the integration has no spec and no
+oracle, the seam dimensions have no owner. Integration test
+specs deserve nodes of their own.
+
+### 8. The chain enforces the information boundary, not the runtime boundary
+
+Confinement guarantees no agent *sees* another component's
+internals; it does not guarantee no artifact *shares mutable
+state*, exhausts a common resource, or crosses failure domains.
+The tree gives context boundaries for free; execution
+boundaries remain spec discipline — constraints written in
+guard nodes that descendants inherit.
+
+### 9. Granularity is a crossover
+
+Too fine, and seam dimensions dominate the system. Too coarse,
+and the component exits the safe-resampling regime while its
+chains bloat. Where to cut is the marginal-value-versus-
+marginal-cost question again, applied to boundaries. (Refines
+the over-fragmentation note in section 5.)
+
+### 10. Drift containment and maturity funneling
+
+One stakeholder concern per subtree means drift re-specifies
+one subtree while every unrelated component's survivor evidence
+stays intact. And reuse funnels maturity: a shared node meets
+the environment-as-oracle at the rate of the whole system's use
+of it; N copies mature N times slower, with N defect sets to
+eventually discover.

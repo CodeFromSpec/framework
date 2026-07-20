@@ -1,7 +1,7 @@
 # Code From Spec v5
 
-**Code From Spec** is a methodology where code is a generated
-artifact, not the source of truth. The source of truth is a
+**Code From Spec** is a methodology where specifications are the
+source of truth and code materializes it. The source of truth is a
 hierarchy of specification files. To change behavior, you change
 the specifications, and regenerate the code.
 

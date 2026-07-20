@@ -1,7 +1,7 @@
 # Code From Spec v5
 
-**Code From Spec** is a methodology where code is a generated
-artifact, not the source of truth. The source of truth is a
+**Code From Spec** is a methodology where specifications are the
+source of truth and code materializes it. The source of truth is a
 hierarchy of specification files. To change behavior, you change
 the spec and regenerate. You never edit generated artifacts
 directly.
@@ -48,8 +48,10 @@ code-from-spec/
 ```
 
 Staleness is detected automatically by comparing a hash of each
-node's context against the hash recorded in its generated artifacts.
-When they differ, the artifact is stale and must be regenerated.
+node's context against the hash recorded in the manifest at the
+time of generation. When they differ, the artifact is stale and
+must be regenerated. Generated files carry no framework metadata —
+the manifest holds all the bookkeeping.
 
 ---
 
@@ -142,6 +144,7 @@ possible but out of scope — community contributions welcome.
 |---|---|
 | [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md) | Practical guidance for spec authoring |
 | [`docs/LAYERS.md`](docs/LAYERS.md) | Progressive refinement layers |
+| [`docs/TESTING.md`](docs/TESTING.md) | Organizing test specs and keeping them independent |
 
 ### Documentation
 
