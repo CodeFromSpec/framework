@@ -1,24 +1,33 @@
 # Code From Spec v5
 
-**Code From Spec** is a methodology where code is a generated
-artifact, not the source of truth. The source of truth is a
-hierarchy of specification files. To change behavior, you change
-the specifications, and regenerate the code.
+**Code From Spec** is a methodology where specifications drive
+the code. To change behavior, you change the specifications and
+regenerate. Never edit generated artifacts directly — a fix the
+specifications don't carry will not survive the next generation.
 
-This methodology is designed for AI agent participation at every
-stage — writing specs, generating artifacts, and assisting
-non-technical contributors with spec authoring. It requires
-tooling for chain assembly, staleness detection, and manifest
-management. See Resources for the reference implementation.
+This methodology is designed for AI agents to participate at
+every stage, from spec authoring to artifact generation to
+debugging. It requires tooling for chain assembly, staleness
+detection, and manifest management. See Resources for the
+reference implementation.
 
 ---
 
-## The Model
+## Specifications
+
+Specifications carry the project's decisions.
+
+### Location
+
+Specifications live under `<project root>/code-from-spec/`.
+
+### Structure
 
 Specifications are organized as a tree — or multiple
 independent trees — of spec nodes. Each node adds precision
-to its parent — high-level intent at the root, implementation
-detail at the leaves. Only leaf nodes generate artifacts.
+to its parent — high-level decisions at the root,
+implementation detail at the leaves. Only leaf nodes
+generate artifacts.
 
 ```
 code-from-spec/
@@ -29,22 +38,6 @@ code-from-spec/
 └── integrations/
     └── database/          ← leaf
 ```
-
----
-
-## Specifications
-
-Specifications are the source of truth from which artifacts are
-generated.
-
-### Location
-
-Specifications live under `<project root>/code-from-spec/`.
-
-### Structure
-
-Specifications are organized as a tree — or multiple
-independent trees — of spec nodes.
 
 Child nodes inherit the public content of all their ancestors.
 This inheritance is automatic and mandatory.
@@ -225,8 +218,8 @@ immediately after the frontmatter closing `---` (if
 present) or on the first line of the file. Nothing may
 precede it, not even whitespace. The heading is the
 node's name (e.g. `# SPEC/architecture/backend/config`).
-Its content serves as intent — what this node does and
-why it exists. This section is not inherited, not
+Its content states the node's purpose — what this node
+does and why it exists. This section is not inherited, not
 importable, and not included in the chain.
 
 #### Public section
@@ -356,9 +349,10 @@ before returning or comparing them.
 
 ## Resources
 
-### Framework repository
+### Project sites
 
-https://github.com/CodeFromSpec/framework
+- https://codefromspec.com
+- https://github.com/CodeFromSpec
 
 ### Companion documents
 
