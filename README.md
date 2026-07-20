@@ -171,13 +171,6 @@ possible but out of scope — community contributions welcome.
 | [`docs/LAYERS.md`](docs/LAYERS.md) | Progressive refinement layers |
 | [`docs/TESTING.md`](docs/TESTING.md) | Organizing test specs and keeping them independent |
 
-### Documentation
-
-| Directory | Contents |
-|---|---|
-| [`docs/future-work/`](docs/future-work/) | Planned features and ideas |
-| [`docs/misc/`](docs/misc/) | Conceptual notes and reference material |
-
 ---
 
 ## Reference implementation
