@@ -1,15 +1,15 @@
 # Code From Spec v5
 
-**Code From Spec** is a methodology where specifications are the
-source of truth and code materializes it. The source of truth is a
-hierarchy of specification files. To change behavior, you change
-the specifications, and regenerate the code.
+**Code From Spec** is a methodology where specifications drive
+the code. To change behavior, you change the specifications and
+regenerate. Never edit generated artifacts directly — a fix the
+specifications don't carry will not survive the next generation.
 
-This methodology is designed for AI agent participation at every
-stage — writing specs, generating artifacts, and assisting
-non-technical contributors with spec authoring. It requires
-tooling for chain assembly, staleness detection, and manifest
-management. See Resources for the reference implementation.
+This methodology is designed for AI agents to participate at
+every stage, from spec authoring to artifact generation to
+debugging. It requires tooling for chain assembly, staleness
+detection, and manifest management. See Resources for the
+reference implementation.
 
 ---
 
@@ -34,8 +34,7 @@ code-from-spec/
 
 ## Specifications
 
-Specifications are the source of truth from which artifacts are
-generated.
+Specifications carry the project's decisions.
 
 ### Location
 
@@ -356,9 +355,10 @@ before returning or comparing them.
 
 ## Resources
 
-### Framework repository
+### Project sites
 
-https://github.com/CodeFromSpec/framework
+- https://codefromspec.com
+- https://github.com/CodeFromSpec
 
 ### Companion documents
 
