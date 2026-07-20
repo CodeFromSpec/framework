@@ -13,25 +13,6 @@ reference implementation.
 
 ---
 
-## The Model
-
-Specifications are organized as a tree — or multiple
-independent trees — of spec nodes. Each node adds precision
-to its parent — high-level intent at the root, implementation
-detail at the leaves. Only leaf nodes generate artifacts.
-
-```
-code-from-spec/
-├── payments/
-│   └── fees/
-│       ├── calculation/   ← leaf, generates artifacts
-│       └── rounding/      ← leaf, generates artifacts
-└── integrations/
-    └── database/          ← leaf
-```
-
----
-
 ## Specifications
 
 Specifications carry the project's decisions.
@@ -43,7 +24,20 @@ Specifications live under `<project root>/code-from-spec/`.
 ### Structure
 
 Specifications are organized as a tree — or multiple
-independent trees — of spec nodes.
+independent trees — of spec nodes. Each node adds precision
+to its parent — high-level decisions at the root,
+implementation detail at the leaves. Only leaf nodes
+generate artifacts.
+
+```
+code-from-spec/
+├── payments/
+│   └── fees/
+│       ├── calculation/   ← leaf, generates artifacts
+│       └── rounding/      ← leaf, generates artifacts
+└── integrations/
+    └── database/          ← leaf
+```
 
 Child nodes inherit the public content of all their ancestors.
 This inheritance is automatic and mandatory.
@@ -224,8 +218,8 @@ immediately after the frontmatter closing `---` (if
 present) or on the first line of the file. Nothing may
 precede it, not even whitespace. The heading is the
 node's name (e.g. `# SPEC/architecture/backend/config`).
-Its content serves as intent — what this node does and
-why it exists. This section is not inherited, not
+Its content states the node's purpose — what this node
+does and why it exists. This section is not inherited, not
 importable, and not included in the chain.
 
 #### Public section
