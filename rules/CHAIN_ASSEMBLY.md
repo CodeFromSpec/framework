@@ -82,9 +82,9 @@ The document has up to seven sections, in this order:
 Sections 1–4 provide context from the previous
 generation: what the spec said before, what input was
 used, and what was generated from them. Section 5 is
-the current source of truth. Section 6 is the
-generation guidance. Section 7 is the material to
-transform.
+the current spec content, authoritative over everything
+before it. Section 6 is the generation guidance.
+Section 7 is the material to transform.
 
 ## Generation scenarios
 
