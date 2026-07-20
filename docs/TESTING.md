@@ -61,7 +61,7 @@ regeneration.
 The same discipline applies in reverse: never fix a failing
 test by editing the generated test file, and never weaken a
 test spec to make an implementation pass. Diagnose first — see
-"Diagnose before regenerating" in
+"Diagnose before fixing" in
 [BEST_PRACTICES.md](BEST_PRACTICES.md).
 
 ---
