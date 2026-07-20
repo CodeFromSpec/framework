@@ -1,14 +1,20 @@
-# Code From Spec v5
+# Code from Spec v5
 
-**Code From Spec** is a methodology where code is a generated
-artifact, not the source of truth. The source of truth is a
-hierarchy of specification files. To change behavior, you change
-the spec and regenerate. You never edit generated artifacts
-directly.
+**Code from Spec** is a methodology where specifications drive
+the code. A specification defines a region of acceptable
+programs, not a single one: generate twice from the same spec
+and you can get two different programs, both correct. Each
+generation resolves what the specification leaves open, and
+the generated artifact records those resolutions.
 
-This methodology is designed for AI agent participation at every
-stage — writing specs, generating artifacts, detecting staleness,
-and assisting non-technical contributors with spec authoring.
+To change behavior, you change the specifications and
+regenerate. Never edit generated artifacts directly — a fix
+the specifications don't carry will not survive the next
+generation.
+
+This methodology is designed for AI agents to participate at
+every stage, from spec authoring to artifact generation to
+debugging.
 
 ---
 
@@ -34,7 +40,7 @@ For a stable release, use a version branch:
 Specifications are organized as a tree of nodes under
 `code-from-spec/`. Each node is a directory containing a
 `_node.md` file. Child nodes add precision to their parents —
-high-level intent at the root, implementation detail at the
+high-level decisions at the root, implementation detail at the
 leaves. Only leaf nodes generate artifacts.
 
 ```
@@ -47,9 +53,31 @@ code-from-spec/
             └── _node.md   ← leaf → generates artifacts
 ```
 
-Staleness is detected automatically by comparing a hash of each
-node's context against the hash recorded in its generated artifacts.
-When they differ, the artifact is stale and must be regenerated.
+Staleness is detected automatically by comparing a hash of
+everything that feeds a node's generation — its ancestors,
+dependencies, and own content — against the hash recorded in
+the manifest at the time of generation. When they differ, the artifact is stale and
+must be regenerated. Generated files carry no framework metadata —
+the manifest holds all the bookkeeping.
+
+Regeneration is not a blind rewrite. The tooling assembles
+each generation's context as a **spec chain**: the current
+spec content with changes marked, the previous content of
+what changed, and the existing artifact as a reference. The
+generator sees exactly what changed since the last
+generation — so the existing code keeps diffs small and
+stable, without ever overriding what the spec now says.
+
+---
+
+## Theory
+
+The design decisions above are not ad hoc — they follow from
+a theory of spec-driven development, published at
+[codefromspec.com/theory](https://codefromspec.com/theory):
+why a specification defines a region rather than a program,
+why the artifact is not a disposable output of the spec, and
+why regeneration must show the generator what changed.
 
 ---
 
@@ -88,7 +116,7 @@ context for the current session.
 
 ## Scope
 
-Code from Spec turns knowledge into verified software. It
+Code from Spec turns knowledge into software. It
 owns the path from specification to generated code — not
 the infrastructure the code runs on. Provisioning,
 deployment, and operations (databases, clusters, CI/CD)
@@ -128,7 +156,6 @@ possible but out of scope — community contributions welcome.
 | [`cfs-init-session`](skills/cfs-init-session/SKILL.md) | Load guidelines at session start |
 | [`cfs-status`](skills/cfs-status/SKILL.md) | Report spec tree health (errors, cycles, staleness) |
 | [`cfs-generate`](skills/cfs-generate/SKILL.md) | Regenerate stale artifacts |
-| [`cfs-check-meta-language`](skills/cfs-check-meta-language/SKILL.md) | Detect tree-structure references in spec content |
 
 ### Subagents
 
@@ -142,19 +169,8 @@ possible but out of scope — community contributions welcome.
 |---|---|
 | [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md) | Practical guidance for spec authoring |
 | [`docs/LAYERS.md`](docs/LAYERS.md) | Progressive refinement layers |
-
-### Documentation
-
-| Directory | Contents |
-|---|---|
-| [`docs/future-work/`](docs/future-work/) | Planned features and ideas |
-| [`docs/misc/`](docs/misc/) | Conceptual notes and reference material |
-
-The rationale behind the methodology — why it exists and why it
-works — is published at
-[codefromspec.com](https://codefromspec.com/rationale), along with
-[articles](https://codefromspec.com/articles) on specific design
-decisions.
+| [`docs/TESTING.md`](docs/TESTING.md) | Organizing test specs and keeping them independent |
+| [`docs/FUTURE_WORK.md`](docs/FUTURE_WORK.md) | What the theory obliges that the framework does not yet meet |
 
 ---
 

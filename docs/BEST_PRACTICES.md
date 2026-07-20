@@ -6,70 +6,77 @@ that reduce friction and avoid common pitfalls.
 
 ---
 
-## Diagnose before regenerating
+## Diagnose before fixing
 
 ### The problem
 
-When generated artifacts fail tests, the instinct is to regenerate
-immediately — fix the spec, dispatch the subagent, hope it works
-this time. This often produces the same bug or a different one,
-because the root cause was never understood.
-
-The spec might be correct and the subagent might have made a
-reasonable but wrong implementation choice. Regenerating from the
-same spec can produce the same wrong choice, or a different wrong
-choice, burning tokens without progress.
+A failing test is a disagreement between two generated
+readings — the implementation and the test — and either
+side can be the wrong one. Each root cause takes a
+different repair. A fix applied without knowing the case
+tends to reproduce the bug — or to damage the spec: a
+clause added to chase a bug the spec never had teaches
+nothing and clutters every future generation.
 
 ### The practice
 
-When tests fail after artifact generation, stop and diagnose:
+1. **Read the failure.** What specifically went wrong? A
+   failing assertion, a panic, a compilation error, a bug
+   report from use?
 
-1. **Read the failing test output.** What specifically failed?
-   An assertion, a panic, a compilation error?
+2. **Read the generated artifact.** Find the line or logic
+   that caused it. Understand what it is doing and why it
+   is wrong.
 
-2. **Read the generated artifact.** Find the line or logic that
-   caused the failure. Understand what it is doing and why it's
-   wrong.
+3. **Trace back to the specs — on both sides.** Read the
+   spec that produced the artifact and the test spec
+   behind the failing test, with the context they inherit.
+   Decide which side is wrong before fixing anything. The
+   diagnosis lands in one of four cases.
 
-3. **Trace back to the spec.** Is the spec ambiguous? Missing a
-   constraint? Prescribing something that doesn't work? Or is
-   the spec correct and the subagent simply implemented it
-   incorrectly?
+4. **Repair according to the case.**
 
-4. **Fix the spec if needed.** If the spec is the problem,
-   correct it. Be specific — add the constraint, prescribe the
-   approach, clarify the ambiguity. A vague spec fix produces
-   vague output.
+   **The test is wrong.** The implementation may be fine.
+   If the generated assertion does not follow from its
+   test spec, regenerate the test. If the test spec itself
+   is wrong — it pins an accident of a previous artifact,
+   or an expectation that intent has moved past — correct
+   the test spec. Never edit the generated test file, and
+   never weaken a test spec just to make the suite pass.
 
-5. **Regenerate.** Now that you understand the problem and the
-   spec addresses it, regeneration is targeted rather than
-   hopeful.
+   **The spec never ruled on it.** The generator resolved a
+   silence — and resolved it against what you wanted (a
+   spec that never said which function to use; generated
+   code that picked a platform-dependent one). The repair
+   is a decision: state the missing rule in the spec, and
+   pin it with a test spec so it is checked mechanically
+   from now on (see [TESTING.md](TESTING.md)).
 
-### A real example
+   **The spec ruled and the artifact disobeyed.** The
+   repair depends on where the failure was caught. A test
+   caught it: nothing to fix — the test did its job;
+   regenerate. The same miss returns across regenerations:
+   the clause is not landing with this generator — reword
+   how the spec says it; the decision itself is fine. It
+   slipped past the tests and was found in use: the gap is
+   in the test suite — add the test spec that would have
+   caught it.
 
-In one session, generated code used a standard library function
-(`filepath.Match`) that behaved differently across operating
-systems. Tests passed on Windows but failed on Linux. The spec
-was not wrong — it simply didn't prescribe which function to
-use, so the subagent chose one that seemed reasonable.
+   **The spec ruled wrong.** The artifact obeys the spec
+   and the behavior is still wrong — the spec does not say
+   what the project needs. No test derived from the spec
+   can catch this; the verdict comes from people or
+   production. Correct the spec, and review the test specs
+   that inherited the error.
 
-The first instinct was to regenerate. Instead, the team
-investigated: they read the test output, traced the failure to
-the function's platform-dependent behavior, identified that the
-spec needed to prescribe a platform-independent alternative
-(`path.Match`), updated the spec, and regenerated. The fix was
-permanent.
-
-Had they regenerated without diagnosing, the subagent might have
-chosen the same function again — or a different one with its own
-problems.
+5. **Regenerate.** With the repair in place, regeneration
+   is targeted rather than hopeful.
 
 ### The principle
 
-Regeneration is not debugging. The subagent generates artifacts
-from the spec it receives. If the spec doesn't address the
-problem, no amount of regeneration will fix it. Diagnosis is the
-step that turns a failing test into a better spec.
+The diagnosis decides where the repair goes — the test,
+the spec, or nowhere but a regeneration. Skipping the
+diagnosis means picking the repair blind.
 
 ---
 
@@ -194,8 +201,8 @@ the agent will fetch or remember them is unreliable.
 ### The practice
 
 Run `/cfs-init-session` at the start of every session. It reads
-`code-from-spec/.rules/CODE_FROM_SPEC.md` (the pinned copy
-installed by `cfs-init-repo`) and loads the working guidelines.
+the pinned copy of `CODE_FROM_SPEC.md` bundled with the skill
+(installed by `cfs-init-repo`) and loads the working guidelines.
 
 If context gets cluttered during a long session, clear and
 re-initialize:
@@ -218,33 +225,34 @@ and no partial reads.
 ### The problem
 
 The cache stores spec chain content from previous
-generations. Without proper lifecycle management, the
-cache accumulates stale data or loses entries that are
-still relevant.
+generations. It only serves its purpose — showing the
+subagent what changed — if it is rebuilt when the git
+state moves, and it raises an obvious question over time:
+when should it be pruned?
 
 ### The practice
 
 Treat `cfs-init-session` as the boundary between tasks.
 The recommended workflow:
 
-1. **Start of task**: `cfs-init-session` — prunes the
-   cache and reconstructs it from the current state.
-   The git state is stable (fresh clone, post-merge,
-   or start of new work).
+1. **Start of task**: `cfs-init-session` — reconstructs
+   the cache from the current state. The git state is
+   stable (fresh clone, post-merge, or start of new work).
 2. **Work**: edit specs, regenerate, test. The cache
-   grows as new chains are computed. No pruning during
-   work.
+   grows as new chains are computed.
 3. **End of task**: PR, merge.
-4. **Next task**: `cfs-init-session` again — prune and
-   reconstruct.
+4. **Next task**: `cfs-init-session` again.
 
-Pruning at the start of a session is safe because the
-git state has not been modified yet — there is no risk
-of discarding cache entries that a `git restore` might
-make relevant again. During work, the cache only grows.
+Pruning is always manual — no step of the workflow prunes
+for you. Cache space is cheap, and old entries are not
+dead weight: a `git restore` or a reverted merge can make
+an old chain current again, and a cache that still holds
+its content spares the next generation from running
+without history. Run `prune_cache` only when the cache's
+size actually becomes a problem.
 
 ### The principle
 
-The cache is a session-scoped resource. It is built at
-the start, grows during work, and is cleaned at the
-start of the next session.
+The cache is rebuilt at task boundaries and grows during
+work. Old entries cost disk and buy history. Prune by
+need, never by schedule.
