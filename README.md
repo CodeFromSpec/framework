@@ -155,7 +155,6 @@ possible but out of scope — community contributions welcome.
 | [`cfs-init-session`](skills/cfs-init-session/SKILL.md) | Load guidelines at session start |
 | [`cfs-status`](skills/cfs-status/SKILL.md) | Report spec tree health (errors, cycles, staleness) |
 | [`cfs-generate`](skills/cfs-generate/SKILL.md) | Regenerate stale artifacts |
-| [`cfs-check-meta-language`](skills/cfs-check-meta-language/SKILL.md) | Detect tree-structure references in spec content |
 
 ### Subagents
 

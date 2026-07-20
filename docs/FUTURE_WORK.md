@@ -33,6 +33,14 @@ much it hurts today.
   presenting spec and artifact together without the artifact
   capturing the draw. It is a bet, not a validated result.
 
+- **Tree-aware chain reading.** Spec authors naturally write
+  from their position in the tree — "the parent node", "this
+  node" — and chain entry names already encode the hierarchy
+  as paths. The generation subagent should be taught to
+  resolve such references from the entry names and their
+  order, rather than policing the authored form to avoid
+  them.
+
 - **Spec-toward-prompt drift.** The generation loop polices
   only what changes the generated output, so specs drift
   toward excellent prompts and away from a legible theory of

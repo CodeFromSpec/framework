@@ -69,8 +69,6 @@ already in place.
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-generate/SKILL.md`
    - `cfs-status` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-status/SKILL.md`
-   - `cfs-check-meta-language` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-check-meta-language/SKILL.md`
    - `cfs-init-session` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-session/SKILL.md`
    - `cfs-init-session/CODE_FROM_SPEC.md` from
