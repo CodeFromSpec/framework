@@ -36,6 +36,7 @@ already in place.
 
    - `/code-from-spec/.tools/`
    - `/code-from-spec/.cache/`
+   - `/code-from-spec/.dump/`
    - `/code-from-spec/.manifest.lock`
 
 4. **Configure the MCP server.** Create or update

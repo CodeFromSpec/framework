@@ -176,9 +176,33 @@ Save the spec chain for a given node to a file for inspection.
 **Behavior:**
 
 Assemble the spec chain exactly as `load_chain` would, and write it to
-`<project root>/dump_chain.xml`. This produces the same document the
-generation subagent would receive, allowing the orchestrator or the
-human to inspect it.
+a file under `code-from-spec/.dump/`, named after the logical name with
+path separators replaced by underscores (e.g.,
+`code-from-spec/.dump/SPEC_golang_implementation_chain_hash.xml`). Each
+node dumps to its own file, so multiple dumps do not overwrite each
+other. This produces the same document the generation subagent would
+receive, allowing the orchestrator or the human to inspect it.
+
+---
+
+## prune_orphans
+
+Remove orphan manifest entries and their artifact files.
+
+**Parameters:** none.
+
+**Behavior:**
+
+1. Scan the spec tree and identify manifest entries whose corresponding
+   spec node no longer exists or no longer declares `output`.
+2. For each orphan entry, delete the artifact file from disk first, then
+   remove the entry from the manifest. This order ensures that if the
+   file deletion fails, the manifest entry is preserved — the orphan
+   remains trackable.
+3. If the artifact file does not exist on disk, remove the manifest entry
+   directly.
+4. If the artifact file exists but cannot be deleted, skip that entry —
+   do not remove it from the manifest.
 
 ---
 

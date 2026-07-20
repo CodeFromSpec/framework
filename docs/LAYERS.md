@@ -15,7 +15,7 @@ becomes detailed logic becomes source code, one transformation
 at a time.
 
 ```
-SPEC/domain/           ← business intent (written by non-programmers)
+SPEC/domain/           ← business rules (written by non-programmers)
 SPEC/functional/       ← pseudocode logic (generated from domain artifacts)
 SPEC/implementation/   ← source code (generated from functional artifacts)
 ```
@@ -116,23 +116,26 @@ does not inflate context; here, depth does not either.
 ```
 code-from-spec/
 ├── domain/
+│   ├── _node.md               ← conventions for the domain layer
 │   └── transfers/
 │       └── _node.md           ← leaf, output: domain/transfers/output.md
 ├── functional/
+│   ├── _node.md               ← conventions for the functional layer
 │   └── transfers/
 │       └── _node.md           ← input: ARTIFACT/domain/transfers
 └── implementation/
+    ├── _node.md               ← conventions for the implementation layer
     └── transfers/
         └── _node.md           ← input: ARTIFACT/functional/transfers
 ```
 
-The `domain/` layer captures business intent. The `functional/`
+The `domain/` layer encodes business intent. The `functional/`
 layer consumes domain artifacts and produces pseudocode or
 detailed logic. The `implementation/` layer consumes functional
 artifacts and produces source code.
 
 Within each layer, intermediate nodes define the conventions for
-their leaf nodes. Some examples:
+their leaf nodes. Some examples, from this pipeline and beyond:
 
 - **`SPEC/domain/`** — glossary of business terms, rules
   for writing acceptance criteria, tone and language for
@@ -168,6 +171,7 @@ code-from-spec/
 │       └── _node.md          ← input: EXTERNAL/docs/vendor/api-spec.yaml
 │                                output: extraction/vendor-api/output.md
 ├── functional/
+│   ├── _node.md              ← conventions for the functional layer
 │   └── transfers/
 │       └── _node.md          ← depends_on: ARTIFACT/extraction/payments-proto
 ```
