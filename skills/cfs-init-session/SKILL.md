@@ -50,11 +50,11 @@ working on a project that uses Code from Spec.
 
 ## Guidelines
 
-### Source of truth
+### Authority
 
-The spec tree under `code-from-spec/` is the source of
-truth. Generated code is a derived artifact. When the
-two conflict, the spec wins.
+The spec tree under `code-from-spec/` carries the
+project's decisions. A conflict between spec and
+generated code is won by the spec.
 
 ### Working with specs
 
