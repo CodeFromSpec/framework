@@ -1,6 +1,6 @@
-# Code From Spec v5
+# Code from Spec v5
 
-**Code From Spec** is a methodology where specifications drive
+**Code from Spec** is a methodology where specifications drive
 the code. To change behavior, you change the specifications and
 regenerate. Never edit generated artifacts directly — a fix the
 specifications don't carry will not survive the next generation.

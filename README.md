@@ -1,6 +1,6 @@
-# Code From Spec v5
+# Code from Spec v5
 
-**Code From Spec** is a methodology where specifications drive
+**Code from Spec** is a methodology where specifications drive
 the code. A specification defines a region of acceptable
 programs, not a single one: generate twice from the same spec
 and you can get two different programs, both correct. Each
@@ -53,9 +53,10 @@ code-from-spec/
             └── _node.md   ← leaf → generates artifacts
 ```
 
-Staleness is detected automatically by comparing a hash of each
-node's context against the hash recorded in the manifest at the
-time of generation. When they differ, the artifact is stale and
+Staleness is detected automatically by comparing a hash of
+everything that feeds a node's generation — its ancestors,
+dependencies, and own content — against the hash recorded in
+the manifest at the time of generation. When they differ, the artifact is stale and
 must be regenerated. Generated files carry no framework metadata —
 the manifest holds all the bookkeeping.
 
@@ -115,7 +116,7 @@ context for the current session.
 
 ## Scope
 
-Code from Spec turns knowledge into verified software. It
+Code from Spec turns knowledge into software. It
 owns the path from specification to generated code — not
 the infrastructure the code runs on. Provisioning,
 deployment, and operations (databases, clusters, CI/CD)
