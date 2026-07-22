@@ -204,6 +204,9 @@ Remove orphan manifest entries and their artifact files.
 4. If the artifact file exists but cannot be deleted, skip that entry —
    do not remove it from the manifest.
 
+Returns a report of every entry pruned. See MANIFEST.md ("Artifact
+status") for the orphan status reported by `validate_specs`.
+
 ---
 
 ## version
