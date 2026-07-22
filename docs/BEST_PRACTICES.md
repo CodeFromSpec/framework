@@ -160,6 +160,85 @@ regenerations.
 
 ---
 
+## Route dependencies through the interface
+
+### The problem
+
+When module A consumes module B, the tempting dependency is
+B's implementation artifact. Every internal change to B then
+makes A stale, even when B's contract did not move — and B's
+full source enters A's chain, so A's generation subagent
+anchors on internals A was never meant to depend on.
+
+### The practice
+
+Give the module an explicit contract — an authored
+`## Interface` subsection imported via a qualified
+reference, or a generated interface artifact — and make
+every consumer depend on it alone. Prefer the most
+mechanically checkable form the language offers. See
+[DECOMPOSITION.md](DECOMPOSITION.md) for the forms, the
+oracle regimes, and per-language guidance.
+
+### The principle
+
+Consumers depend on the contract, never the implementation.
+Staleness propagates at contract granularity, and what the
+interface does not state stays free to change.
+
+---
+
+## Harvest shared helpers, do not predict them
+
+### The problem
+
+With one node per file, shared helpers raise a question:
+how does a generation subagent know which helpers it may
+call? Confinement means an agent sees only its chain — it
+cannot browse the package for what exists. The tempting
+fix is to author the helper nodes up front, but that
+inverts their nature: a helper is a resolution, something
+draws reveal a need for, not a design decision the author
+can predict on day zero.
+
+### The practice
+
+Treat shared helpers as a lifecycle:
+
+1. **First draws self-contain.** Each node's generation
+   gets by on its own — local helpers, inline logic.
+   Duplication across sibling files appears. That is the
+   cost of independent draws, and it is acceptable.
+
+2. **Harvest.** The author observes the repetition — three
+   files carrying the same fetch-with-lock sequence — and
+   ratifies it: a helper node is born, its spec written
+   from what the draws revealed necessary, its signatures
+   stated in `# Public ## Interface`.
+
+3. **Steady state.** The helper is now available
+   vocabulary. A new node whose domain touches it declares
+   `depends_on: SPEC/…/utils_x(interface)` — not
+   predicting helpers, importing vocabulary that already
+   exists. The agent decides whether and how to use what
+   its chain offers; what it cannot do is depend on what
+   it cannot see.
+
+4. **Deduplicate gradually.** The nodes that duplicated
+   the logic gain the `depends_on` and regenerate when it
+   is worth the draw — not all at once, not urgently.
+
+### The principle
+
+A shared helper is a ratified discovery, not a predicted
+design: the helper node is the project's memory of what
+the draws taught. Confinement is what makes that memory
+reliable — an agent can only call what its chain shows, so
+every shared use is a declared, staleness-tracked
+dependency instead of an untracked coupling.
+
+---
+
 ## Place conventions at the right level
 
 ### The problem
