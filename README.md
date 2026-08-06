@@ -1,4 +1,4 @@
-# Code from Spec v5
+# Code from Spec v6
 
 **Code from Spec** is a methodology where specifications drive
 the code. A specification defines a region of acceptable
@@ -28,6 +28,7 @@ For a stable release, use a version branch:
 
 | Version | Branch                                                                                                 |
 |---------|--------------------------------------------------------------------------------------------------------|
+| v5      | [https://github.com/CodeFromSpec/framework/tree/v5](https://github.com/CodeFromSpec/framework/tree/v5) |
 | v4      | [https://github.com/CodeFromSpec/framework/tree/v4](https://github.com/CodeFromSpec/framework/tree/v4) |
 | v3      | [https://github.com/CodeFromSpec/framework/tree/v3](https://github.com/CodeFromSpec/framework/tree/v3) |
 | v2      | [https://github.com/CodeFromSpec/framework/tree/v2](https://github.com/CodeFromSpec/framework/tree/v2) |
@@ -167,11 +168,15 @@ possible but out of scope — community contributions welcome.
 
 | File | Purpose |
 |---|---|
+| [`docs/HOWTO_FIRST_SLICE.md`](docs/HOWTO_FIRST_SLICE.md) | Step-by-step walkthrough from empty spec tree to a built, running artifact |
 | [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md) | Practical guidance for spec authoring |
 | [`docs/LAYERS.md`](docs/LAYERS.md) | Progressive refinement layers |
 | [`docs/DECOMPOSITION.md`](docs/DECOMPOSITION.md) | Splitting software into modules and routing dependencies through interfaces |
 | [`docs/TESTING.md`](docs/TESTING.md) | Organizing test specs and keeping them independent |
+| [`docs/DOCUMENTATION.md`](docs/DOCUMENTATION.md) | Generating project documentation from the same spec tree that generates the code |
+| [`docs/migration_guides/FROM_V5_TO_V6.md`](docs/migration_guides/FROM_V5_TO_V6.md) | Migrating a v5 spec tree to v6 |
 | [`docs/FUTURE_WORK.md`](docs/FUTURE_WORK.md) | What the theory obliges that the framework does not yet meet |
+| [`RELEASING.md`](RELEASING.md) | Freezing a stable version branch and reopening main for the next version (development branch only) |
 
 ---
 
