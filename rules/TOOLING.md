@@ -223,8 +223,8 @@ Report the tool version.
 
 | Document | Description |
 |---|---|
-| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/main/CODE_FROM_SPEC.md) | Full methodology specification |
-| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
-| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
-| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CACHE.md) | Cache structure for disposition computation |
+| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/v5/CODE_FROM_SPEC.md) | Full methodology specification |
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/v5/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/v5/rules/MANIFEST.md) | Manifest format and artifact status |
+| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/v5/rules/CACHE.md) | Cache structure for disposition computation |
 | [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | Reference implementation |

@@ -187,7 +187,7 @@ content. See CHAIN_ASSEMBLY.md for the full format.
 
 | Document | Description |
 |---|---|
-| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/main/CODE_FROM_SPEC.md) | Full methodology specification |
-| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
-| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
-| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
+| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/v5/CODE_FROM_SPEC.md) | Full methodology specification |
+| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/v5/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/v5/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/v5/rules/MANIFEST.md) | Manifest format and artifact status |

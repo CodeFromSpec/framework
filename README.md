@@ -20,11 +20,7 @@ debugging.
 
 ## Versions
 
-> [!WARNING] 
-> **This is the development branch (`main`) and may contain unreleased
-> changes.** 
-
-For a stable release, use a version branch:
+This is the **v5 stable release** branch. For other versions:
 
 | Version | Branch                                                                                                 |
 |---------|--------------------------------------------------------------------------------------------------------|
@@ -89,7 +85,7 @@ Copy and paste the following prompt into Claude Code:
 
 ````
 Download the Code from Spec init skill from
-https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-repo/SKILL.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v5/skills/cfs-init-repo/SKILL.md
 and save it to `.claude/skills/cfs-init-repo/SKILL.md`.
 Create the directory if needed.
 ````
@@ -167,10 +163,12 @@ possible but out of scope — community contributions welcome.
 
 | File | Purpose |
 |---|---|
+| [`docs/HOWTO_FIRST_SLICE.md`](docs/HOWTO_FIRST_SLICE.md) | Step-by-step walkthrough from empty spec tree to a built, running artifact |
 | [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md) | Practical guidance for spec authoring |
 | [`docs/LAYERS.md`](docs/LAYERS.md) | Progressive refinement layers |
 | [`docs/DECOMPOSITION.md`](docs/DECOMPOSITION.md) | Splitting software into modules and routing dependencies through interfaces |
 | [`docs/TESTING.md`](docs/TESTING.md) | Organizing test specs and keeping them independent |
+| [`docs/DOCUMENTATION.md`](docs/DOCUMENTATION.md) | Generating project documentation from the same spec tree that generates the code |
 | [`docs/FUTURE_WORK.md`](docs/FUTURE_WORK.md) | What the theory obliges that the framework does not yet meet |
 
 ---
@@ -185,14 +183,12 @@ possible but out of scope — community contributions welcome.
 
 ## Versioning
 
-`main` is the development branch. Released versions live in
-dedicated branches (`v1`, `v2`, ...) and are frozen — they
-receive fixes only in exceptional cases. Breaking changes
-always produce a new version branch.
+This is the `v5` stable branch. It is frozen — it receives
+fixes only in exceptional cases. Development continues on
+`main`.
 
-To fetch a specific version of the methodology, use the raw URLs
-from the appropriate branch:
+To fetch v5 files, use the raw URLs from this branch:
 
 ```
-https://raw.githubusercontent.com/CodeFromSpec/framework/<version>/CODE_FROM_SPEC.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v5/CODE_FROM_SPEC.md
 ```
