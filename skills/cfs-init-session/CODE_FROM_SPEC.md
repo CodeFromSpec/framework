@@ -1,4 +1,4 @@
-# Code from Spec v5
+# Code from Spec v6
 
 **Code from Spec** is a methodology where specifications drive
 the code. To change behavior, you change the specifications and
