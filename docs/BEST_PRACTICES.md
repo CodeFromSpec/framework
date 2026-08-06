@@ -34,7 +34,20 @@ nothing and clutters every future generation.
    Decide which side is wrong before fixing anything. The
    diagnosis lands in one of four cases.
 
-4. **Repair according to the case.**
+4. **Pin the bug with a test spec.** Before repairing
+   anything, write (or update) a test spec that captures
+   the correct behavior — the behavior the bug violates.
+   Regenerate the test and confirm it fails against the
+   current artifact. A red test before the fix proves the
+   bug is real and detectable; a green test after the fix
+   proves the repair worked. Without this step, you are
+   trusting that the fix is correct without a mechanical
+   check — the same gap that let the bug in. If the
+   diagnosis shows the test spec is the wrong side (case
+   one below), this step does not apply — you are
+   correcting the test, not adding one.
+
+5. **Repair according to the case.**
 
    **The test is wrong.** The implementation may be fine.
    If the generated assertion does not follow from its
@@ -69,7 +82,7 @@ nothing and clutters every future generation.
    production. Correct the spec, and review the test specs
    that inherited the error.
 
-5. **Regenerate.** With the repair in place, regeneration
+6. **Regenerate.** With the repair in place, regeneration
    is targeted rather than hopeful.
 
 ### The principle
@@ -335,3 +348,47 @@ size actually becomes a problem.
 The cache is rebuilt at task boundaries and grows during
 work. Old entries cost disk and buy history. Prune by
 need, never by schedule.
+
+---
+
+## Names are specs
+
+### The problem
+
+A generation subagent reads every identifier in the chain
+as a declaration of intent. A parameter named `sessionHash`
+tells the subagent the value is already hashed; a parameter
+named `sessionID` tells it the value is a raw identifier
+that may need processing. The name decides behavior — no
+instruction in `# Agent` compensates for a name that says
+the wrong thing.
+
+This applies to every name in the spec: function names,
+parameter names, field names, type names, error sentinel
+names. Each one is read by the subagent as meaning exactly
+what it says.
+
+### The practice
+
+Name everything for what it **is**, not for what will be
+done to it or what it came from. A raw session identifier
+is `sessionID`, not `sessionHash` (which says it is already
+hashed) and not `sessionToken` (which says what carried it).
+
+When reviewing a spec, read the names as a subagent would —
+literally, without the context you carry. If a name
+suggests a different meaning than the one intended, the
+subagent will follow the name.
+
+### The principle
+
+A name in the spec is a contract with the subagent. It
+will be taken at face value. A misleading name produces
+correct-looking code that does the wrong thing, and no
+amount of prose in `# Agent` overrides what the name
+already said.
+
+A name that is precise enough for a subagent is precise
+enough for a human — both read it literally and expect it
+to mean what it says. Getting names right for generation
+gets them right for everyone who reads the code afterwards.

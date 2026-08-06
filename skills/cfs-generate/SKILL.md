@@ -72,13 +72,13 @@ artifacts, or when stale artifacts exist.
   the next rank.
 - Never edit generated files manually — always regenerate via
   a subagent.
-- After each subagent completes, check its output for an
-  `## Assumptions` section or any language indicating the spec
-  was ambiguous, silent, or required interpretation (e.g.,
-  "the spec does not specify", "chose", "assumed", "not
-  defined"). Collect all such items and present them to the
-  user **before** reporting success. These are potential spec
-  gaps that need confirmation.
+- After each subagent completes, report **any feedback** the
+  subagent provided beyond confirming the file was written —
+  assumptions, decisions, ambiguities, dependencies on code
+  not in the chain, or anything else the subagent chose to
+  mention. Present the subagent's exact text to the user
+  **before** continuing to the next artifact. Do not filter
+  or classify the feedback — the user decides what matters.
 - If a subagent reports a spec gap that prevented generation,
   surface it to the user. Do not attempt to fill the gap by
   reading the codebase yourself.
