@@ -32,6 +32,23 @@ must have its header updated — regenerating the manifest
 also works, at the cost of every artifact being treated as
 stale.
 
+### Capability tokens for `load_chain` and `write_file`
+
+`load_chain` and `write_file` no longer accept a
+`logical_name` parameter. They take a `token` minted by the
+new `create_token` operation, which the orchestrator calls
+before dispatching each generation subagent. The subagent
+receives only the token, cannot mint one itself, and
+therefore cannot load the chain of, or write the output
+for, any node other than its target (see TOOLING.md,
+`create_token`).
+
+**Action:** upgrade the tooling to the v6 series and
+re-download the `cfs-generate` skill and the
+`cfs-artifact-generation` subagent definition. v5 skills
+and subagents pass logical names to `load_chain` and
+`write_file`, which the v6 tooling rejects.
+
 ---
 
 ## Behavioral changes
