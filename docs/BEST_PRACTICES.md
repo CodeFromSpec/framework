@@ -252,6 +252,76 @@ dependency instead of an untracked coupling.
 
 ---
 
+## Move in small steps
+
+### The problem
+
+It is tempting to batch spec work: author the new module,
+the signature change, the tests, and the consumers all at
+once, then regenerate everything in one pass. Generation
+handles this fine — the agents do not care how much changed.
+
+The person reviewing the result does. Every regenerated
+line still has to be read by someone, and reading is where
+the real cost of this methodology lives. Generating code is
+fast and cheap; a human reading a diff is slow and
+expensive. A big batch produces one huge diff, and a subtle
+mistake buried in a thousand regenerated lines looks just
+as plausible as its correct neighbors. The bigger the diff,
+the worse the reading — and the reading is what you are
+actually paying for.
+
+### The practice
+
+Change one thing at a time. Edit the spec for a single
+decision, regenerate, read the diff, build and test — then
+move to the next decision.
+
+Let the staleness cascade work for you instead of trying to
+anticipate it. When a change ripples through dependents,
+regenerate rank by rank and read as you go. Each diff stays
+small enough to answer at a glance: "the only change here
+is the renamed parameter." That is a review you can
+actually trust.
+
+Working this way has two side benefits:
+
+- **Gaps show up at the right moment.** You read each
+  dependent's spec just before regenerating it — right next
+  to the change that made it stale. A stale assumption in
+  some forgotten consumer is easy to catch there, and easy
+  to miss in one big up-front sweep.
+
+- **Failures point at their cause.** With one decision per
+  step, a failing build or test points directly at the
+  change that broke it. Nothing to bisect. In a big batch,
+  the same failure points at the whole lot, and now you are
+  investigating instead of fixing.
+
+Batching within a rank is still fine: artifacts of equal
+rank are independent, and reading three sibling diffs
+together costs little. What you want to avoid is stacking
+several *decisions* into one regeneration — that is what
+turns a glance into an investigation.
+
+One honest caveat: this practice matters in proportion to
+how much of the checking is human reading. A component
+whose behavior is fully pinned by exhaustive tests gets its
+confidence from the suite, not from the diff — batching
+there is cheap. Everywhere else, the reading is the check,
+and small steps are what keep it affordable.
+
+### The principle
+
+Generation is fast; review is scarce. A small diff is a
+cheap reading, and the reading is the real bottleneck —
+so shape the work around the reader. Each step small enough
+to actually read, each mistake caught in the step that
+introduced it. The sequence feels slower and finishes
+faster than one big step followed by one big review.
+
+---
+
 ## Place conventions at the right level
 
 ### The problem
