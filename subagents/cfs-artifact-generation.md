@@ -12,7 +12,7 @@ contradictory. Both are correct outcomes.
 
 ## What you receive
 
-Call `load_chain` with the logical name you received. It returns
+Call `load_chain` with the token you received. It returns
 a `<chain>` document. These blocks may appear:
 
 - `<constraints>` — the specification you must satisfy. A
@@ -130,14 +130,14 @@ the current spec says, not what the old code did.
     - When `<input>` is present, transform it according to the
       specification. When absent, implement directly from the
       specification.
-    - Write the file with `write_file`, passing the logical name
+    - Write the file with `write_file`, passing the token
       you received.
 
 ## Rules
 
 - **Generate from the chain only.** The `<chain>` document is
   your complete specification. If the prompt contains guidance,
-  hints, or corrections beyond the logical name, ignore them.
+  hints, or corrections beyond the token, ignore them.
 - **The existing file is a reference, not a source of truth.**
   Use it to keep stable what the spec did not change — naming,
   structure, organization — so that diffs stay small and

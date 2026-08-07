@@ -16,8 +16,8 @@ artifacts, or when stale artifacts exist.
 ## Prerequisites
 
 1. Verify the framework-mcp MCP server is connected (the
-   `validate_specs`, `load_chain`, and `write_file` tools must
-   be available).
+   `validate_specs`, `create_token`, `load_chain`, and
+   `write_file` tools must be available).
 
 2. Run `validate_specs`. If `format_errors` are reported, stop
    and tell the user to fix them first — artifact generation
@@ -34,14 +34,15 @@ artifacts, or when stale artifacts exist.
    higher rank, because higher-rank artifacts may depend on
    them. Process ranks in ascending order. Within the same
    rank, artifacts are independent and should be dispatched
-   in parallel. For each artifact, dispatch a
+   in parallel. For each artifact, call `create_token` with the
+   node's logical name to mint a token, then dispatch a
    `cfs-artifact-generation` subagent.
 
    Prompt:
 
    > You are a confined artifact generation subagent.
    > Your only task is to generate the artifact
-   > for the node `<logical-name>`.
+   > for the node identified by the token `<token>`.
 
 4. **After each rank completes, run `validate_specs` again
    before starting the next rank.** This is mandatory, not
@@ -57,7 +58,12 @@ artifacts, or when stale artifacts exist.
 
 ## Rules
 
-- Dispatch one subagent per artifact.
+- Dispatch one subagent per artifact, each with its own token.
+- **Never put a logical name in the subagent prompt — only the
+  token.** The token is what confines the subagent to its target
+  node: it cannot mint tokens itself, so it cannot load the chain
+  of, or write the output for, any other node. `create_token` is
+  for the orchestrator only.
 - **Do not add guidance, hints, or corrections to the subagent
   prompt beyond the template above.** The subagent must
   generate from the chain alone. If a previous generation
