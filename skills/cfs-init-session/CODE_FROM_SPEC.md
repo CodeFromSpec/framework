@@ -156,12 +156,17 @@ imports:
 #### input
 
 Optional. Material to be transformed into a new artifact.
-Uses a `SPEC/`, `ARTIFACT/`, or `EXTERNAL/` name. While
-`imports` brings in context that informs generation,
-`input` brings in content that the generation subagent
-transforms. When absent, the subagent generates directly
-from the specification without source material to
-transform.
+Accepts a single `SPEC/`, `ARTIFACT/`, or `EXTERNAL/` name,
+or a list of names. While `imports` brings in context that
+informs generation, `input` brings in content that the
+generation subagent transforms. When absent, the subagent
+generates directly from the specification without source
+material to transform.
+
+When `input` is a list, entries are delivered in alphabetical
+order by the full logical name, using the same ordering and
+deduplication rules as `imports` (see CHAIN_HASH.md). Each
+entry is tracked independently for staleness and disposition.
 
 ```yaml
 ---
@@ -172,6 +177,14 @@ input: ARTIFACT/functional/notifications
 ```yaml
 ---
 input: SPEC/functional/notifications(acceptance-tests)
+---
+```
+
+```yaml
+---
+input:
+  - ARTIFACT/functional/notifications/email
+  - ARTIFACT/functional/notifications/sms
 ---
 ```
 

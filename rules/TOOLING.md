@@ -55,7 +55,9 @@ document contains up to four core sections:
   `<entry>` element with a `name` attribute.
 - `<instructions>` — the target node's `# Agent` section.
 - `<input>` — the content referenced by the target node's `input`
-  field.
+  field. Each position is an `<entry>` element with a `name`
+  attribute, one per `input` reference (a single value or each item
+  in a list).
 
 When cache is available, up to three additional sections may appear
 before the core sections: `<previous_constraints>`,

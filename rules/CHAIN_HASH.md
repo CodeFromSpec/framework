@@ -73,8 +73,9 @@ assembly order:
    FILE_FORMAT.md.
 3. The target node — content hash of `# Public`, then content hash
    of `# Agent`.
-4. `input` entry (if present) — the byte `0x49` (`I`), followed
-   by the content hash of the referenced content.
+4. `input` entries, in alphabetical order by the full logical
+   name (including prefix and qualifier) — each contributes
+   the byte `0x49` (`I`) followed by its content hash.
 
 Redundant `imports` entries are deduplicated before hashing.
 When an entry without a qualifier exists for a given path, entries
@@ -85,11 +86,18 @@ remaining entry contributes its content hash in alphabetical
 order by the full logical name (including prefix and
 qualifier).
 
-The `0x49` marker ensures that moving a reference from
-`imports` to `input` (or vice versa) always changes the
-chain hash, even when the target node has no `# Public` or
-`# Agent` section and the content hash is the same in both
-positions.
+`input` entries follow the same deduplication rule,
+independently of `imports` — deduplication never crosses
+between the two fields.
+
+The `0x49` marker is prepended to every `input` entry's
+content hash individually. This ensures that moving a
+reference from `imports` to `input` (or vice versa) always
+changes the chain hash, even when the target node has no
+`# Public` or `# Agent` section and the content hash is the
+same in both positions — and that adding or removing one
+`input` entry among several changes the chain hash regardless
+of where the others sort alphabetically.
 
 The resulting SHA-1 is encoded as base64url to produce the
 27-character chain hash recorded in the manifest.
@@ -110,7 +118,9 @@ imports:
   - SPEC/integrations/database
   - EXTERNAL/docs/vendor/api-spec.yaml
   - ARTIFACT/extraction/proto
-input: ARTIFACT/functional/transfers
+input:
+  - ARTIFACT/functional/transfers/create
+  - ARTIFACT/functional/transfers/cancel
 output: internal/transfers/handler.go
 ---
 ```
@@ -128,13 +138,18 @@ SPEC/integrations/database                  [# Public]       → G  (imports)
 SPEC/payments/transfers                     [# Public]       → H  (target node)
 SPEC/payments/transfers                     [# Agent]        → I  (target node)
                                                                0x49
-ARTIFACT/functional/transfers               [full]           → J  (input)
+ARTIFACT/functional/transfers/cancel        [full]           → J  (input)
+                                                               0x49
+ARTIFACT/functional/transfers/create        [full]           → K  (input)
 ```
 
 The `imports` entries are sorted alphabetically by
 the full logical name — `ARTIFACT/` before `EXTERNAL/`
 before `SPEC/` — regardless of the order in the
-frontmatter.
+frontmatter. `input` entries are sorted the same way,
+independently of `imports` — here `cancel` sorts before
+`create` even though `create` is listed first in the
+frontmatter — and each carries its own `0x49` marker.
 
 ---
 
@@ -162,6 +177,28 @@ SHA-1( A || B || C || D || E || F || 0x49 || G )
 
 where `||` denotes concatenation of raw hash bytes (20 bytes
 each), and the result is encoded as base64url.
+
+### With multiple inputs
+
+Given the spec chain for `SPEC/payments/transfers`:
+
+```
+SPEC/payments                              [# Public]      → content hash A  (ancestor)
+SPEC/payments/transfers                    [# Public]      → content hash B  (target node)
+SPEC/payments/transfers                    [# Agent]       → content hash C  (target node)
+ARTIFACT/functional/transfers/cancel       [full]          → content hash D  (input)
+ARTIFACT/functional/transfers/create       [full]          → content hash E  (input)
+```
+
+The chain hash is:
+
+```
+SHA-1( A || B || C || 0x49 || D || 0x49 || E )
+```
+
+Each `input` entry contributes its own `0x49` marker,
+immediately followed by its content hash, in alphabetical
+order by full logical name.
 
 ### Without input
 
