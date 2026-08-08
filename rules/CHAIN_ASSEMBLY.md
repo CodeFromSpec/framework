@@ -118,7 +118,7 @@ Three scenarios determine which sections are present:
 Positions within `<constraints>` appear in this order:
 
 1. Ancestors from root to the target node's parent.
-2. `depends_on` entries in alphabetical order by the
+2. `imports` entries in alphabetical order by the
    full logical name (including prefix and qualifier).
 3. The target node's `# Public`.
 
@@ -145,7 +145,7 @@ Previous frontmatter (at the time of last generation):
 
 ```yaml
 ---
-depends_on:
+imports:
   - SPEC/legacy/old-fees
 input: ARTIFACT/functional/fees/calculation
 output: internal/fees/calculation.go
@@ -156,7 +156,7 @@ Current frontmatter:
 
 ```yaml
 ---
-depends_on:
+imports:
   - EXTERNAL/proto/payments/v1/transfers.proto
   - SPEC/integrations/database
 input: ARTIFACT/functional/fees/calculation

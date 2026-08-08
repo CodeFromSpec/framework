@@ -164,7 +164,7 @@ pattern rather than reinventing it for each page.
 A documentation leaf node has three parts:
 
 **Frontmatter** — declares `input` (the spec being
-documented), optional `depends_on` (additional context), and
+documented), optional `imports` (additional context), and
 `output` (the generated file path).
 
 **Public section** — contains `## Path` with the output
@@ -214,15 +214,15 @@ documentation. The subagent does the transformation.
 
 ---
 
-## Cross-linking with qualified depends_on
+## Cross-linking with qualified imports
 
 Index pages need to link to individual pages. A naive
 approach — hardcoding relative paths — breaks when pages
-move. A `depends_on` on the full content of each page pulls
-too much into the chain and makes the index stale whenever
+move. Declaring `imports` on the full content of each page
+pulls too much into the chain and makes the index stale whenever
 any page's content changes.
 
-The solution uses qualified `depends_on` with the `(Path)`
+The solution uses qualified `imports` with the `(Path)`
 selector. Each doc leaf node exposes a `## Path` subsection
 in its `# Public` containing only the output file path. The
 index node depends on `SPEC/doc/api/create-user(Path)`,
@@ -230,7 +230,7 @@ which delivers one line — `doc/API/CreateUser.md` — without
 pulling in any of the page's other content.
 
 ```yaml
-depends_on:
+imports:
   - SPEC/doc/api/create-user(Path)
   - SPEC/doc/api/list-users(Path)
   - SPEC/doc/api/delete-user(Path)
@@ -310,12 +310,12 @@ documentation page is four steps:
 3. Add `## Path` in `# Public` and a one-line `# Agent`
    directing the subagent to follow the parent template.
 4. Add a `SPEC/doc/api/new-operation(Path)` entry to the
-   index node's `depends_on` so the index links to the new
+   index node's `imports` so the index links to the new
    page.
 
 Run `validate_specs` — the new page appears as `missing`.
 Generate it. The index regenerates in a later rank (its chain
-changed because of the new `depends_on`). The new page
+changed because of the new `imports` entry). The new page
 inherits every convention, every restriction, every template
 rule from the ancestors it has never seen.
 

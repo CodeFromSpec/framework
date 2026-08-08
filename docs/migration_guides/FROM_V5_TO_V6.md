@@ -49,6 +49,24 @@ re-download the `cfs-generate` skill and the
 and subagents pass logical names to `load_chain` and
 `write_file`, which the v6 tooling rejects.
 
+### `depends_on` renamed to `imports`
+
+The frontmatter field `depends_on` is now called `imports`.
+This aligns its name with `input` and `output` — the three
+frontmatter fields dedicated to artifact generation — and
+with the "imported" language the methodology already used
+to describe what the field does. Semantics, prefixes
+(`SPEC/`, `ARTIFACT/`, `EXTERNAL/`), and qualifier syntax are
+unchanged, and the chain hash does not encode the frontmatter
+key name — only the resolved entries — so this rename does
+not by itself restale any artifact.
+
+**Action:** upgrade the tooling to the v6 series, then rename
+the `depends_on` key to `imports` in the frontmatter of every
+leaf node that declares it. Until both are done, a v6 tool
+reading a node that still says `depends_on` will treat it as
+having no imports.
+
 ---
 
 ## Behavioral changes

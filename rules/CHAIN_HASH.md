@@ -30,7 +30,7 @@ and delivery never diverge.
 
 For whole-file content — external files (`EXTERNAL/`
 references) and artifact files (`ARTIFACT/` references via
-`depends_on` or `input`) — no other normalization is applied.
+`imports` or `input`) — no other normalization is applied.
 
 ---
 
@@ -46,10 +46,10 @@ defined in FILE_FORMAT.md ("Block extraction").
 | Ancestor | `##` subsections of `# Public`, concatenated in order |
 | Target node `# Public` | `##` subsections of `# Public`, concatenated in order |
 | Target node `# Agent` | Content of `# Agent` (heading not included) |
-| `depends_on: ARTIFACT/x` | Full content of the referenced artifact |
-| `depends_on: EXTERNAL/x` | Full content of the referenced file |
-| `depends_on: SPEC/x` | `##` subsections of `# Public` of the referenced node, concatenated in order |
-| `depends_on: SPEC/x(y)` | `## y` subsection of `# Public` of the referenced node |
+| `imports: ARTIFACT/x` | Full content of the referenced artifact |
+| `imports: EXTERNAL/x` | Full content of the referenced file |
+| `imports: SPEC/x` | `##` subsections of `# Public` of the referenced node, concatenated in order |
+| `imports: SPEC/x(y)` | `## y` subsection of `# Public` of the referenced node |
 | `input: ARTIFACT/x` | Full content of the artifact file |
 | `input: EXTERNAL/x` | Full content of the referenced file |
 | `input: SPEC/x` | `##` subsections of `# Public` of the referenced node, concatenated in order |
@@ -66,7 +66,7 @@ assembly order:
 1. Each ancestor from root to the target node's parent — content
    hash of `##` subsections of `# Public`, concatenated in
    document order.
-2. `depends_on` entries — content hash of each, in alphabetical
+2. `imports` entries — content hash of each, in alphabetical
    order by the full logical name (including prefix and
    qualifier). Qualifiers are normalized before comparison
    using the heading normalization rules defined in
@@ -76,7 +76,7 @@ assembly order:
 4. `input` entry (if present) — the byte `0x49` (`I`), followed
    by the content hash of the referenced content.
 
-Redundant `depends_on` entries are deduplicated before hashing.
+Redundant `imports` entries are deduplicated before hashing.
 When an entry without a qualifier exists for a given path, entries
 with qualifiers for the same path are removed (the full
 `# Public` section already includes every subsection). Exact
@@ -86,7 +86,7 @@ order by the full logical name (including prefix and
 qualifier).
 
 The `0x49` marker ensures that moving a reference from
-`depends_on` to `input` (or vice versa) always changes the
+`imports` to `input` (or vice versa) always changes the
 chain hash, even when the target node has no `# Public` or
 `# Agent` section and the content hash is the same in both
 positions.
@@ -103,7 +103,7 @@ A node with mixed dependencies:
 
 ```yaml
 ---
-depends_on:
+imports:
   - SPEC/architecture/backend/config(interface)
   - EXTERNAL/proto/payments/v1/transfers.proto
   - ARTIFACT/extraction/email-templates
@@ -119,19 +119,19 @@ The resulting spec chain order:
 
 ```
 SPEC/payments                               [# Public]      → A  (ancestor)
-ARTIFACT/extraction/email-templates         [full]           → B  (depends_on)
-ARTIFACT/extraction/proto                   [full]           → C  (depends_on)
-EXTERNAL/docs/vendor/api-spec.yaml          [full]           → D  (depends_on)
-EXTERNAL/proto/payments/v1/transfers.proto  [full]           → E  (depends_on)
-SPEC/architecture/backend/config(interface) [## Interface]   → F  (depends_on)
-SPEC/integrations/database                  [# Public]       → G  (depends_on)
+ARTIFACT/extraction/email-templates         [full]           → B  (imports)
+ARTIFACT/extraction/proto                   [full]           → C  (imports)
+EXTERNAL/docs/vendor/api-spec.yaml          [full]           → D  (imports)
+EXTERNAL/proto/payments/v1/transfers.proto  [full]           → E  (imports)
+SPEC/architecture/backend/config(interface) [## Interface]   → F  (imports)
+SPEC/integrations/database                  [# Public]       → G  (imports)
 SPEC/payments/transfers                     [# Public]       → H  (target node)
 SPEC/payments/transfers                     [# Agent]        → I  (target node)
                                                                0x49
 ARTIFACT/functional/transfers               [full]           → J  (input)
 ```
 
-The `depends_on` entries are sorted alphabetically by
+The `imports` entries are sorted alphabetically by
 the full logical name — `ARTIFACT/` before `EXTERNAL/`
 before `SPEC/` — regardless of the order in the
 frontmatter.
@@ -147,8 +147,8 @@ Given the spec chain for `SPEC/payments/fees/calculation`:
 ```
 SPEC/payments                              [# Public]      → content hash A  (ancestor)
 SPEC/payments/fees                         [# Public]      → content hash B  (ancestor)
-EXTERNAL/proto/payments/v1/transfers.proto [full]          → content hash C  (depends_on)
-SPEC/integrations/database                 [# Public]      → content hash D  (depends_on)
+EXTERNAL/proto/payments/v1/transfers.proto [full]          → content hash C  (imports)
+SPEC/integrations/database                 [# Public]      → content hash D  (imports)
 SPEC/payments/fees/calculation             [# Public]      → content hash E  (target node)
 SPEC/payments/fees/calculation             [# Agent]       → content hash F  (target node)
 ARTIFACT/functional/calc                   [full]          → content hash G  (input)

@@ -106,7 +106,7 @@ generation. Anything true of only one branch belongs in that
 branch, not the root.
 
 When a leaf consumes another node, route the dependency through
-the **interface**, not the implementation — `depends_on:
+the **interface**, not the implementation — `imports:
 SPEC/…/x(interface)` rather than the artifact — so an internal
 change to `x` does not needlessly restale this one. The cases
 where you *do* want the artifact (and the generation ordering it
