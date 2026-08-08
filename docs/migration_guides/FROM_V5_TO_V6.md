@@ -73,7 +73,26 @@ having no imports.
 
 Changes that do not break the format but alter what the
 framework does — for example, a chain hash change that
-marks every artifact stale on first validation. None yet.
+marks every artifact stale on first validation.
+
+### `input` accepts a list
+
+`input` now accepts either a single `SPEC/`, `ARTIFACT/`, or
+`EXTERNAL/` name (as before) or a list of names. Existing
+nodes with a single scalar `input` are unaffected — same
+chain hash, same disposition behavior.
+
+Nodes that adopt a list gain per-entry tracking: each entry
+is delivered as its own `<entry>` in the `<input>` section of
+the spec chain, ordered alphabetically (same rule as
+`imports`), and its disposition (`unchanged`/`changed`/
+`added`) is computed by logical name instead of by content
+hash alone. See CHAIN_HASH.md, CHAIN_ASSEMBLY.md, and
+CACHE.md for the full algorithm.
+
+**Action:** none required to keep existing nodes working.
+Upgrade the tooling to the v6 series before using a list —
+older tooling only understands a scalar `input`.
 
 ---
 
