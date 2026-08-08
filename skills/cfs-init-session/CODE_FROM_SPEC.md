@@ -99,7 +99,7 @@ parenthetical suffix: `SPEC/x/y(z)` targets the
 #### Content delivered in the chain
 
 When a name is included in the chain (via inheritance,
-`depends_on`, or `input`), the content delivered depends
+`imports`, or `input`), the content delivered depends
 on the prefix:
 
 - `SPEC/x` — all `##` subsections of `# Public`,
@@ -123,7 +123,7 @@ the artifact it consumes is up to date.
 
 Frontmatter is optional YAML metadata in spec nodes.
 It is not part of the node's content — it does not
-participate in inheritance or `depends_on`. The framework
+participate in inheritance or `imports`. The framework
 recognizes specific fields (described below). Unrecognized
 fields are ignored and may be used as custom fields by
 projects.
@@ -131,9 +131,9 @@ projects.
 The following fields are recognized by the framework. All
 are optional and only permitted on leaf nodes.
 
-#### depends_on
+#### imports
 
-Optional. Dependencies that provide context for generation.
+Optional. Content imported to provide context for generation.
 Each entry uses a `SPEC/`, `ARTIFACT/`, or `EXTERNAL/`
 name. When absent, the node's chain contains only
 inherited content from ancestors.
@@ -145,7 +145,7 @@ descendant would create a circular dependency.
 
 ```yaml
 ---
-depends_on:
+imports:
   - SPEC/integrations/payments-api/create-transfer
   - SPEC/architecture/backend/api-gateway
   - ARTIFACT/extraction/email-templates
@@ -156,12 +156,17 @@ depends_on:
 #### input
 
 Optional. Material to be transformed into a new artifact.
-Uses a `SPEC/`, `ARTIFACT/`, or `EXTERNAL/` name. While
-`depends_on` brings in context that informs generation,
-`input` brings in content that the generation subagent
-transforms. When absent, the subagent generates directly
-from the specification without source material to
-transform.
+Accepts a single `SPEC/`, `ARTIFACT/`, or `EXTERNAL/` name,
+or a list of names. While `imports` brings in context that
+informs generation, `input` brings in content that the
+generation subagent transforms. When absent, the subagent
+generates directly from the specification without source
+material to transform.
+
+When `input` is a list, entries are delivered in alphabetical
+order by the full logical name, using the same ordering and
+deduplication rules as `imports` (see CHAIN_HASH.md). Each
+entry is tracked independently for staleness and disposition.
 
 ```yaml
 ---
@@ -172,6 +177,14 @@ input: ARTIFACT/functional/notifications
 ```yaml
 ---
 input: SPEC/functional/notifications(acceptance-tests)
+---
+```
+
+```yaml
+---
+input:
+  - ARTIFACT/functional/notifications/email
+  - ARTIFACT/functional/notifications/sms
 ---
 ```
 
@@ -194,7 +207,7 @@ A leaf node with all fields:
 
 ```yaml
 ---
-depends_on:
+imports:
   - SPEC/integrations/payments-api/create-transfer
   - ARTIFACT/extraction/email-templates
   - EXTERNAL/proto/payments/v1/transfers.proto
@@ -226,7 +239,7 @@ importable, and not included in the chain.
 
 Everything under `# Public` is available to other nodes:
 - Inherited automatically by all descendant nodes.
-- Imported by nodes that declare `depends_on: SPEC/x`
+- Imported by nodes that declare `imports: SPEC/x`
   or `input: SPEC/x`.
 
 All content in `# Public` must be under a `##` subsection.
@@ -331,7 +344,7 @@ FILE_FORMAT.md (under Resources) for detailed parsing rules.
 
 ## Circular References
 
-Circular references across `depends_on`, `input`, and
+Circular references across `imports`, `input`, and
 inheritance are prohibited.
 
 ---

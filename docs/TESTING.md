@@ -79,7 +79,7 @@ mechanism: the step-by-step logic, the algorithm choices, the
 implementation guidance. The format makes `# Agent` invisible
 to every other node — it is not inherited and cannot be
 imported. Anything placed in `# Public`, by contrast, is one
-`depends_on` away from any node in the tree.
+`imports` entry away from any node in the tree.
 
 The convention that follows: **keep `# Public` contract-only.**
 Implementation detail in a public section leaks — it becomes
@@ -103,14 +103,14 @@ code-from-spec/golang/
 └── test/
     ├── cases/
     │   └── fees/
-    │       └── _node.md  ← depends_on the implementation node
+    │       └── _node.md  ← imports the implementation node
     │                       output: internal/fees/fees_test.go
     └── utils/
         └── ...           ← shared test helpers, themselves
                             generated artifacts
 ```
 
-The test node declares `depends_on` to the implementation node
+The test node declares `imports` pointing to the implementation node
 — which delivers only its `# Public`, the contract — and to
 the test-utility nodes it uses. Shared helpers (temp-dir
 setup, fixture builders) are their own generated artifacts
@@ -173,7 +173,7 @@ it cannot hide what you choose to put in `# Public`. Mechanism
 placed there is mechanism the test generation will see.
 
 **Never point a test node at the implementation's artifact.**
-`depends_on: ARTIFACT/` of the unit under test would deliver
+`imports: ARTIFACT/` of the unit under test would deliver
 the generated source into the test's chain, reopening the
 correlation channel the structure closed.
 

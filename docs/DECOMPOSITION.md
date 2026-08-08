@@ -31,7 +31,7 @@ that hold.
 ## Route dependencies through the interface
 
 When module A consumes module B, the tempting dependency is
-`depends_on: ARTIFACT/…/b` — B's implementation artifact.
+`imports: ARTIFACT/…/b` — B's implementation artifact.
 This has two costs:
 
 - **Staleness at the wrong granularity.** Every internal
@@ -88,7 +88,7 @@ Consumers in other branches import it with a qualified
 reference:
 
 ```yaml
-depends_on:
+imports:
   - SPEC/implementation/transfers(interface)
 ```
 
@@ -102,7 +102,7 @@ Changes to other subsections (`## Context`,
 node whose spec states what the module must expose
 semantically, and whose generation resolves the exact
 shape — names, idiomatic signatures. Consumers declare
-`depends_on: ARTIFACT/…/interface`. The interface is a
+`imports: ARTIFACT/…/interface`. The interface is a
 **resolution**: the draw decides the form, and the artifact
 records and stabilizes it across regenerations.
 
@@ -167,11 +167,11 @@ code-from-spec/
     │   │   └── _node.md    ← output: include/transfers.h
     │   └── core/
     │       └── _node.md    ← output: src/transfers.c
-    │                          depends_on:
+    │                          imports:
     │                            ARTIFACT/implementation/transfers/interface
     └── reports/
         └── _node.md        ← output: src/reports.c
-                               depends_on:
+                               imports:
                                  ARTIFACT/implementation/transfers/interface
 ```
 
@@ -282,8 +282,8 @@ it.
 
 Helpers shared between sibling leaves get leaf nodes of
 their own, with their signatures stated in
-`# Public ## Interface` and imported by qualified
-`depends_on` — but they are harvested from observed
+`# Public ## Interface` and consumed via qualified
+`imports` — but they are harvested from observed
 duplication, never designed up front. See "Harvest shared
 helpers, do not predict them" in
 [BEST_PRACTICES.md](BEST_PRACTICES.md).
@@ -406,7 +406,7 @@ code-from-spec/golang/
 └── test/
     └── cases/
         └── transfers/
-            └── _node.md    ← depends_on:
+            └── _node.md    ← imports:
                                 SPEC/golang/implementation/transfers(interface)
 ```
 

@@ -21,7 +21,7 @@ collected in the report.
 
 1. Walk the spec tree and check every node for format errors (see
    FILE_FORMAT.md and CODE_FROM_SPEC.md).
-2. Detect circular references across `depends_on`, `input`, and
+2. Detect circular references across `imports`, `input`, and
    inheritance. Report cycle participants.
 3. For each node that declares `output`, determine the artifact status
    by comparing the manifest against the current spec tree and file
@@ -55,7 +55,9 @@ document contains up to four core sections:
   `<entry>` element with a `name` attribute.
 - `<instructions>` — the target node's `# Agent` section.
 - `<input>` — the content referenced by the target node's `input`
-  field.
+  field. Each position is an `<entry>` element with a `name`
+  attribute, one per `input` reference (a single value or each item
+  in a list).
 
 When cache is available, up to three additional sections may appear
 before the core sections: `<previous_constraints>`,
@@ -126,7 +128,7 @@ logical name: since the subagent has no way to mint a token itself, it
 cannot request the chain or write the output of a node other than the
 one it was dispatched for, even though the chain it receives from
 `load_chain` may reference other logical names (via inheritance,
-`depends_on`, or `input`).
+`imports`, or `input`).
 
 `create_token` is intended for the orchestrator only and must not be
 exposed to generation subagents — exposing it defeats the confinement

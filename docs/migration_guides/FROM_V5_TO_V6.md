@@ -49,13 +49,50 @@ re-download the `cfs-generate` skill and the
 and subagents pass logical names to `load_chain` and
 `write_file`, which the v6 tooling rejects.
 
+### `depends_on` renamed to `imports`
+
+The frontmatter field `depends_on` is now called `imports`.
+This aligns its name with `input` and `output` — the three
+frontmatter fields dedicated to artifact generation — and
+with the "imported" language the methodology already used
+to describe what the field does. Semantics, prefixes
+(`SPEC/`, `ARTIFACT/`, `EXTERNAL/`), and qualifier syntax are
+unchanged, and the chain hash does not encode the frontmatter
+key name — only the resolved entries — so this rename does
+not by itself restale any artifact.
+
+**Action:** upgrade the tooling to the v6 series, then rename
+the `depends_on` key to `imports` in the frontmatter of every
+leaf node that declares it. Until both are done, a v6 tool
+reading a node that still says `depends_on` will treat it as
+having no imports.
+
 ---
 
 ## Behavioral changes
 
 Changes that do not break the format but alter what the
 framework does — for example, a chain hash change that
-marks every artifact stale on first validation. None yet.
+marks every artifact stale on first validation.
+
+### `input` accepts a list
+
+`input` now accepts either a single `SPEC/`, `ARTIFACT/`, or
+`EXTERNAL/` name (as before) or a list of names. Existing
+nodes with a single scalar `input` are unaffected — same
+chain hash, same disposition behavior.
+
+Nodes that adopt a list gain per-entry tracking: each entry
+is delivered as its own `<entry>` in the `<input>` section of
+the spec chain, ordered alphabetically (same rule as
+`imports`), and its disposition (`unchanged`/`changed`/
+`added`) is computed by logical name instead of by content
+hash alone. See CHAIN_HASH.md, CHAIN_ASSEMBLY.md, and
+CACHE.md for the full algorithm.
+
+**Action:** none required to keep existing nodes working.
+Upgrade the tooling to the v6 series before using a list —
+older tooling only understands a scalar `input`.
 
 ---
 

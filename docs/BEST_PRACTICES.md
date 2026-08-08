@@ -111,7 +111,7 @@ entirely relevant (a `.proto` definition, a JSON contract, a
 short config file), import it directly:
 
 ```yaml
-depends_on:
+imports:
   - EXTERNAL/proto/payments/v1/transfers.proto
 ```
 
@@ -120,7 +120,7 @@ only part of a large file matters, create a dedicated leaf
 node that consumes the whole file via `input: EXTERNAL/` and
 generates an intermediate artifact containing only the
 relevant extract. The downstream node then consumes that
-artifact via `depends_on: ARTIFACT/`. See
+artifact via `imports: ARTIFACT/`. See
 [LAYERS.md](LAYERS.md) for the extraction layer pattern.
 
 This keeps the large file out of the downstream chain and lets
@@ -136,11 +136,11 @@ a large direct import.
 
 ---
 
-## Prefer qualified depends_on
+## Prefer qualified imports
 
 ### The problem
 
-When a node declares `depends_on: SPEC/x/y`, the entire
+When a node declares `imports: SPEC/x/y`, the entire
 `# Public` section of `SPEC/x/y` participates in the chain
 hash. Any change to any part of that section — a new
 subsection, a reworded paragraph, a renamed type — makes
@@ -153,7 +153,7 @@ When a node only needs a specific subsection, use a qualified
 reference:
 
 ```yaml
-depends_on:
+imports:
   - SPEC/x/y(interface)
 ```
 
@@ -231,14 +231,14 @@ Treat shared helpers as a lifecycle:
 
 3. **Steady state.** The helper is now available
    vocabulary. A new node whose domain touches it declares
-   `depends_on: SPEC/…/utils_x(interface)` — not
+   `imports: SPEC/…/utils_x(interface)` — not
    predicting helpers, importing vocabulary that already
    exists. The agent decides whether and how to use what
    its chain offers; what it cannot do is depend on what
    it cannot see.
 
 4. **Deduplicate gradually.** The nodes that duplicated
-   the logic gain the `depends_on` and regenerate when it
+   the logic gain the `imports` entry and regenerate when it
    is worth the draw — not all at once, not urgently.
 
 ### The principle
