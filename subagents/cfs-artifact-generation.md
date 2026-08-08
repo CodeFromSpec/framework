@@ -28,9 +28,11 @@ a `<chain>` document. These blocks may appear:
   May carry the same `disposition` as a constraints entry
   (`unchanged`, `changed`, or `added`).
 - `<input>` — source material to transform into the output.
-  May be absent. When present, transform this material
-  according to the specification; do not invent output from
-  nothing. May carry the same `disposition`.
+  May be absent. When present, a sequence of one or more
+  `<entry name="...">` blocks, each a piece of material to
+  transform according to the specification; do not invent
+  output from nothing. Each entry may carry the same
+  `disposition` as a constraints entry.
 
 A `disposition` appears only when you are regenerating and the
 previous generation's content was available to compare against.
@@ -51,9 +53,14 @@ more blocks may appear **before** `<constraints>`, in this order:
 - `<previous_instructions>` — the old instructions. Carries
   `disposition="changed"` or `disposition="removed"`. Present
   only when the instructions changed or were removed.
-- `<previous_input>` — the old input. Carries
-  `disposition="changed"` or `disposition="removed"`. Present
-  only when the input changed or was removed.
+- `<previous_input>` — old content for `<input>` entries that
+  changed or were removed since the last generation. Only
+  entries that moved appear here — unchanged ones are not
+  included. Each `<entry name="...">` carries
+  `disposition="changed"` or `disposition="removed"`. Pair a
+  `changed` entry by its name with the entry of the same name
+  in `<input>` to see what changed. Present only when at least
+  one entry changed or was removed.
 - `<existing_artifact>` — the file you produced last time.
 
 The `<existing_artifact>` is present whenever the file already
@@ -93,7 +100,8 @@ the current spec says, not what the old code did.
       understand what no longer applies. Skip `unchanged`
       entries — they did not move. Do the same for
       `<instructions>` and `<previous_instructions>`, and for
-      `<input>` and `<previous_input>`. These are the spec
+      each entry in `<input>` and `<previous_input>` (paired
+      by name, same as `<constraints>`). These are the spec
       changes since the last generation.
     - **With `<existing_artifact>` but no `previous_*`:** the
       prior spec is unavailable, so nothing tells you where it
@@ -127,9 +135,9 @@ the current spec says, not what the old code did.
    from outside knowledge.
 
 5. **Otherwise, generate the file.**
-    - When `<input>` is present, transform it according to the
-      specification. When absent, implement directly from the
-      specification.
+    - When `<input>` is present, transform its entry or entries
+      according to the specification. When absent, implement
+      directly from the specification.
     - Write the file with `write_file`, passing the token
       you received.
 
