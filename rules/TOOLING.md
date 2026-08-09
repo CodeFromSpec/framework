@@ -53,11 +53,9 @@ document contains these core sections:
   omitted silently.
 - `<constraints>` — the inheritance line: ancestors plus the target
   node's own `# Public`. Each position is an `<entry>` element with a
-  `name` attribute. This is binding — the target must comply.
+  `name` attribute.
 - `<references>` — the target node's `imports`, in alphabetical
-  order. Same `<entry>` shape as `<constraints>`, but informational —
-  material to consult, not convention to adopt. Present only when the
-  node declares `imports`.
+  order. Present only when the node declares `imports`.
 - `<instructions>` — the target node's `# Agent` section.
 - `<input>` — the content referenced by the target node's `input`
   field. Each position is an `<entry>` element with a `name`

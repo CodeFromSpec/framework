@@ -156,9 +156,7 @@ position:
 2. Compute the current chain positions (labels and
    content hashes).
 3. For constraints and references entries, compare by
-   label — the same rule for both relations, since the
-   split is a delivery detail (see CHAIN_ASSEMBLY.md),
-   not a difference in how disposition is computed:
+   label:
    - **`unchanged`** — same label, same content hash.
    - **`changed`** — same label, different content
      hash. Old content is read from

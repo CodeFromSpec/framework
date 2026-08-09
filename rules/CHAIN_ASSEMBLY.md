@@ -119,23 +119,21 @@ which section carries it (see CHAIN_HASH.md).
 Three scenarios determine which sections are present:
 
 - **First generation** (no existing artifact): the
-  spec chain contains only `<constraints>`,
-  optionally `<references>`, `<instructions>`, and
-  optionally `<input>`. Even if the cache has data, it
-  is not used — there is no existing code to compare
-  against.
+  spec chain contains `<constraints>` and
+  `<instructions>`, plus `<references>` and `<input>`
+  when the node declares them. Even if the cache has
+  data, it is not used — there is no existing code to
+  compare against.
 
 - **Regeneration without cache** (existing artifact,
-  no cache): the spec chain contains
-  `<existing_artifact>`, `<constraints>`, optionally
-  `<references>`, `<instructions>`, and optionally
-  `<input>`. No `<previous_*>` sections — the subagent
-  compares the existing artifact directly against the
-  current spec.
+  no cache): the spec chain adds
+  `<existing_artifact>` to the above. No `<previous_*>`
+  sections — the subagent compares the existing
+  artifact directly against the current spec.
 
 - **Regeneration with cache** (existing artifact and
-  cache available): all nine sections may be present.
-  The `<previous_*>` sections and the current
+  cache available): all sections may be present. The
+  `<previous_*>` sections and the current
   `<constraints>`, `<references>`, `<instructions>`,
   and `<input>` carry disposition attributes showing
   exactly what changed.
@@ -148,6 +146,8 @@ Positions within `<constraints>` appear in this order:
 
 1. Ancestors from root to the target node's parent.
 2. The target node's `# Public`.
+
+---
 
 ## References assembly order
 
