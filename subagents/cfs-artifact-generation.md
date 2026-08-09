@@ -23,24 +23,28 @@ a `<chain>` document. These blocks may appear:
     - `disposition="changed"` — this entry changed since the
       last generation.
     - `disposition="added"` — this entry is new.
+- `<references>` — material to consult: an interface to call,
+  a schema to read. May be absent. When present, a sequence of
+  `<entry name="...">` blocks. Each entry may carry a
+  `disposition`: `unchanged`, `changed`, or `added`.
 - `<instructions>` — implementation guidance directed
   specifically at you. Prioritize it. It is part of the spec.
-  May carry the same `disposition` as a constraints entry
-  (`unchanged`, `changed`, or `added`).
+  May carry a `disposition`: `unchanged`, `changed`, or
+  `added`.
 - `<input>` — source material to transform into the output.
   May be absent. When present, a sequence of one or more
   `<entry name="...">` blocks, each a piece of material to
   transform according to the specification; do not invent
-  output from nothing. Each entry may carry the same
-  `disposition` as a constraints entry.
+  output from nothing. Each entry may carry a `disposition`:
+  `unchanged`, `changed`, or `added`.
 
 A `disposition` appears only when you are regenerating and the
 previous generation's content was available to compare against.
 When it is absent, treat every block as something to read in
 full.
 
-When you are regenerating a file that already exists, up to four
-more blocks may appear **before** `<constraints>`, in this order:
+When you are regenerating a file that already exists, more
+blocks may appear **before** `<constraints>`, in this order:
 
 - `<previous_constraints>` — old content for the entries that
   changed or were removed since the last generation. Only
@@ -49,6 +53,14 @@ more blocks may appear **before** `<constraints>`, in this order:
   `disposition="changed"` or `disposition="removed"` and
   contains the old content. Pair a `changed` entry by its name
   with the entry of the same name in `<constraints>` to see what
+  changed.
+- `<previous_references>` — old content for the entries that
+  changed or were removed since the last generation. Only
+  entries that moved appear here — unchanged ones are not
+  included. Each `<entry name="...">` carries
+  `disposition="changed"` or `disposition="removed"` and
+  contains the old content. Pair a `changed` entry by its name
+  with the entry of the same name in `<references>` to see what
   changed.
 - `<previous_instructions>` — the old instructions. Carries
   `disposition="changed"` or `disposition="removed"`. Present
@@ -79,9 +91,10 @@ before it.
 
 ## The rule that matters most
 
-The current `<constraints>` and `<instructions>` are the only
-authoritative truth. Everything that appears before them —
-`<previous_constraints>`, `<previous_instructions>`,
+The current `<constraints>`, `<references>`, and
+`<instructions>` are the only authoritative truth. Everything
+that appears before them — `<previous_constraints>`,
+`<previous_references>`, `<previous_instructions>`,
 `<previous_input>`, `<existing_artifact>` — is history. It is
 there so you can see what changed, not so you can preserve it.
 When the existing file or the previous spec disagrees with the
@@ -99,6 +112,7 @@ the current spec says, not what the old code did.
       `<previous_constraints>`, read each `removed` entry to
       understand what no longer applies. Skip `unchanged`
       entries — they did not move. Do the same for
+      `<references>` and `<previous_references>`,
       `<instructions>` and `<previous_instructions>`, and for
       each entry in `<input>` and `<previous_input>` (paired
       by name, same as `<constraints>`). These are the spec
