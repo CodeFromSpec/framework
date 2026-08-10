@@ -122,6 +122,19 @@ CACHE.md for the full algorithm.
 Upgrade the tooling to the v6 series before using a list —
 older tooling only understands a scalar `input`.
 
+### Glob references
+
+`imports` and `input` entries may end in `/*`, expanding at
+chain resolution to the full subtree under the given path
+(`SPEC/domain/*`, `ARTIFACT/functional/*`). A new node that
+matches an existing glob enters the chain and stales the
+consumer — explicit lists no longer need manual upkeep to
+stay complete. `EXTERNAL/` references and qualifiers on
+glob entries are not supported. See CODE_FROM_SPEC.md,
+"Glob references".
+
+**Action:** none. Existing explicit lists behave as before.
+
 ### Verdict nodes
 
 `type: verdict` introduces a second kind of generating
