@@ -17,7 +17,7 @@ artifacts or verdicts, or when stale entries exist.
 
 1. Verify the framework-mcp MCP server is connected (the
    `validate_specs`, `create_token`, `load_chain`,
-   `write_file`, and `write_verdict` tools must be
+   `write_artifact`, and `write_verdict` tools must be
    available).
 
 2. Run `validate_specs`. If `format_errors` are reported, stop
