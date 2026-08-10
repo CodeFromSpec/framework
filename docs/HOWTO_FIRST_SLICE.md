@@ -296,5 +296,5 @@ Once the loop is muscle memory, the guides that build on it:
   the eventual real implementation share one interface, and the
   swap is only the body. See also [LAYERS.md](LAYERS.md).
 - **Vendored territory** — keeping code you do not own out of the
-  tree without losing sight of it: nothing declares `output`
+  tree without losing sight of it: nothing declares `type`
   there, and a documentation node describes what exists.
