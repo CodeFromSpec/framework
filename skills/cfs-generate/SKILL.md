@@ -55,10 +55,11 @@ artifacts or verdicts, or when stale entries exist.
    re-validating, newly stale entries are missed. The
    `validate_specs` call between ranks is what keeps the
    generation session consistent.
-5. **If any verdict in the rank failed, stop the session.**
-   Report each failed verdict's reasoning to the user and do
-   not start the next rank. The user addresses the findings
-   and re-runs.
+5. **Skip entries flagged as blocked and report them.** A
+   failed verdict or an artifact awaiting human action blocks
+   its dependents — `validate_specs` flags them. Report each
+   blocked entry (with the failed verdict's reasoning, when
+   that is the cause); everything else proceeds.
 6. After all ranks are processed, run `validate_specs` a
    final time. Report the remaining stale items (if any)
    to the user.
