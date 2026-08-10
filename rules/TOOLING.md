@@ -32,9 +32,11 @@ collected in the report.
    them and can be processed in parallel.
 4. Report all findings: format errors, cycles, and artifact and
    verdict status (stale, modified, missing, orphan). Verdict
-   entries include their `result`. Entries whose `wait_on`
-   targets are not all satisfied — or that depend, directly or
-   transitively, on a blocked entry — are flagged as blocked.
+   entries include their `result`. Entries with a dependency
+   the session cannot satisfy are flagged as blocked: a
+   `wait_on` target that is not satisfied, a chain `ARTIFACT/`
+   reference that is modified, or — directly or transitively —
+   a dependency on a blocked entry.
 
 Nodes without `type` are not checked for staleness — they generate
 nothing.
