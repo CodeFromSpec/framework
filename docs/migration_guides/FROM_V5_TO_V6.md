@@ -32,10 +32,10 @@ must have its header updated — regenerating the manifest
 also works, at the cost of every artifact being treated as
 stale.
 
-### Capability tokens for `load_chain` and `write_file`
+### Capability tokens for `load_chain` and `write_artifact`
 
-`load_chain` and `write_file` no longer accept a
-`logical_name` parameter. They take a `token` minted by the
+`load_chain` and `write_artifact` (called `write_file` in
+v5) no longer accept a `logical_name` parameter. They take a `token` minted by the
 new `create_token` operation, which the orchestrator calls
 before dispatching each generation subagent. The subagent
 receives only the token, cannot mint one itself, and
@@ -48,6 +48,34 @@ re-download the `cfs-generate` skill and the
 `cfs-artifact-generation` subagent definition. v5 skills
 and subagents pass logical names to `load_chain` and
 `write_file`, which the v6 tooling rejects.
+
+### `type:` declares what a node generates
+
+v6 adds a `type:` frontmatter field, an enum of `artifact`
+and `verdict`. A node only generates when it declares
+`type` — `output:` alone no longer does. On a node without
+`type`, the fields `output`, `imports`, and `input`, and an
+`# Agent` section, are format errors. `output:` became
+optional: when absent on a `type: artifact` node, the
+artifact defaults to `code-from-spec/<node path>/artifact.md`.
+
+**Action:** add `type: artifact` to the frontmatter of every
+leaf node that declares `output:`. Remove generation fields
+and `# Agent` sections from leaf nodes that generate
+nothing.
+
+### Strict frontmatter; project fields move under `custom:`
+
+In v5, unrecognized frontmatter fields were ignored and
+could be used as project fields. In v6, any top-level field
+outside the recognized set (`type`, `imports`, `input`,
+`output`, `custom`) is a format error. Project-specific
+fields live under the new `custom:` container — permitted
+on any node, value must be a YAML mapping, never inspected
+by the framework.
+
+**Action:** move any project-specific top-level frontmatter
+fields under `custom:`.
 
 ### `depends_on` renamed to `imports`
 
@@ -94,6 +122,24 @@ CACHE.md for the full algorithm.
 Upgrade the tooling to the v6 series before using a list —
 older tooling only understands a scalar `input`.
 
+### Verdict nodes
+
+`type: verdict` introduces a second kind of generating
+node: instead of an artifact, it generates a verdict — a
+pass/fail judgment recorded as a document (default
+`verdict.md` in the node's directory) and a
+`VERDICT/<node path>` manifest entry carrying
+`result:pass|fail|accepted`. The tooling gains
+`write_verdict`, `load_chain` dispatches by node type, and
+`accept` now takes the `ARTIFACT/` or `VERDICT/` logical
+name (in v5 it took the node's name). A new
+`cfs-verdict-generation` subagent definition accompanies
+the `cfs-generate` skill, which now dispatches both kinds.
+
+**Action:** none — existing trees are unaffected until they
+add verdict nodes. Available after upgrading the tooling,
+skill, and subagent definitions to the v6 series.
+
 ---
 
 ## Migration steps
@@ -105,4 +151,7 @@ v6 freezes.
 2. Update the manifest header (see above).
 3. Re-download the skills and subagent definitions from the
    `v6` branch.
-4. Run `validate_specs` and review what it reports.
+4. Rename `depends_on` to `imports`, add `type: artifact` to
+   every leaf node that declares `output:`, and move any
+   project-specific frontmatter fields under `custom:`.
+5. Run `validate_specs` and review what it reports.

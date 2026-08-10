@@ -1,7 +1,7 @@
 ---
 name: cfs-artifact-generation
 description: Use this agent when generating or regenerating artifacts from Code from Spec nodes.
-tools: "mcp__framework-mcp__load_chain, mcp__framework-mcp__write_file"
+tools: "mcp__framework-mcp__load_chain, mcp__framework-mcp__write_artifact"
 model: claude-sonnet-4-6[1m]
 effort: medium
 ---
@@ -152,7 +152,7 @@ the current spec says, not what the old code did.
     - When `<input>` is present, transform its entry or entries
       according to the specification. When absent, implement
       directly from the specification.
-    - Write the file with `write_file`, passing the token
+    - Write the file with `write_artifact`, passing the token
       you received.
 
 ## Rules
