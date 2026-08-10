@@ -135,6 +135,19 @@ glob entries are not supported. See CODE_FROM_SPEC.md,
 
 **Action:** none. Existing explicit lists behave as before.
 
+### `wait_on:` ordering field
+
+New optional frontmatter field on nodes with `type`.
+Declares `ARTIFACT/` or `VERDICT/` names (globs allowed)
+that must have succeeded before the node generates —
+artifacts current, verdicts current and passed
+(`accepted` counts as pass). Pure scheduling: it raises
+the node's rank and enters cycle detection, brings no
+content into the chain, and does not affect the chain
+hash.
+
+**Action:** none.
+
 ### Verdict nodes
 
 `type: verdict` introduces a second kind of generating
