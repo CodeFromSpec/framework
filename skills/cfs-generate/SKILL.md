@@ -1,64 +1,71 @@
 ---
 name: cfs-generate
-description: Generates or regenerates artifacts from the Code from Spec tree. Use when stale artifacts exist, or when the user asks to generate or regenerate artifacts.
+description: Generates or regenerates artifacts and verdicts from the Code from Spec tree. Use when stale artifacts or verdicts exist, or when the user asks to generate or regenerate them.
 ---
 
-# Artifact Generation
+# Artifact and Verdict Generation
 
-Generate artifacts for stale entries reported by
-`validate_specs`.
+Generate artifacts and verdicts for stale entries reported
+by `validate_specs`.
 
 ## When invoked
 
 Run this skill when the user asks to generate or regenerate
-artifacts, or when stale artifacts exist.
+artifacts or verdicts, or when stale entries exist.
 
 ## Prerequisites
 
 1. Verify the framework-mcp MCP server is connected (the
-   `validate_specs`, `create_token`, `load_chain`, and
-   `write_file` tools must be available).
+   `validate_specs`, `create_token`, `load_chain`,
+   `write_file`, and `write_verdict` tools must be
+   available).
 
 2. Run `validate_specs`. If `format_errors` are reported, stop
-   and tell the user to fix them first — artifact generation
-   requires a clean spec tree.
+   and tell the user to fix them first — generation requires
+   a clean spec tree.
 
 ## Algorithm
 
-1. Run `validate_specs` and collect all stale/missing artifacts.
-2. If no stale artifacts, report that everything is up to date
+1. Run `validate_specs` and collect all stale/missing entries —
+   artifacts and verdicts.
+2. If no stale entries, report that everything is up to date
    and stop.
-3. Group stale artifacts by rank. The rank (returned by
-   `validate_specs`) reflects dependency depth — artifacts
-   with lower rank must be generated before artifacts with
-   higher rank, because higher-rank artifacts may depend on
+3. Group stale entries by rank. The rank (returned by
+   `validate_specs`) reflects dependency depth — entries
+   with lower rank must be generated before entries with
+   higher rank, because higher-rank entries may depend on
    them. Process ranks in ascending order. Within the same
-   rank, artifacts are independent and should be dispatched
-   in parallel. For each artifact, call `create_token` with the
+   rank, entries are independent and should be dispatched
+   in parallel. For each entry, call `create_token` with the
    node's logical name to mint a token, then dispatch a
-   `cfs-artifact-generation` subagent.
+   subagent by the entry's prefix: `cfs-artifact-generation`
+   for `ARTIFACT/` entries, `cfs-verdict-generation` for
+   `VERDICT/` entries.
 
-   Prompt:
+   The prompt is the same for both subagent types — the
+   token and nothing else:
 
-   > You are a confined artifact generation subagent.
-   > Your only task is to generate the artifact
-   > for the node identified by the token `<token>`.
+   > Token: `<token>`
 
 4. **After each rank completes, run `validate_specs` again
    before starting the next rank.** This is mandatory, not
    an optimization to skip. Regenerating rank N changes
-   artifact content, which may cause rank N+1 artifacts
+   artifact content, which may cause rank N+1 entries
    that depend on them to become stale. Without
-   re-validating, newly stale artifacts are missed. The
+   re-validating, newly stale entries are missed. The
    `validate_specs` call between ranks is what keeps the
    generation session consistent.
-5. After all ranks are processed, run `validate_specs` a
+5. **If any verdict in the rank failed, stop the session.**
+   Report each failed verdict's reasoning to the user and do
+   not start the next rank. The user addresses the findings
+   and re-runs.
+6. After all ranks are processed, run `validate_specs` a
    final time. Report the remaining stale items (if any)
    to the user.
 
 ## Rules
 
-- Dispatch one subagent per artifact, each with its own token.
+- Dispatch one subagent per entry, each with its own token.
 - **Never put a logical name in the subagent prompt — only the
   token.** The token is what confines the subagent to its target
   node: it cannot mint tokens itself, so it cannot load the chain
@@ -72,9 +79,9 @@ artifacts, or when stale artifacts exist.
   additions bypass the chain, are not versioned, do not
   participate in the hash, and will not reproduce on the next
   regeneration.
-- Artifacts with the same rank are independent — dispatch them
+- Entries with the same rank are independent — dispatch them
   in parallel (single message with multiple Agent tool calls).
-  Wait for all artifacts in a rank to complete before starting
+  Wait for all entries in a rank to complete before starting
   the next rank.
 - Never edit generated files manually — always regenerate via
   a subagent.
@@ -83,8 +90,10 @@ artifacts, or when stale artifacts exist.
   assumptions, decisions, ambiguities, dependencies on code
   not in the chain, or anything else the subagent chose to
   mention. Present the subagent's exact text to the user
-  **before** continuing to the next artifact. Do not filter
+  **before** continuing to the next entry. Do not filter
   or classify the feedback — the user decides what matters.
+- Report every verdict's result (`pass` or `fail`) to the
+  user, with the reasoning from the verdict document.
 - If a subagent reports a spec gap that prevented generation,
   surface it to the user. Do not attempt to fill the gap by
   reading the codebase yourself.
