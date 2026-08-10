@@ -175,6 +175,9 @@ code-from-spec/
                                  ARTIFACT/implementation/transfers/interface
 ```
 
+Every generating leaf declares `type: artifact` — the
+comments show only output and imports.
+
 The `transfers/_node.md` root holds the authored contract.
 The `interface/` leaf inherits it and transcribes it into
 the native form — a cheap, near-deterministic draw. The

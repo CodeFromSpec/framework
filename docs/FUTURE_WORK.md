@@ -17,11 +17,12 @@ much it hurts today.
   swap reviewed as a real event. Today the model identifier
   is buried in the subagent definition.
 
-- **The oracle side.** The framework covers aiming in detail
-  and confirming barely at all: nothing prescribes how a
-  project organizes its verdicts — which are trusted enough
-  to feed back, how tests stay independent of the code they
-  check. [TESTING.md](TESTING.md) is the seed.
+- **The oracle side.** v6 gives verdicts a home — verdict
+  nodes, `VERDICT/` manifest entries, `wait_on:` gates — but
+  prescribes little about organizing them: which verdicts are
+  trusted enough to feed back, how tests stay independent of
+  the code they check, mechanical `checks:` (designed,
+  deferred). [TESTING.md](TESTING.md) is the seed.
 
 - **Ratification into both destinations.** A durable fix
   enters both the description and the oracle. The framework

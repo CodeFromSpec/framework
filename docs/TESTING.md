@@ -110,6 +110,9 @@ code-from-spec/golang/
                             generated artifacts
 ```
 
+Every generating leaf declares `type: artifact` — the
+diagram's comments show only the distinguishing fields.
+
 The test node declares `imports` pointing to the implementation node
 — which delivers only its `# Public`, the contract — and to
 the test-utility nodes it uses. Shared helpers (temp-dir

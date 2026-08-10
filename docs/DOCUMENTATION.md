@@ -65,7 +65,7 @@ Documentation pages share style rules — field table formats,
 section structure, content restrictions, terminology. In a
 hand-written project these rules live in a style guide that
 authors consult. In Code from Spec they live in
-**convention nodes**: intermediate nodes with no `output`
+**convention nodes**: intermediate nodes with no `type`
 that exist solely to inject inherited rules into every
 descendant's chain.
 
@@ -163,9 +163,9 @@ pattern rather than reinventing it for each page.
 
 A documentation leaf node has three parts:
 
-**Frontmatter** — declares `input` (the spec being
-documented), optional `imports` (additional context), and
-`output` (the generated file path).
+**Frontmatter** — declares `type: artifact`, `input` (the
+spec being documented), optional `imports` (additional
+context), and `output` (the generated file path).
 
 **Public section** — contains `## Path` with the output
 path. This is importable by other nodes via
@@ -184,6 +184,7 @@ A typical leaf node:
 
 ```yaml
 ---
+type: artifact
 input: SPEC/implementation/api/operations/create-user
 output: doc/API/CreateUser.md
 ---
@@ -305,8 +306,8 @@ documentation page is four steps:
 
 1. Create the directory and `_node.md` under the appropriate
    category (`doc/api/new-operation/`).
-2. Set `input` to the operation's interface spec, `output` to
-   the doc file path.
+2. Set `type: artifact`, `input` to the operation's interface
+   spec, and `output` to the doc file path.
 3. Add `## Path` in `# Public` and a one-line `# Agent`
    directing the subagent to follow the parent template.
 4. Add a `SPEC/doc/api/new-operation(Path)` entry to the

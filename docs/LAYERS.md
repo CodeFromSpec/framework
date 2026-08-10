@@ -118,7 +118,7 @@ code-from-spec/
 ├── domain/
 │   ├── _node.md               ← conventions for the domain layer
 │   └── transfers/
-│       └── _node.md           ← leaf, output: domain/transfers/output.md
+│       └── _node.md           ← leaf, type: artifact
 ├── functional/
 │   ├── _node.md               ← conventions for the functional layer
 │   └── transfers/
@@ -132,7 +132,11 @@ code-from-spec/
 The `domain/` layer encodes business intent. The `functional/`
 layer consumes domain artifacts and produces pseudocode or
 detailed logic. The `implementation/` layer consumes functional
-artifacts and produces source code.
+artifacts and produces source code. Every generating leaf
+declares `type: artifact` — the comments show only the
+distinguishing fields. The in-tree leaves omit `output`, so
+each artifact defaults to `artifact.md` in its node's own
+directory.
 
 Within each layer, intermediate nodes define the conventions for
 their leaf nodes. Some examples, from this pipeline and beyond:
@@ -166,10 +170,8 @@ code-from-spec/
 │   ├── _node.md              ← conventions for extraction
 │   ├── payments-proto/
 │   │   └── _node.md          ← input: EXTERNAL/proto/payments/v1/transfers.proto
-│   │                            output: extraction/payments-proto/output.md
 │   └── vendor-api/
 │       └── _node.md          ← input: EXTERNAL/docs/vendor/api-spec.yaml
-│                                output: extraction/vendor-api/output.md
 ├── functional/
 │   ├── _node.md              ← conventions for the functional layer
 │   └── transfers/
