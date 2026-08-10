@@ -42,17 +42,10 @@ artifacts or verdicts, or when stale entries exist.
    for `ARTIFACT/` entries, `cfs-verdict-generation` for
    `VERDICT/` entries.
 
-   Artifact prompt:
+   The prompt is the same for both subagent types — the
+   token and nothing else:
 
-   > You are a confined artifact generation subagent.
-   > Your only task is to generate the artifact
-   > for the node identified by the token `<token>`.
-
-   Verdict prompt:
-
-   > You are a confined verdict generation subagent.
-   > Your only task is to render the verdict
-   > for the node identified by the token `<token>`.
+   > Token: `<token>`
 
 4. **After each rank completes, run `validate_specs` again
    before starting the next rank.** This is mandatory, not
