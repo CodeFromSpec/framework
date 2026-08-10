@@ -16,8 +16,8 @@ control.
 
 If the manifest is lost, it can be regenerated, but the
 record of which chain hash produced each artifact and
-verdict is lost. All are treated as stale and must be
-regenerated.
+verdict is lost — and so is each verdict's `result`. All
+are treated as stale and must be regenerated.
 
 ---
 
