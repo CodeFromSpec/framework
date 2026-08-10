@@ -211,8 +211,8 @@ input:
 
 Optional. The path of the generated artifact, relative
 to the project root, using forward slashes. When absent,
-defaults to `output.md` in the node's own directory
-(`code-from-spec/<node path>/output.md`). The manifest
+defaults to `artifact.md` in the node's own directory
+(`code-from-spec/<node path>/artifact.md`). The manifest
 records the resolved path. Each leaf node generates at
 most one artifact.
 
