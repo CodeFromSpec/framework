@@ -62,6 +62,8 @@ already in place.
 
    - `cfs-artifact-generation` from
      `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-artifact-generation.md`
+   - `cfs-verdict-generation` from
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-verdict-generation.md`
 
 6. **Install skills.** Download the following skills and
    save them to `.claude/skills/<name>/SKILL.md`:
