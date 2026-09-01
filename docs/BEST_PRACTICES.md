@@ -93,6 +93,82 @@ diagnosis means picking the repair blind.
 
 ---
 
+## Write fixes as decisions, not corrections
+
+### The problem
+
+A fix is written with the defect in view: the old code,
+the failing test, the whole session that diagnosed it.
+Written from that position, the natural wording is
+oppositional — "do not use X", "instead of the previous
+approach", "no longer does Y". Every future reader of
+the spec — a generation subagent months from now, a
+teammate, a new model — has none of that context. A
+clause worded against a state that no longer exists is
+unintelligible to them: it forbids something they cannot
+see, opposes an approach that is nowhere in the chain.
+
+AI assistance makes this failure mode the default, not
+the exception. An AI editing a spec writes in opposition
+to what it sees, and what it sees — the artifact, the
+diagnosis, the conversation — is not in the spec.
+
+There is a deeper cost. Each such clause is written in
+the coordinate system of the artifact that happened to
+be generated. A specification defines a region; the
+artifact is one draw from it. Accumulate corrections
+against that one draw, and the spec stops encoding
+intent and starts encoding the accidents of the draw —
+scar tissue around a particular artifact. A future
+regeneration, or a different generator, inherits
+constraints that intent never demanded.
+
+### The practice
+
+**Word every fix as a statement of what must be true**,
+in the domain's terms. "Monetary amounts are integers in
+cents" — not "replace the float from the previous
+version". The clause must be self-contained: readable
+by someone who never saw the bug, the old artifact, or
+the session that fixed it.
+
+**Apply the resample test before adding the clause**:
+would this clause still be wanted if the artifact were
+regenerated from scratch and had never had this bug?
+
+- *Yes* — it is a real decision, discovered through the
+  bug but independent of it. State it positively and
+  keep it.
+- *No, it only makes sense against the current
+  artifact* — it does not belong in `# Public` or
+  `# Agent`. Record the incident under `## Decisions`
+  in `# Private`, where it informs humans without
+  entering any chain.
+
+**Record provenance.** When a clause is born from an
+incident, add a line under `## Decisions` in `# Private`
+saying which incident produced it. The clause alone
+cannot tell a future reviewer whether it encodes intent
+or a scar; the provenance can. `# Private` enters no
+chain and no hash, so this costs nothing in
+regenerations.
+
+A warning sign to watch for in review: a spec
+accumulating specific prohibitions that only make sense
+to someone who saw yesterday's artifact. Intent tends to
+be stated affirmatively; scars inherit the shape of the
+defect they corrected.
+
+### The principle
+
+The spec accumulates the destination and the rules of
+the road; course corrections are consumables of the
+loop, not heritage. A clause earns its place by being
+true under any artifact intent would accept — not by
+having fixed the one that existed when it was written.
+
+---
+
 ## Use external imports intentionally
 
 ### The problem
