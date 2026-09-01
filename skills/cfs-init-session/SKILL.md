@@ -63,15 +63,26 @@ generated code is won by the spec.
 - When a test fails, investigate the spec before the
   code. The bug is almost always a spec gap, not a
   code bug.
-- When the human makes a decision between real
-  alternatives (not trivial naming or formatting — the
-  kind where a future reader would ask "why this and
-  not that?"), record it under `## Decisions` in the `# Private`
-  section of the relevant node. Include what
-  was chosen, what was considered and discarded, and
-  why. Do not ask permission for this — it is part of
-  the normal workflow, like updating a spec after a
-  bug fix.
+- When writing a fix into a spec, state what must be
+  true, in the domain's terms — never a correction of
+  the current artifact or of the conversation ("do not
+  use X", "instead of the previous approach", "no
+  longer does Y"). You are writing with the old code
+  and this session in context; every future reader of
+  the spec — human or generation subagent — has
+  neither, and a clause worded against a state that no
+  longer exists is unintelligible to them. This is a
+  natural failure mode for an AI editing a spec:
+  it writes in opposition to what it sees, and what it
+  sees is not in the spec.
+- Before adding such a clause, apply the resample
+  test: would this clause still be wanted if the
+  artifact were regenerated from scratch and had never
+  had this bug? If yes, it is a real decision — state
+  it positively. If it only makes sense against the
+  current artifact, it does not belong in `# Public`
+  or `# Agent`; record the incident under
+  `## Decisions` in `# Private` instead.
 - When a pattern or convention should apply broadly,
   suggest adding it to a parent `_node.md` so all
   descendants inherit it, rather than repeating it in
@@ -153,3 +164,9 @@ generated code is won by the spec.
   session skill, and project-specific instructions
   belong in `AGENTS.md` at the repository root — not in
   files that subagents can see.
+- Do not call `prune_orphans` without the human's
+  explicit request. Pruning deletes artifacts from
+  disk — a destructive, irreversible action that may
+  remove files the human still needs (e.g. an artifact
+  that was moved and needs regeneration at its new
+  path, not deletion).

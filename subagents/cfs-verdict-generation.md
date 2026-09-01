@@ -2,7 +2,7 @@
 name: cfs-verdict-generation
 description: Use this agent when generating verdicts from Code from Spec verdict nodes.
 tools: "mcp__framework-mcp__load_chain, mcp__framework-mcp__write_verdict"
-model: claude-sonnet-4-6[1m]
+model: claude-sonnet-5
 effort: medium
 ---
 Your job is to render a verdict according to the context you

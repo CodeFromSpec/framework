@@ -163,6 +163,7 @@ possible but out of scope — community contributions welcome.
 | Agent | Purpose |
 |---|---|
 | [`cfs-artifact-generation`](subagents/cfs-artifact-generation.md) | Confined subagent for generating one artifact |
+| [`cfs-verdict-generation`](subagents/cfs-verdict-generation.md) | Confined subagent for generating one verdict |
 
 ### Guides
 
@@ -174,7 +175,7 @@ possible but out of scope — community contributions welcome.
 | [`docs/DECOMPOSITION.md`](docs/DECOMPOSITION.md) | Splitting software into modules and routing dependencies through interfaces |
 | [`docs/TESTING.md`](docs/TESTING.md) | Organizing test specs and keeping them independent |
 | [`docs/DOCUMENTATION.md`](docs/DOCUMENTATION.md) | Generating project documentation from the same spec tree that generates the code |
-| [`docs/migration_guides/FROM_V5_TO_V6.md`](docs/migration_guides/FROM_V5_TO_V6.md) | Migrating a v5 spec tree to v6 |
+| [`migration_guides/FROM_V5_TO_V6.md`](migration_guides/FROM_V5_TO_V6.md) | Migrating a v5 spec tree to v6 |
 | [`docs/FUTURE_WORK.md`](docs/FUTURE_WORK.md) | What the theory obliges that the framework does not yet meet |
 | [`RELEASING.md`](RELEASING.md) | Freezing a stable version branch and reopening main for the next version (development branch only) |
 
