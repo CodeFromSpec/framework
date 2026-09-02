@@ -36,10 +36,6 @@ extension, using forward slashes. The spec at
 filesystem: there is no declared name, and uniqueness is
 guaranteed by construction.
 
-Renaming or moving a spec file changes its logical name:
-references that pointed at it dangle, and its manifest
-entry becomes an orphan. `validate_specs` reports both.
-
 A spec file and a directory of the same name coexist:
 `payments/fees.cfs.md` and `payments/fees/rounding.cfs.md`
 are distinct specs — `SPEC/payments/fees` and
