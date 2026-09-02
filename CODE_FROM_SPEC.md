@@ -205,13 +205,16 @@ custom:
 
 # Artifact Generation
 
+A spec with `type: artifact` generates an **artifact**: the file at its 
+`output` path.
+
 For each stale artifact, an **orchestrator** dispatches a confined **subagent** 
-to regenerate it, providing an opaque token for the spec that produces that 
-artifact (the **target spec**).
+to regenerate it from the spec that produces that artifact (the **target 
+spec**).
 
 ## Spec chain
 
-The tooling assembles the context for each subagent as a **spec chain** — a 
+The tooling assembles the context for each subagent as a **spec chain**, a 
 self-contained document with everything the subagent needs to generate the 
 artifact: what its `imports` and `input` deliver, and the spec's own content as 
 the instructions.
@@ -255,34 +258,37 @@ The subagent may produce:
   contradictory to the point where generation is not possible. The subagent 
   reports exactly what is wrong.
 
-## Manifest
-
-The manifest is a file at `code-from-spec/.manifest` that records the state of 
-every generated artifact and verdict. See MANIFEST.md (under Resources) for the 
-full format.
-
-## Staleness
-
-An artifact or verdict is stale when its chain has changed since it was last 
-generated. The `validate_specs` tool reports staleness.
-
 ---
 
-# Verdicts
+# Verdict Generation
 
 A spec with `type: verdict` generates a **verdict** — a judgment recorded as a 
 document — instead of an artifact. Its `input` is the material under judgment,
 its `imports` are context, and chain assembly, staleness, and confinement follow 
 the same rules as artifact generation.
 
-The judging subagent performs a cold read: the verdict chain carries no 
-`<previous_*>` sections and no `<existing_artifact>` — not even the spec's own 
-previous verdict (see CHAIN_ASSEMBLY.md). It judges the current state of the 
-chain, with no memory of previous runs.
+The judging subagent performs a cold read: it judges the current state of the 
+chain with no memory of previous runs — not even the spec's own previous 
+verdict (see CHAIN_ASSEMBLY.md).
 
 The subagent writes the verdict document and its pass or fail via 
 `write_verdict`. The manifest records the result (`pass`, `fail`, or 
-`accepted`— see MANIFEST.md).
+`accepted` — see MANIFEST.md).
+
+---
+
+# Manifest
+
+The manifest is a file at `code-from-spec/.manifest` that records the state of 
+every generated artifact and verdict. See MANIFEST.md (under Resources) for the 
+full format.
+
+---
+
+# Staleness
+
+An artifact or verdict is stale when its chain has changed since it was last 
+generated. The `validate_specs` tool reports staleness.
 
 ---
 
