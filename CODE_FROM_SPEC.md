@@ -170,11 +170,9 @@ wait_on:
 
 #### custom
 
-Optional. A container for project-specific fields.
-Permitted on any spec. The value must be a YAML mapping;
-anything else is a format error. The framework never
-inspects the content. `custom` does not participate in
-chain assembly or the chain hash.
+Optional. A container for project-specific fields. The value must be a YAML 
+mapping; anything else is a format error. The framework never inspects the 
+content.
 
 ```yaml
 ---
@@ -197,6 +195,7 @@ imports:
   - EXTERNAL/proto/payments/v1/transfers.proto
 input: ARTIFACT/functional/transfers
 output: internal/transfers/handler.go
+wait_on: VERDICT/spec-review/*
 custom:
   owner: payments-team
 ---
