@@ -213,7 +213,7 @@ artifact (the **target spec**).
 
 The tooling assembles the context for each subagent as a **spec chain** — a 
 self-contained document with everything the subagent needs to generate the 
-artifact: the content of the target spec's `imports`, its own body as 
+artifact: the content of the target spec's `imports`, its own content as 
 instructions, and the content of its `input`.
 
 See CHAIN_ASSEMBLY.md (under Resources) for the full format, assembly order, and 
@@ -224,12 +224,12 @@ examples.
 When a name is included in the chain (via `imports` or `input`), the content 
 delivered depends on the prefix:
 
-- `SPEC/` — the spec's body: the file minus its frontmatter.
+- `SPEC/` — the spec's content: the file minus its frontmatter.
 - `ARTIFACT/` — full file content.
 - `EXTERNAL/` — full file content.
 
 Do not use `EXTERNAL/` to reference specs or generated artifacts. For specs, use 
-`SPEC/` — it delivers the body; `EXTERNAL/` would deliver the raw file, 
+`SPEC/` — it delivers the contents only; `EXTERNAL/` would deliver the raw file, 
 frontmatter included. For generated artifacts, use `ARTIFACT/` — it establishes 
 a dependency in the generation graph. Without it, a consuming spec may be 
 generated before the artifact it consumes is up to date.
@@ -289,7 +289,7 @@ The subagent writes the verdict document and its pass or fail via
 # File Format
 
 Specification files are CommonMark Markdown, UTF-8 encoded. Frontmatter is 
-optional YAML between `---` delimiters at the top of the file. The body is free
+optional YAML between `---` delimiters at the top of the file. The body is free 
 Markdown — the framework assigns no meaning to its structure. See FILE_FORMAT.md 
 (under Resources) for detailed parsing rules.
 
