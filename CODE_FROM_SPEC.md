@@ -205,128 +205,110 @@ custom:
 
 # Artifact Generation
 
-For each stale artifact, an **orchestrator** dispatches
-a confined **subagent** to regenerate it, providing an
-opaque token for the spec that produces that artifact
-(the **target spec**).
+For each stale artifact, an **orchestrator** dispatches a confined **subagent** 
+to regenerate it, providing an opaque token for the spec that produces that 
+artifact (the **target spec**).
 
 ## Spec chain
 
-The tooling assembles the context for each subagent as a
-**spec chain** — a self-contained document with
-everything the subagent needs to generate the artifact:
-the content of the target spec's `imports`, its own body
-as instructions, and the content of its `input`.
+The tooling assembles the context for each subagent as a **spec chain** — a 
+self-contained document with everything the subagent needs to generate the 
+artifact: the content of the target spec's `imports`, its own body as 
+instructions, and the content of its `input`.
 
-See CHAIN_ASSEMBLY.md (under Resources) for the full
-format, assembly order, and examples.
+See CHAIN_ASSEMBLY.md (under Resources) for the full format, assembly order, and 
+examples.
 
 ### Content delivered in the chain
 
-When a name is included in the chain (via `imports` or
-`input`), the content delivered depends on the prefix:
+When a name is included in the chain (via `imports` or `input`), the content 
+delivered depends on the prefix:
 
-- `SPEC/x` — the spec's body: the file minus its
-  frontmatter.
+- `SPEC/x` — the spec's body: the file minus its frontmatter.
 - `ARTIFACT/x` — full file content.
 - `EXTERNAL/x` — full file content.
 
-Do not use `EXTERNAL/` to reference specs or generated
-artifacts. For specs, use `SPEC/` — it delivers the body;
-`EXTERNAL/` would deliver the raw file, frontmatter
-included. For generated artifacts, use `ARTIFACT/` — it
-establishes a dependency in the generation graph. Without
-it, a consuming spec may be generated before the artifact
-it consumes is up to date.
+Do not use `EXTERNAL/` to reference specs or generated artifacts. For specs, use 
+`SPEC/` — it delivers the body; `EXTERNAL/` would deliver the raw file, 
+frontmatter included. For generated artifacts, use `ARTIFACT/` — it establishes 
+a dependency in the generation graph. Without it, a consuming spec may be 
+generated before the artifact it consumes is up to date.
 
 ## Confinement
 
-A subagent must only have access to the spec chain for
-the target spec and the ability to write the declared
-output file. It must not explore the filesystem, read
-unrelated files, or fetch external information. If the
-chain is insufficient, the correct action is to report
-what is missing. The tooling enforces this confinement —
-see TOOLING.md (under Resources) for the available
+A subagent must only have access to the spec chain for the target spec and the 
+ability to write the declared output file. It must not explore the filesystem, 
+read unrelated files, or fetch external information. If the chain is 
+insufficient, the correct action is to report what is missing. The tooling 
+enforces this confinement — see TOOLING.md (under Resources) for the available
 operations.
 
 ## Outcomes
 
 The subagent may produce:
 
-- **Generated artifact** — the tooling writes the file
-  to disk and updates the manifest. The subagent may
-  also report assumptions or ambiguities it encountered
-  during generation.
+- **Generated artifact** — the tooling writes the file to disk and updates the 
+  manifest. The subagent may also report assumptions or ambiguities it 
+  encountered during generation.
 
-- **Findings report** — the specification is ambiguous,
-  incomplete, or contradictory to the point where
-  generation is not possible. The subagent reports
-  exactly what is wrong.
+- **Findings report** — the specification is ambiguous, incomplete, or 
+  contradictory to the point where generation is not possible. The subagent 
+  reports exactly what is wrong.
 
 ## Manifest
 
-The manifest is a file at `code-from-spec/.manifest`
-that records the state of every generated artifact
-and verdict.
-See MANIFEST.md (under Resources) for the full format.
+The manifest is a file at `code-from-spec/.manifest` that records the state of 
+every generated artifact and verdict. See MANIFEST.md (under Resources) for the 
+full format.
 
 ## Staleness
 
-An artifact or verdict is stale when its chain has
-changed since it was last generated. The
-`validate_specs` tool reports staleness.
+An artifact or verdict is stale when its chain has changed since it was last 
+generated. The `validate_specs` tool reports staleness.
 
 ---
 
 # Verdicts
 
-A spec with `type: verdict` generates a **verdict** — a
-judgment recorded as a document — instead of an
-artifact. Its `input` is the material under judgment,
-its `imports` are context, and chain assembly,
-staleness, and confinement follow the same rules as
-artifact generation.
+A spec with `type: verdict` generates a **verdict** — a judgment recorded as a 
+document — instead of an artifact. Its `input` is the material under judgment,
+its `imports` are context, and chain assembly, staleness, and confinement follow 
+the same rules as artifact generation.
 
-The judging subagent performs a cold read: the verdict
-chain carries no `<previous_*>` sections and no
-`<existing_artifact>` — not even the spec's own previous
-verdict (see CHAIN_ASSEMBLY.md). It judges the current
-state of the chain, with no memory of previous runs.
+The judging subagent performs a cold read: the verdict chain carries no 
+`<previous_*>` sections and no `<existing_artifact>` — not even the spec's own 
+previous verdict (see CHAIN_ASSEMBLY.md). It judges the current state of the 
+chain, with no memory of previous runs.
 
-The subagent writes the verdict document and its pass or
-fail via `write_verdict`. The manifest records the result
-(`pass`, `fail`, or `accepted` — see MANIFEST.md).
+The subagent writes the verdict document and its pass or fail via 
+`write_verdict`. The manifest records the result (`pass`, `fail`, or 
+`accepted`— see MANIFEST.md).
 
 ---
 
 # File Format
 
-Specification files are CommonMark Markdown, UTF-8
-encoded. Frontmatter is optional YAML between `---`
-delimiters at the top of the file. The body is free
-Markdown — the framework assigns no meaning to its
-structure. See FILE_FORMAT.md (under Resources) for
-detailed parsing rules.
+Specification files are CommonMark Markdown, UTF-8 encoded. Frontmatter is 
+optional YAML between `---` delimiters at the top of the file. The body is free
+Markdown — the framework assigns no meaning to its structure. See FILE_FORMAT.md 
+(under Resources) for detailed parsing rules.
 
 ---
 
 # Circular References
 
-Circular references across `imports`, `input`, and
-`wait_on` are prohibited. Detection runs after glob
-expansion.
+Circular references across `imports`, `input`, and `wait_on` are prohibited. 
+Detection runs after glob expansion.
 
 ---
 
 # Path Separator
 
-All paths in the framework use forward slash (`/`) as the
-separator, regardless of the operating system. This applies to
-logical names, `output` paths, and file paths in the chain.
-Backslash (`\`) is never used as a separator. Tools that interact
-with the OS filesystem must normalize paths to forward slashes
-before returning or comparing them.
+All paths in the framework use forward slash (`/`) as the separator, regardless 
+of the operating system. This applies to logical names, `output` paths, and file 
+paths in the chain. Backslash (`\`) is never used as a separator. Tools that 
+interact with the OS filesystem must normalize paths to forward slashes before 
+returning or comparing them.
 
 ---
 
@@ -339,19 +321,19 @@ before returning or comparing them.
 
 ## Companion documents
 
-| Document | Description |
-|---|---|
-| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
-| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
-| [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
-| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
-| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CACHE.md) | Cache structure for disposition computation |
-| [TOOLING.md](https://github.com/CodeFromSpec/framework/blob/main/rules/TOOLING.md) | Operations a tool must implement |
+| Document                                                                                         | Description                                  |
+|--------------------------------------------------------------------------------------------------|----------------------------------------------|
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery   |
+| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md)         | Chain hash algorithm for staleness detection |
+| [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md)       | Detailed file format and parsing rules       |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md)             | Manifest format and artifact status          |
+| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CACHE.md)                   | Cache structure for disposition computation  |
+| [TOOLING.md](https://github.com/CodeFromSpec/framework/blob/main/rules/TOOLING.md)               | Operations a tool must implement             |
 
 ## Reference implementation
 
-| Repository | Description |
-|---|---|
+| Repository                                                               | Description                                                                                       |
+|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
 | [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | MCP server implementing spec validation, chain loading, artifact writing, and manifest management |
 
 ## Author
