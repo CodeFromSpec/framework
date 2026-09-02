@@ -54,12 +54,9 @@ only on specs that declare `type`.
 
 #### type
 
-Optional. Declares what the spec generates. Recognized
-values: `artifact` — the spec generates an artifact —
-and `verdict` — the spec generates a verdict (see
-Verdicts). When absent, the spec generates nothing:
-`output`, `imports`, `input`, and `wait_on` are format
-errors.
+Optional. Declares what the spec generates. Recognized values are `artifact` and 
+`verdict`. When absent, the spec generates nothing: `output`, `imports`, 
+`input`, and `wait_on` are format errors.
 
 ```yaml
 ---
