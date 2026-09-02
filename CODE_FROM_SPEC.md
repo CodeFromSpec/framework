@@ -76,7 +76,7 @@ documentation only.
 
 ### Logical names
 
-The framework uses three prefixes to name things:
+The framework uses four prefixes to name things:
 
 - **`SPEC/`** — a spec node. The name is `SPEC/`
   followed by the node's path under `code-from-spec/`.
