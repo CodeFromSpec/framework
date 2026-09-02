@@ -213,8 +213,8 @@ artifact (the **target spec**).
 
 The tooling assembles the context for each subagent as a **spec chain** — a 
 self-contained document with everything the subagent needs to generate the 
-artifact: the content of the target spec's `imports`, its own content as 
-instructions, and the content of its `input`.
+artifact: what its `imports` and `input` deliver, and the spec's own content as 
+the instructions.
 
 See CHAIN_ASSEMBLY.md (under Resources) for the full format, assembly order, and 
 examples.
@@ -289,9 +289,9 @@ The subagent writes the verdict document and its pass or fail via
 # File Format
 
 Specification files are CommonMark Markdown, UTF-8 encoded. Frontmatter is 
-optional YAML between `---` delimiters at the top of the file. The body is free 
-Markdown — the framework assigns no meaning to its structure. See FILE_FORMAT.md 
-(under Resources) for detailed parsing rules.
+optional YAML between `---` delimiters at the top of the file. The content is 
+free Markdown — the framework assigns no meaning to its structure. See 
+FILE_FORMAT.md (under Resources) for detailed parsing rules.
 
 ---
 
