@@ -291,8 +291,8 @@ no old content to show.
 
 | Document | Description |
 |---|---|
-| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/main/CODE_FROM_SPEC.md) | Full methodology specification |
-| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
-| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CACHE.md) | Cache structure for disposition computation |
-| [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Block extraction and normalization rules |
-| [TOOLING.md](https://github.com/CodeFromSpec/framework/blob/main/rules/TOOLING.md) | Operations a tool must implement |
+| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/v6/CODE_FROM_SPEC.md) | Full methodology specification |
+| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
+| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/CACHE.md) | Cache structure for disposition computation |
+| [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/FILE_FORMAT.md) | Block extraction and normalization rules |
+| [TOOLING.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/TOOLING.md) | Operations a tool must implement |

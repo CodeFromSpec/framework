@@ -231,7 +231,7 @@ No `0x49` marker — the input position is absent.
 
 | Document | Description |
 |---|---|
-| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/main/CODE_FROM_SPEC.md) | Full methodology specification |
-| [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Block extraction and normalization rules |
-| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
-| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
+| [CODE_FROM_SPEC.md](https://github.com/CodeFromSpec/framework/blob/v6/CODE_FROM_SPEC.md) | Full methodology specification |
+| [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/FILE_FORMAT.md) | Block extraction and normalization rules |
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/MANIFEST.md) | Manifest format and artifact status |

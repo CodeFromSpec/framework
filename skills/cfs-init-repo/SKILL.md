@@ -24,11 +24,21 @@ already in place.
    does not exist, create it.
 
 2. **Download the MCP server.** Detect the platform
-   (OS + architecture) and download the appropriate
-   `framework-mcp` binary from
-   `https://github.com/CodeFromSpec/tool-framework-mcp/releases/latest`
+   (OS + architecture) and download the matching archive
+   from the pinned v6.1.0 release:
+
+   ```
+   https://github.com/CodeFromSpec/tool-framework-mcp/releases/download/v6.1.0/framework-mcp_<os>_<arch>.tar.gz
+   ```
+
+   `<os>` is `darwin`, `linux`, or `windows`; `<arch>` is
+   `amd64` or `arm64`. On Windows the archive is a `.zip`
+   instead of `.tar.gz`. Extract the `framework-mcp` binary
    into `code-from-spec/.tools/`. On Windows, the binary is
    `framework-mcp.exe`.
+
+   Do not use the `releases/latest` URL — this branch is
+   frozen and its tooling is pinned to v6.1.0.
 
 3. **Configure .gitignore.** Add the following entries
    to `.gitignore`. Create the file if it does not exist.
@@ -61,21 +71,21 @@ already in place.
    to `.claude/agents/`. Create the directory if needed.
 
    - `cfs-artifact-generation` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-artifact-generation.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v6/subagents/cfs-artifact-generation.md`
    - `cfs-verdict-generation` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/subagents/cfs-verdict-generation.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v6/subagents/cfs-verdict-generation.md`
 
 6. **Install skills.** Download the following skills and
    save them to `.claude/skills/<name>/SKILL.md`:
 
    - `cfs-generate` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-generate/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v6/skills/cfs-generate/SKILL.md`
    - `cfs-status` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-status/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v6/skills/cfs-status/SKILL.md`
    - `cfs-init-session` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-session/SKILL.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v6/skills/cfs-init-session/SKILL.md`
    - `cfs-init-session/CODE_FROM_SPEC.md` from
-     `https://raw.githubusercontent.com/CodeFromSpec/framework/main/CODE_FROM_SPEC.md`
+     `https://raw.githubusercontent.com/CodeFromSpec/framework/v6/CODE_FROM_SPEC.md`
 
    Create directories as needed.
 

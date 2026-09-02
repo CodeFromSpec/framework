@@ -20,11 +20,7 @@ debugging.
 
 ## Versions
 
-> [!WARNING] 
-> **This is the development branch (`main`) and may contain unreleased
-> changes.** 
-
-For a stable release, use a version branch:
+This is the **v6 stable release** branch. For other versions:
 
 | Version | Branch                                                                                                 |
 |---------|--------------------------------------------------------------------------------------------------------|
@@ -90,7 +86,7 @@ Copy and paste the following prompt into Claude Code:
 
 ````
 Download the Code from Spec init skill from
-https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-repo/SKILL.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v6/skills/cfs-init-repo/SKILL.md
 and save it to `.claude/skills/cfs-init-repo/SKILL.md`.
 Create the directory if needed.
 ````
@@ -177,7 +173,6 @@ possible but out of scope — community contributions welcome.
 | [`docs/DOCUMENTATION.md`](docs/DOCUMENTATION.md) | Generating project documentation from the same spec tree that generates the code |
 | [`migration_guides/FROM_V5_TO_V6.md`](migration_guides/FROM_V5_TO_V6.md) | Migrating a v5 spec tree to v6 |
 | [`docs/FUTURE_WORK.md`](docs/FUTURE_WORK.md) | What the theory obliges that the framework does not yet meet |
-| [`RELEASING.md`](RELEASING.md) | Freezing a stable version branch and reopening main for the next version (development branch only) |
 
 ---
 
@@ -191,14 +186,12 @@ possible but out of scope — community contributions welcome.
 
 ## Versioning
 
-`main` is the development branch. Released versions live in
-dedicated branches (`v1`, `v2`, ...) and are frozen — they
-receive fixes only in exceptional cases. Breaking changes
-always produce a new version branch.
+This is the `v6` stable branch. It is frozen — it receives
+fixes only in exceptional cases. Development continues on
+`main`.
 
-To fetch a specific version of the methodology, use the raw URLs
-from the appropriate branch:
+To fetch v6 files, use the raw URLs from this branch:
 
 ```
-https://raw.githubusercontent.com/CodeFromSpec/framework/<version>/CODE_FROM_SPEC.md
+https://raw.githubusercontent.com/CodeFromSpec/framework/v6/CODE_FROM_SPEC.md
 ```
