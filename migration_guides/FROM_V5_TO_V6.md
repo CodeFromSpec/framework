@@ -40,7 +40,7 @@ v6 of the methodology.
 
 4. **Download `cfs-init-repo`.** Download the v6
    `cfs-init-repo` skill from
-   `https://raw.githubusercontent.com/CodeFromSpec/framework/main/skills/cfs-init-repo/SKILL.md`
+   `https://raw.githubusercontent.com/CodeFromSpec/framework/v6/skills/cfs-init-repo/SKILL.md`
    and save to `.claude/skills/cfs-init-repo/SKILL.md`.
 
 5. **Run `cfs-init-repo`.** It will download the v6 MCP

@@ -496,12 +496,12 @@ before returning or comparing them.
 
 | Document | Description |
 |---|---|
-| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
-| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
-| [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/main/rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
-| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/main/rules/MANIFEST.md) | Manifest format and artifact status |
-| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CACHE.md) | Cache structure for disposition computation |
-| [TOOLING.md](https://github.com/CodeFromSpec/framework/blob/main/rules/TOOLING.md) | Operations a tool must implement |
+| [CHAIN_ASSEMBLY.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/CHAIN_ASSEMBLY.md) | Chain format, assembly order, and delivery |
+| [CHAIN_HASH.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/CHAIN_HASH.md) | Chain hash algorithm for staleness detection |
+| [FILE_FORMAT.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/FILE_FORMAT.md) | Detailed file format and parsing rules |
+| [MANIFEST.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/MANIFEST.md) | Manifest format and artifact status |
+| [CACHE.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/CACHE.md) | Cache structure for disposition computation |
+| [TOOLING.md](https://github.com/CodeFromSpec/framework/blob/v6/rules/TOOLING.md) | Operations a tool must implement |
 
 ### Reference implementation
 
