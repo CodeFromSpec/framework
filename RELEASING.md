@@ -68,7 +68,7 @@ next development version.
    README tables.
 
 7. **Finalize the migration guide.**
-   `docs/migration_guides/FROM_V<N-1>_TO_V<N>.md` stays on
+   `migration_guides/FROM_V<N-1>_TO_V<N>.md` stays on
    the frozen branch — it is where migrating users will look
    for it.
    Review it for completeness against the changes actually
@@ -101,7 +101,7 @@ Back on `main`:
    development branch warning in place.
 
 3. **Start the next migration guide.** Create
-   `docs/migration_guides/FROM_V<N>_TO_V<N+1>.md` from the
+   `migration_guides/FROM_V<N>_TO_V<N+1>.md` from the
    structure of the previous one, empty of entries and
    carrying the under-development warning. Every change on `main` that
    affects existing projects must add its entry there when
