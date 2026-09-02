@@ -68,7 +68,7 @@ The following frontmatter fields are allowed:
 | Field     | Type                      | Description                                                       |
 |-----------|---------------------------|-------------------------------------------------------------------|
 | `type`    | string                    | What the spec generates: `artifact` or `verdict`                  |
-| `imports` | list of strings           | Context for the generation                                        |
+| `imports` | string or list of strings | Context for the generation                                        |
 | `input`   | string or list of strings | Material the generation transforms — or judges, for verdicts      |
 | `output`  | string                    | Path of the generated file, relative to the project root          |
 | `wait_on` | string or list of strings | References that must be up to date before this spec generates     |
@@ -151,15 +151,13 @@ output: internal/transfers/handler.go
 
 #### wait_on
 
-Optional. Ordering without content: names that must be generated and up to date 
-before this spec generates. Each entry uses an `ARTIFACT/` or `VERDICT/` name. 
-A target is satisfied when it has succeeded: an artifact target is 
-current — generated, not stale, not modified; a verdict target is current and 
-passed (`accepted` counts as pass).
+Optional. This spec is only generated after every listed target has succeeded. 
+Each entry uses an `ARTIFACT/` or `VERDICT/` name. An artifact target has 
+succeeded when it is generated and up to date; a verdict target, when it is up 
+to date and passed (`accepted` counts as a pass).
 
-`wait_on` adds edges to the dependency graph: it raises the spec's rank above 
-its targets and participates in circular-reference detection. It brings no 
-content into the chain and does not participate in the chain hash.
+Unlike `imports`, `wait_on` delivers no content — it only orders generation. 
+Changing it does not make the spec's output stale.
 
 ```yaml
 ---
