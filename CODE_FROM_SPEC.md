@@ -224,9 +224,9 @@ examples.
 When a name is included in the chain (via `imports` or `input`), the content 
 delivered depends on the prefix:
 
-- `SPEC/x` — the spec's body: the file minus its frontmatter.
-- `ARTIFACT/x` — full file content.
-- `EXTERNAL/x` — full file content.
+- `SPEC/` — the spec's body: the file minus its frontmatter.
+- `ARTIFACT/` — full file content.
+- `EXTERNAL/` — full file content.
 
 Do not use `EXTERNAL/` to reference specs or generated artifacts. For specs, use 
 `SPEC/` — it delivers the body; `EXTERNAL/` would deliver the raw file, 
