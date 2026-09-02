@@ -44,22 +44,29 @@ the file at `<project root>/proto/payments/v1/transfers.proto`.
 
 ### Frontmatter
 
-Frontmatter is optional YAML metadata. It is not part of the spec's body — it is 
-never delivered in a chain. The framework recognizes the fields described below. 
-Any other top-level field is a format error. Project-specific fields live under 
-`custom:`.
+Frontmatter is optional YAML metadata at the top of the spec, between `---` 
+delimiters. It is not part of the spec's **body** — 
+the content after it — and a reference to the spec delivers only the body. The 
+framework recognizes the fields described below. Any other top-level field is a 
+format error. Project-specific fields live under `custom:`.
 
 All fields are optional. `custom` is permitted on any spec; the remaining fields 
 only on specs that declare `type`.
 
+| Field | Description |
+|---|---|
+| `type` | What the spec generates: `artifact` or `verdict` |
+| `imports` | Context for the generation: `SPEC/`, `ARTIFACT/`, or `EXTERNAL/` names |
+| `input` | Material the generation transforms — or judges, for verdicts |
+| `output` | Path of the generated file, relative to the project root |
+| `wait_on` | Names that must be generated and up to date before this spec generates |
+| `custom` | Project-specific fields, never inspected by the framework |
+
 #### type
 
-Optional. Declares what the spec generates. Recognized
-values: `artifact` — the spec generates an artifact —
-and `verdict` — the spec generates a verdict (see
-Verdicts). When absent, the spec generates nothing:
-`output`, `imports`, `input`, and `wait_on` are format
-errors.
+Optional. Declares what the spec generates. Recognized values are `artifact` and 
+`verdict`. When absent, the spec generates nothing: `output`, `imports`, 
+`input`, and `wait_on` are format errors.
 
 ```yaml
 ---

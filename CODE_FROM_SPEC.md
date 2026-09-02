@@ -13,20 +13,20 @@ the reference implementation.
 
 ---
 
-## Specifications
+# Specifications
 
 Specifications carry the project's decisions.
 
-### Location
+## Location
 
 Specifications live under `<project root>/code-from-spec/`.
 
 A **spec** is a Markdown file with the `.cfs.md` extension, anywhere under 
 `code-from-spec/`. The framework ignores every other file.
 
-### Logical names
+## Logical names and references
 
-Four prefixes are used to name things:
+Four prefixes are used to name (and to reference) things:
 
 - **`SPEC/`** — a spec. A spec's name is `SPEC/` followed by its path relative 
   to `code-from-spec/`, without the `.cfs.md` extension, using forward slashes: 
@@ -42,21 +42,42 @@ Four prefixes are used to name things:
 relative to the project root: `EXTERNAL/proto/payments/v1/transfers.proto` is 
 the file at `<project root>/proto/payments/v1/transfers.proto`.
 
-### Frontmatter
+### Glob references
 
-Frontmatter is optional YAML metadata. It is not part of the spec's body — it is 
-never delivered in a chain. The framework recognizes the fields described below. 
-Any other top-level field is a format error. Project-specific fields live under 
-`custom:`.
+A reference ending in `/*` expands, at chain resolution, to every name of the 
+same prefix under the given path, at any depth: `SPEC/payments/*` expands to 
+every spec whose name starts with `SPEC/payments/`; `ARTIFACT/payments/*` and 
+`VERDICT/payments/*` to the artifacts and verdicts of those specs. The `*` must 
+be the entire last segment — `SPEC/payments/fee*`, `SPEC/*/fees`, or more than 
+one `*` are format errors. `EXTERNAL/` references do not accept globs.
 
-All fields are optional. `custom` is permitted on any spec; the remaining fields 
-only on specs that declare `type`.
+Expansion is deterministic: matches are sorted alphabetically by full logical 
+name and deduplicated against explicit entries. Expansion excludes the declaring 
+spec. An empty match is legal — the glob then contributes nothing until matching 
+specs exist.
+
+## Frontmatter
+
+Frontmatter is optional YAML metadata at the beginning of a spec, between `---` 
+delimiters. It is not part of the spec's content. 
+
+### Fields
+
+The following frontmatter fields are allowed: 
+
+| Field     | Type                      | Description                                                       |
+|-----------|---------------------------|-------------------------------------------------------------------|
+| `type`    | string                    | What the spec generates: `artifact` or `verdict`                  |
+| `imports` | list of strings           | Context for the generation                                        |
+| `input`   | string or list of strings | Material the generation transforms — or judges, for verdicts      |
+| `output`  | string                    | Path of the generated file, relative to the project root          |
+| `wait_on` | string or list of strings | References that must be up to date before this spec generates     |
+| `custom`  | mapping                   | Custom, project-specific fields; never inspected by the framework |
 
 #### type
 
 Optional. Declares what the spec generates. Recognized values are `artifact` and 
-`verdict`. When absent, the spec generates nothing: `output`, `imports`, 
-`input`, and `wait_on` are format errors.
+`verdict`. When absent, the spec generates nothing.
 
 ```yaml
 ---
@@ -66,13 +87,8 @@ type: artifact
 
 #### imports
 
-Optional. Content imported to provide context for
-generation. Each entry uses a `SPEC/`, `ARTIFACT/`, or
-`EXTERNAL/` name. A `SPEC/` entry that names a spec with
-`type` is a format error — the same applies to `input`.
-Entries may be glob references (see Glob references).
-When absent, the spec's chain carries only its own body
-and its `input`.
+Optional. Content imported to provide additional context for generation. Each 
+entry uses a `SPEC/`, `ARTIFACT/`, or `EXTERNAL/` name. 
 
 ```yaml
 ---
@@ -87,21 +103,20 @@ imports:
 
 #### input
 
-Optional. Material to be transformed into a new artifact.
-Accepts a single `SPEC/`, `ARTIFACT/`, or `EXTERNAL/`
-name, or a list of names. While `imports` brings in
-context that informs generation, `input` brings in
-content that the generation subagent transforms. For
-`type: verdict`, `input` is the material under judgment.
-Entries may be glob references (see Glob references).
-When absent, the subagent works directly from the
-specification without source material.
+Optional. Material to be transformed into a new artifact. Each entry uses a 
+`SPEC/`, `ARTIFACT/`, or `EXTERNAL/` name. 
 
-When `input` is a list, entries are delivered in
-alphabetical order by the full logical name, using the
-same ordering and deduplication rules as `imports` (see
-CHAIN_HASH.md). Each entry is tracked independently for
-staleness and disposition.
+While `imports` brings in context that informs generation, `input` brings in
+content that the generation subagent transforms. For `type: verdict`, `input` is 
+the material under judgment. 
+
+When absent, the subagent works directly from the specification without source 
+material.
+
+When `input` is a list, entries are delivered in alphabetical order by the full 
+logical name, using the same ordering and deduplication rules as `imports` (see
+CHAIN_HASH.md). Each entry is tracked independently for staleness and 
+disposition.
 
 ```yaml
 ---
@@ -121,14 +136,11 @@ input:
 
 #### output
 
-Optional. The path of the generated artifact or verdict,
-relative to the project root, using forward slashes. When
-absent, it defaults to the spec's own path with `.cfs.md`
-replaced by `.artifact.md` (`type: artifact`) or
-`.verdict.md` (`type: verdict`) — the output is generated
-next to its spec, inside `code-from-spec/`. The manifest
-records the resolved path. Each spec generates at most
-one artifact or verdict.
+Optional. The path of the generated artifact or verdict, relative to the project 
+root, using forward slashes. When absent, it defaults to the spec's own path 
+with `.cfs.md` replaced by `.artifact.md` (`type: artifact`) or `.verdict.md` 
+(`type: verdict`). The manifest records the resolved path. Each spec generates 
+at most one artifact or verdict.
 
 ```yaml
 ---
@@ -139,19 +151,15 @@ output: internal/transfers/handler.go
 
 #### wait_on
 
-Optional. Ordering without content: names that must be
-generated and up to date before this spec generates.
-Accepts a single `ARTIFACT/` or `VERDICT/` name, or a
-list; entries may be glob references. A target is
-satisfied when it has succeeded: an artifact target is
-current — generated, not stale, not modified; a verdict
-target is current and passed (`accepted` counts as
-pass).
+Optional. Ordering without content: names that must be generated and up to date 
+before this spec generates. Each entry uses an `ARTIFACT/` or `VERDICT/` name. 
+A target is satisfied when it has succeeded: an artifact target is 
+current — generated, not stale, not modified; a verdict target is current and 
+passed (`accepted` counts as pass).
 
-`wait_on` adds edges to the dependency graph: it raises
-the spec's rank above its targets and participates in
-circular-reference detection. It brings no content into
-the chain and does not participate in the chain hash.
+`wait_on` adds edges to the dependency graph: it raises the spec's rank above 
+its targets and participates in circular-reference detection. It brings no 
+content into the chain and does not participate in the chain hash.
 
 ```yaml
 ---
@@ -161,25 +169,6 @@ wait_on:
   - VERDICT/spec-review
 ---
 ```
-
-#### Glob references
-
-A reference ending in `/*` expands, at chain resolution,
-to every name of the same prefix under the given path,
-at any depth: `SPEC/x/*`
-expands to the specs without `type` under `x/`;
-`ARTIFACT/x/*` and `VERDICT/x/*` to the artifacts and
-verdicts of the specs under `x/`. The `*` must be the
-entire last segment — `SPEC/x/foo*`, `SPEC/*/y`, or more
-than one `*` are format errors. `EXTERNAL/` references do
-not accept globs.
-
-Expansion is deterministic: matches are sorted
-alphabetically by full logical name and deduplicated
-against explicit entries. Expansion excludes the
-declaring spec. An empty match is legal — the glob then
-contributes nothing until matching specs exist. Globs are
-permitted in `imports`, `input`, and `wait_on`.
 
 #### custom
 
@@ -197,7 +186,7 @@ custom:
 ---
 ```
 
-#### Full example
+### Full frontmatter example
 
 A spec with all fields:
 
@@ -217,14 +206,14 @@ custom:
 
 ---
 
-## Artifact Generation
+# Artifact Generation
 
 For each stale artifact, an **orchestrator** dispatches
 a confined **subagent** to regenerate it, providing an
 opaque token for the spec that produces that artifact
 (the **target spec**).
 
-### Spec chain
+## Spec chain
 
 The tooling assembles the context for each subagent as a
 **spec chain** — a self-contained document with
@@ -235,7 +224,7 @@ as instructions, and the content of its `input`.
 See CHAIN_ASSEMBLY.md (under Resources) for the full
 format, assembly order, and examples.
 
-#### Content delivered in the chain
+### Content delivered in the chain
 
 When a name is included in the chain (via `imports` or
 `input`), the content delivered depends on the prefix:
@@ -253,7 +242,7 @@ establishes a dependency in the generation graph. Without
 it, a consuming spec may be generated before the artifact
 it consumes is up to date.
 
-### Confinement
+## Confinement
 
 A subagent must only have access to the spec chain for
 the target spec and the ability to write the declared
@@ -264,7 +253,7 @@ what is missing. The tooling enforces this confinement —
 see TOOLING.md (under Resources) for the available
 operations.
 
-### Outcomes
+## Outcomes
 
 The subagent may produce:
 
@@ -278,14 +267,14 @@ The subagent may produce:
   generation is not possible. The subagent reports
   exactly what is wrong.
 
-### Manifest
+## Manifest
 
 The manifest is a file at `code-from-spec/.manifest`
 that records the state of every generated artifact
 and verdict.
 See MANIFEST.md (under Resources) for the full format.
 
-### Staleness
+## Staleness
 
 An artifact or verdict is stale when its chain has
 changed since it was last generated. The
@@ -293,7 +282,7 @@ changed since it was last generated. The
 
 ---
 
-## Verdicts
+# Verdicts
 
 A spec with `type: verdict` generates a **verdict** — a
 judgment recorded as a document — instead of an
@@ -314,7 +303,7 @@ fail via `write_verdict`. The manifest records the result
 
 ---
 
-## File Format
+# File Format
 
 Specification files are CommonMark Markdown, UTF-8
 encoded. Frontmatter is optional YAML between `---`
@@ -325,7 +314,7 @@ detailed parsing rules.
 
 ---
 
-## Circular References
+# Circular References
 
 Circular references across `imports`, `input`, and
 `wait_on` are prohibited. Detection runs after glob
@@ -333,7 +322,7 @@ expansion.
 
 ---
 
-## Path Separator
+# Path Separator
 
 All paths in the framework use forward slash (`/`) as the
 separator, regardless of the operating system. This applies to
@@ -344,14 +333,14 @@ before returning or comparing them.
 
 ---
 
-## Resources
+# Resources
 
-### Project sites
+## Project sites
 
 - https://codefromspec.com
 - https://github.com/CodeFromSpec
 
-### Companion documents
+## Companion documents
 
 | Document | Description |
 |---|---|
@@ -362,12 +351,12 @@ before returning or comparing them.
 | [CACHE.md](https://github.com/CodeFromSpec/framework/blob/main/rules/CACHE.md) | Cache structure for disposition computation |
 | [TOOLING.md](https://github.com/CodeFromSpec/framework/blob/main/rules/TOOLING.md) | Operations a tool must implement |
 
-### Reference implementation
+## Reference implementation
 
 | Repository | Description |
 |---|---|
 | [tool-framework-mcp](https://github.com/CodeFromSpec/tool-framework-mcp) | MCP server implementing spec validation, chain loading, artifact writing, and manifest management |
 
-### Author
+## Author
 
 Gustavo Silveira Neto — `gustavo@codefromspec.com`
