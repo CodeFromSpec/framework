@@ -3,7 +3,8 @@
 **Code from Spec** is a methodology where specifications drive
 the code. To change behavior, you change the specifications and
 regenerate. Never edit generated artifacts directly — a fix the
-specifications don't carry will not survive the next generation.
+specifications don't carry will not survive the next
+regeneration.
 
 This methodology is designed for AI agents to participate at
 every stage, from spec authoring to artifact generation to
@@ -21,9 +22,9 @@ Specifications carry the project's decisions.
 
 Specifications live under `<project root>/code-from-spec/`.
 
-A **spec** is a file with the `.cfs.md` extension, anywhere
-under `code-from-spec/`. Every other file is ignored by the
-framework.
+A **spec** is a Markdown file with the `.cfs.md` extension,
+anywhere under `code-from-spec/`. Every other file is
+ignored by the framework.
 
 ### Logical name
 
@@ -31,11 +32,11 @@ A spec's **logical name** is `SPEC/` followed by its path
 relative to `code-from-spec/`, without the `.cfs.md`
 extension, using forward slashes. The spec at
 `code-from-spec/payments/fees.cfs.md` is named
-`SPEC/payments/fees`. Identity comes from the filesystem:
-there is no declared name, and uniqueness is guaranteed by
-construction.
+`SPEC/payments/fees`. The logical name comes from the
+filesystem: there is no declared name, and uniqueness is
+guaranteed by construction.
 
-Renaming or moving a spec file renames its identity:
+Renaming or moving a spec file changes its logical name:
 references that pointed at it dangle, and its manifest
 entry becomes an orphan. `validate_specs` reports both.
 
