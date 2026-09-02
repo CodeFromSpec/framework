@@ -42,7 +42,7 @@ working on a project that uses Code from Spec.
 
 6. Acknowledge:
 
-   > Code from Spec v6 session initialized.
+   > Code from Spec v7 session initialized.
 
    Then continue normally.
 
