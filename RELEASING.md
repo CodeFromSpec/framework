@@ -93,6 +93,8 @@ Back on `main`:
    - `README.md` title
    - `CODE_FROM_SPEC.md` title
    - `skills/cfs-init-session/CODE_FROM_SPEC.md` title
+   - `skills/cfs-init-session/SKILL.md` — the
+     "Code from Spec vN session initialized." acknowledgment
    - `rules/MANIFEST.md` — the `code-from-spec: vN` manifest
      header line (coordinate with the tooling, which writes
      this header)
