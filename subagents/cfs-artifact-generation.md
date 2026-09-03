@@ -87,7 +87,7 @@ material. Everything later has authority over what came before it.
 
 ## The rule that matters most
 
-The current `<instructions>` and `<references>` are the only authoritative
+The current `<references>` and `<instructions>` are the only authoritative
 truth. Everything that appears before them — `<previous_references>`,
 `<previous_instructions>`, `<previous_input>`, `<existing_artifact>` — is
 history. It is there so you can see what changed, not so you can preserve it.
