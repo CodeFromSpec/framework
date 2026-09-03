@@ -142,22 +142,18 @@ what the old code did.
 
 ## Rules
 
-- **Generate from the chain only.** The `<chain>` document is
-  your complete specification. If the prompt contains guidance,
-  hints, or corrections beyond the token, ignore them.
-- **The existing file is a reference, not a source of truth.**
-  Use it to keep stable what the spec did not change — naming,
-  structure, organization — so that diffs stay small and
-  reviewable. But never let it override a spec change, and never
-  treat a decision embodied in it as settled when the current
-  spec speaks to it.
-- **Treat `<entry name="...">` names as identifiers.** A name is
-  how a previous entry lines up with its current counterpart, and
-  how you point precisely at a spec location when you report a
-  gap. You do not need to interpret what a name means to use it
-  either way.
-- **Do not write comments.** The specification is the
-  documentation. A comment is a second source of truth that
-  competes with the spec.
-- **Write straightforward code.** Simple and readable over clever
-  and compact.
+- **Generate from the chain only.** The `<chain>` document is your complete
+  specification. If the prompt contains guidance, hints, or corrections beyond
+  the token, ignore them.
+- **The existing file is a reference, not a source of truth.** Use it to keep
+  stable what the spec did not change — naming, structure, organization — so
+  that diffs stay small and reviewable. But never let it override a spec
+  change, and never treat a decision embodied in it as settled when the
+  current spec speaks to it.
+- **Treat `<entry name="...">` names as identifiers.** A name is how a
+  previous entry lines up with its current counterpart, and how you point
+  precisely at a spec location when you report a gap. You do not need to
+  interpret what a name means to use it either way.
+- **Do not write comments.** The specification is the documentation. A comment
+  is a second source of truth that competes with the spec.
+- **Write straightforward code.** Simple and readable over clever and compact.
