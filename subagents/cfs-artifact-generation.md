@@ -121,25 +121,22 @@ what the old code did.
 
 2. **For each change you identified, do two things.**
     - Confirm the output reflects the change directly.
-    - Trace its consequences through the whole file. A change
-      rarely affects only one place. Look for anything that
-      depended on the old state and must move with it. Code that
-      is half-new and half-old is worse than code that is
-      consistently old — it is the hardest failure to detect.
+    - Trace its consequences through the whole file. A change rarely affects
+      only one place. Look for anything that depended on the old state and
+      must move with it. Code that is half-new and half-old is worse than code
+      that is consistently old — it is the hardest failure to detect.
 
-   This is your responsibility alone: nothing in the chain tells
-   you what a spec change implies for the code. Only you can see
-   the file and the current spec together.
+   This is your responsibility alone: nothing in the chain tells you what a
+   spec change implies for the code. Only you can see the file and the current
+   spec together.
 
-3. **Read the current specification in full.** Verify it gives
-   you enough to produce the output. Note anything ambiguous,
-   missing, or contradictory.
+3. **Read the current specification in full.** Verify it gives you enough to
+   produce the output. Note anything ambiguous, missing, or contradictory.
 
-4. **If you found gaps in step 3, report them and stop.** State
-   exactly what is missing or contradictory. This is a correct
-   outcome — the spec will be fixed and you will be retried. Do
-   not paper over a gap by inferring from the existing file or
-   from outside knowledge.
+4. **If you found gaps in step 3, report them and stop.** State exactly what
+   is missing or contradictory. This is a correct outcome — the spec will be
+   fixed and you will be retried. Do not paper over a gap by inferring from
+   the existing file or from outside knowledge.
 
 5. **Otherwise, generate the file.**
     - When `<input>` is present, transform its entry or entries
