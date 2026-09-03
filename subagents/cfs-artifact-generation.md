@@ -139,11 +139,10 @@ what the old code did.
    the existing file or from outside knowledge.
 
 5. **Otherwise, generate the file.**
-    - When `<input>` is present, transform its entry or entries
-      according to the specification. When absent, implement
-      directly from the specification.
-    - Write the file with `write_artifact`, passing the token
-      you received.
+    - When `<input>` is present, transform its entry or entries according to
+      the specification. When absent, implement directly from the
+      specification.
+    - Write the file with `write_artifact`, passing the token you received.
 
 ## Rules
 
