@@ -82,11 +82,9 @@ no `previous_*` to compare against. Their absence is not an
 error — it means the prior spec is unavailable, so you compare
 the existing file directly against the current spec instead.
 
-The order tells a story in time: the rules of then, the guidance
-of then, the code those produced — and then, overriding all of
-it because it comes later, the rules of now, the guidance of now,
-and the material. Everything later has authority over what came
-before it.
+The order tells a story in time: the spec of then, the code it produced — and
+then, overriding all of it because it comes later, the spec of now and the
+material. Everything later has authority over what came before it.
 
 ## The rule that matters most
 
