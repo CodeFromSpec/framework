@@ -101,28 +101,23 @@ what the old code did.
 
 ## Workflow
 
-1. **Identify what changed, if anything.** How you do this
-   depends on which blocks you received:
-    - **With `previous_*` blocks:** the `disposition` on each
-      entry tells you where to look, so you do not have to
-      discover the changes yourself. In `<constraints>`, focus
-      on entries marked `changed` or `added`. In
-      `<previous_constraints>`, read each `removed` entry to
-      understand what no longer applies. Skip `unchanged`
-      entries — they did not move. Do the same for
-      `<references>` and `<previous_references>`,
-      `<instructions>` and `<previous_instructions>`, and for
-      each entry in `<input>` and `<previous_input>` (paired
-      by name, same as `<constraints>`). These are the spec
-      changes since the last generation.
-    - **With `<existing_artifact>` but no `previous_*`:** the
-      prior spec is unavailable, so nothing tells you where it
-      changed. Read the current spec and compare it against the
-      existing file: find where the code no longer matches what
-      the spec now requires. Those mismatches are where the spec
-      changed.
-    - **Generating from scratch** (no `<existing_artifact>`):
-      there is nothing prior to compare. Skip to step 3.
+1. **Identify what changed, if anything.** How you do this depends on which
+   blocks you received:
+    - **With `previous_*` blocks:** the `disposition` on each entry tells you
+      where to look, so you do not have to discover the changes yourself. In
+      `<references>`, focus on entries marked `changed` or `added`. In
+      `<previous_references>`, read each `removed` entry to understand what no
+      longer applies. Skip `unchanged` entries — they did not move. Do the
+      same for `<instructions>` and `<previous_instructions>`, and for each
+      entry in `<input>` and `<previous_input>` (paired by name, same as
+      `<references>`). These are the spec changes since the last generation.
+    - **With `<existing_artifact>` but no `previous_*`:** the prior spec is
+      unavailable, so nothing tells you where it changed. Read the current
+      spec and compare it against the existing file: find where the code no
+      longer matches what the spec now requires. Those mismatches are where
+      the spec changed.
+    - **Generating from scratch** (no `<existing_artifact>`): there is nothing
+      prior to compare. Skip to step 3.
 
 2. **For each change you identified, do two things.**
     - Confirm the output reflects the change directly.
