@@ -74,13 +74,12 @@ blocks may appear **before** `<constraints>`, in this order:
   one entry changed or was removed.
 - `<existing_artifact>` — the file you produced last time.
 
-The `<existing_artifact>` is present whenever the file already
-exists on disk. The `previous_*` blocks depend on cached history
-from the last generation, so they may be absent even during a
-regeneration: you may receive `<existing_artifact>` alone, with
-no `previous_*` to compare against. Their absence is not an
-error — it means the prior spec is unavailable, so you compare
-the existing file directly against the current spec instead.
+The `<existing_artifact>` is present whenever the file already exists on disk.
+The `previous_*` blocks depend on cached history from the last generation, so
+they may be absent even during a regeneration: you may receive
+`<existing_artifact>` alone, with no `previous_*` to compare against. Their
+absence is not an error — it means the prior spec is unavailable, so you
+compare the existing file directly against the current spec instead.
 
 The order tells a story in time: the spec of then, the code it produced — and
 then, overriding all of it because it comes later, the spec of now and the
