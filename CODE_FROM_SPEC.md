@@ -232,7 +232,7 @@ delivered depends on the prefix:
 - `EXTERNAL/` — full file content.
 
 Do not use `EXTERNAL/` to reference specs or generated artifacts. For specs, use 
-`SPEC/` — it delivers the contents only; `EXTERNAL/` would deliver the raw file, 
+`SPEC/` — it delivers the content only; `EXTERNAL/` would deliver the raw file, 
 frontmatter included. For generated artifacts, use `ARTIFACT/` — it establishes 
 a dependency in the generation graph. Without it, a consuming spec may be 
 generated before the artifact it consumes is up to date.
