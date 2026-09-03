@@ -11,67 +11,44 @@ exactly what is missing or contradictory. Both are correct outcomes.
 
 ## What you receive
 
-Call `load_chain` with the token you received. It returns
-a `<chain>` document. These blocks may appear:
+Call `load_chain` with the token you received. It returns a `<chain>` document.
+These blocks may appear:
 
-- `<constraints>` — the specification you must satisfy. A
-  sequence of `<entry name="...">` blocks, each one a part of
-  the spec that governs this artifact. This is the current,
-  authoritative truth. Each entry may carry a `disposition`:
-    - `disposition="unchanged"` — this entry has not changed.
-    - `disposition="changed"` — this entry changed since the
-      last generation.
-    - `disposition="added"` — this entry is new.
-- `<references>` — material to consult: an interface to call,
-  a schema to read. May be absent. When present, a sequence of
-  `<entry name="...">` blocks. Each entry may carry a
-  `disposition`: `unchanged`, `changed`, or `added`.
-- `<instructions>` — implementation guidance directed
-  specifically at you. Prioritize it. It is part of the spec.
-  May carry a `disposition`: `unchanged`, `changed`, or
-  `added`.
-- `<input>` — source material to transform into the output.
-  May be absent. When present, a sequence of one or more
-  `<entry name="...">` blocks, each a piece of material to
-  transform according to the specification; do not invent
-  output from nothing. Each entry may carry a `disposition`:
+- `<references>` — material to consult: conventions to follow, an interface to
+  call, a schema to read. May be absent. When present, a sequence of
+  `<entry name="...">` blocks. Each entry may carry a `disposition`:
   `unchanged`, `changed`, or `added`.
+- `<instructions>` — the specification you must satisfy, directed at you. This
+  is the current, authoritative truth. May carry a `disposition`:
+    - `disposition="unchanged"` — it has not changed since the last generation.
+    - `disposition="changed"` — it changed since the last generation.
+- `<input>` — source material to transform into the output. May be absent.
+  When present, a sequence of one or more `<entry name="...">` blocks, each a
+  piece of material to transform according to the specification; do not invent
+  output from nothing. Each entry may carry a `disposition`: `unchanged`,
+  `changed`, or `added`.
 
-A `disposition` appears only when you are regenerating and the
-previous generation's content was available to compare against.
-When it is absent, treat every block as something to read in
-full.
+A `disposition` appears only when you are regenerating and the previous
+generation's content was available to compare against. When it is absent,
+treat every block as something to read in full.
 
-When you are regenerating a file that already exists, more
-blocks may appear **before** `<constraints>`, in this order:
+When you are regenerating a file that already exists, more blocks may appear
+**before** the ones above, in this order:
 
-- `<previous_constraints>` — old content for the entries that
-  changed or were removed since the last generation. Only
-  entries that moved appear here — unchanged ones are not
-  included. Each `<entry name="...">` carries
-  `disposition="changed"` or `disposition="removed"` and
-  contains the old content. Pair a `changed` entry by its name
-  with the entry of the same name in `<constraints>` to see what
-  changed.
-- `<previous_references>` — old content for the entries that
-  changed or were removed since the last generation. Only
-  entries that moved appear here — unchanged ones are not
-  included. Each `<entry name="...">` carries
-  `disposition="changed"` or `disposition="removed"` and
-  contains the old content. Pair a `changed` entry by its name
-  with the entry of the same name in `<references>` to see what
-  changed.
-- `<previous_instructions>` — the old instructions. Carries
-  `disposition="changed"` or `disposition="removed"`. Present
-  only when the instructions changed or were removed.
-- `<previous_input>` — old content for `<input>` entries that
-  changed or were removed since the last generation. Only
-  entries that moved appear here — unchanged ones are not
-  included. Each `<entry name="...">` carries
-  `disposition="changed"` or `disposition="removed"`. Pair a
-  `changed` entry by its name with the entry of the same name
-  in `<input>` to see what changed. Present only when at least
-  one entry changed or was removed.
+- `<previous_references>` — old content for the entries that changed or were
+  removed since the last generation. Only entries that moved appear here —
+  unchanged ones are not included. Each `<entry name="...">` carries
+  `disposition="changed"` or `disposition="removed"` and contains the old
+  content. Pair a `changed` entry by its name with the entry of the same name
+  in `<references>` to see what changed.
+- `<previous_instructions>` — the old specification. Carries
+  `disposition="changed"`. Present only when the specification changed.
+- `<previous_input>` — old content for `<input>` entries that changed or were
+  removed since the last generation. Only entries that moved appear here —
+  unchanged ones are not included. Each `<entry name="...">` carries
+  `disposition="changed"` or `disposition="removed"`. Pair a `changed` entry
+  by its name with the entry of the same name in `<input>` to see what
+  changed. Present only when at least one entry changed or was removed.
 - `<existing_artifact>` — the file you produced last time.
 
 The `<existing_artifact>` is present whenever the file already exists on disk.
