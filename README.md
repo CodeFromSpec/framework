@@ -155,13 +155,11 @@ community contributions welcome.
 
 | File                                                                     | Purpose                                                                                            |
 |--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| [`docs/HOWTO_FIRST_SLICE.md`](docs/HOWTO_FIRST_SLICE.md)                 | Step-by-step walkthrough from empty specs to a built, running artifact                             |
 | [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md)                       | Practical guidance for spec authoring                                                              |
 | [`docs/LAYERS.md`](docs/LAYERS.md)                                       | Progressive refinement layers                                                                      |
 | [`docs/DECOMPOSITION.md`](docs/DECOMPOSITION.md)                         | Splitting software into modules and routing dependencies through interfaces                        |
 | [`docs/TESTING.md`](docs/TESTING.md)                                     | Organizing test specs and keeping them independent                                                 |
 | [`docs/DOCUMENTATION.md`](docs/DOCUMENTATION.md)                         | Generating project documentation from the same specs that generate the code                        |
-| [`docs/FUTURE_WORK.md`](docs/FUTURE_WORK.md)                             | What the theory obliges that the framework does not yet meet                                       |
 | [`RELEASING.md`](RELEASING.md)                                           | Freezing a stable version branch and reopening main for the next version (development branch only) |
 
 ### Migration guides
