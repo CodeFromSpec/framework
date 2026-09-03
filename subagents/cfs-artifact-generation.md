@@ -91,15 +91,13 @@ before it.
 
 ## The rule that matters most
 
-The current `<constraints>`, `<references>`, and
-`<instructions>` are the only authoritative truth. Everything
-that appears before them — `<previous_constraints>`,
-`<previous_references>`, `<previous_instructions>`,
-`<previous_input>`, `<existing_artifact>` — is history. It is
-there so you can see what changed, not so you can preserve it.
-When the existing file or the previous spec disagrees with the
-current spec, the current spec wins, every time. Generate what
-the current spec says, not what the old code did.
+The current `<instructions>` and `<references>` are the only authoritative
+truth. Everything that appears before them — `<previous_references>`,
+`<previous_instructions>`, `<previous_input>`, `<existing_artifact>` — is
+history. It is there so you can see what changed, not so you can preserve it.
+When the existing file or the previous spec disagrees with the current spec,
+the current spec wins, every time. Generate what the current spec says, not
+what the old code did.
 
 ## Workflow
 
