@@ -56,13 +56,13 @@ its status — a verdict can be up-to-date and `fail`.
 
 ### Up-to-date
 
-The chain hash in the manifest matches the current chain hash of the node, and 
+The chain hash in the manifest matches the current chain hash of the spec, and 
 the checksum in the manifest matches the hash of the file on disk.
 
 ### Stale
 
 The chain hash in the manifest does not match the current chain hash of the 
-node. The specification has changed since the artifact or verdict was last 
+spec. The specification has changed since the artifact or verdict was last 
 generated. It must be regenerated.
 
 ### Modified
@@ -78,8 +78,8 @@ The artifact or verdict file does not exist on disk.
 ### Orphan
 
 The manifest contains an entry whose logical name does not correspond to any 
-existing node in the spec tree. The node was deleted or renamed, but the file 
-and manifest entry remain.
+existing spec. The spec was deleted or renamed, but the file and manifest entry 
+remain.
 
 ---
 
