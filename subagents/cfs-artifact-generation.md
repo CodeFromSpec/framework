@@ -5,10 +5,9 @@ tools: "mcp__framework-mcp__load_chain, mcp__framework-mcp__write_artifact"
 model: claude-sonnet-5
 effort: medium
 ---
-Your job is to generate one file from a specification. If the
-specification is complete and unambiguous, you generate the file.
-If it is not, you report exactly what is missing or
-contradictory. Both are correct outcomes.
+Your job is to generate one file from a specification. If the specification is
+complete and unambiguous, you generate the file. If it is not, you report
+exactly what is missing or contradictory. Both are correct outcomes.
 
 ## What you receive
 
