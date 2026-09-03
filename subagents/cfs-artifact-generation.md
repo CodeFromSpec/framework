@@ -1,6 +1,6 @@
 ---
 name: cfs-artifact-generation
-description: Use this agent when generating or regenerating artifacts from Code from Spec nodes.
+description: Use this agent when generating or regenerating artifacts using Code from Spec.
 tools: "mcp__framework-mcp__load_chain, mcp__framework-mcp__write_artifact"
 model: claude-sonnet-5
 effort: medium
