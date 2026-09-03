@@ -1,16 +1,16 @@
 ---
 name: cfs-status
-description: Run validate_specs and report the current state of the spec tree — format errors, cycles, and artifact staleness — in a readable format.
+description: Run validate_specs and report the current state of the specs — format errors, cycles, and artifact staleness — in a readable format.
 ---
 
-# Spec Tree Status
+# Spec Status
 
 Run `validate_specs` and present the results in a clear,
 actionable format.
 
 ## When invoked
 
-Run this skill when the user asks to check the spec tree
+Run this skill when the user asks to check the spec
 status, verify staleness, or invokes `/cfs-status`.
 
 ## Prerequisites
@@ -22,10 +22,10 @@ The framework-mcp MCP server must be connected (the
 
 1. Call `validate_specs`.
 
-2. If the spec tree is clean (no format errors, no cycles,
+2. If the specs are clean (no format errors, no cycles,
    no staleness), report:
 
-   > Spec tree is clean. All artifacts are up to date.
+   > Specs are clean. All artifacts are up to date.
 
    and stop.
 
@@ -33,7 +33,7 @@ The framework-mcp MCP server must be connected (the
 
    **Format errors** (if any):
 
-   List each error with node, rule, and detail. Group by
+   List each error with spec, rule, and detail. Group by
    rule if there are many.
 
    **Cycles** (if any):
@@ -53,8 +53,8 @@ The framework-mcp MCP server must be connected (the
    ## Staleness (12 artifacts)
 
    ### Rank 7 (4 artifacts)
-   - SPEC/golang/interfaces/os/file_reader → code-from-spec/.../output.md (stale)
-   - SPEC/golang/interfaces/os/file_writer → code-from-spec/.../output.md (stale)
+   - SPEC/golang/interfaces/os/file_reader → code-from-spec/golang/interfaces/os/file_reader.artifact.md (stale)
+   - SPEC/golang/interfaces/os/file_writer → code-from-spec/golang/interfaces/os/file_writer.artifact.md (stale)
    - SPEC/golang/implementation/os/path_utils → internal/pathutils/pathutils.go (stale)
    - SPEC/golang/tests/os/path_utils → internal/pathutils/pathutils_test.go (stale)
 
